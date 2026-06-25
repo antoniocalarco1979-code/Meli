@@ -1,0 +1,50 @@
+import type { DashboardData } from '../types'
+
+export const dashboardData: DashboardData = {
+  userName: 'Antonio',
+  subtitle: 'Ecco il riepilogo del tuo apiario',
+  selectedApiary: 'Apiario Acquacalda',
+  apiaries: ['Apiario Acquacalda', 'Apiario Monte', 'Apiario Valle'],
+  weather: {
+    temperature: 28,
+    condition: 'Poco nuvoloso',
+    humidity: 48,
+    windKmh: 12,
+  },
+  kpis: [
+    { id: '1', label: 'Arnie totali', value: '28', icon: 'hives' },
+    { id: '2', label: 'Ultima visita', value: '3 giorni fa', icon: 'visit' },
+    { id: '3', label: 'Produzione anno', value: '428 kg', icon: 'production' },
+    { id: '4', label: 'Regine da sostituire', value: '2', icon: 'queen' },
+    { id: '5', label: 'Trattamenti in scadenza', value: '1', icon: 'treatment' },
+  ],
+  hiveMarkers: [
+    { id: 'h1', label: '1', x: 18, y: 22, status: 'healthy' },
+    { id: 'h2', label: '2', x: 32, y: 18, status: 'healthy' },
+    { id: 'h3', label: '3', x: 48, y: 28, status: 'warning' },
+    { id: 'h4', label: '4', x: 62, y: 20, status: 'healthy' },
+    { id: 'h5', label: '5', x: 75, y: 35, status: 'healthy' },
+    { id: 'h6', label: '6', x: 22, y: 45, status: 'healthy' },
+    { id: 'h7', label: '7', x: 38, y: 52, status: 'critical' },
+    { id: 'h8', label: '8', x: 55, y: 48, status: 'healthy' },
+    { id: 'h9', label: '9', x: 70, y: 55, status: 'warning' },
+    { id: 'h10', label: '10', x: 85, y: 42, status: 'healthy' },
+    { id: 'h11', label: '11', x: 28, y: 68, status: 'healthy' },
+    { id: 'h12', label: '12', x: 50, y: 72, status: 'healthy' },
+    { id: 'h13', label: '13', x: 68, y: 78, status: 'inactive' },
+    { id: 'h14', label: '14', x: 82, y: 65, status: 'healthy' },
+  ],
+  todayActivities: [
+    { id: 'a1', time: '09:30', title: 'Controllo arnia 12' },
+    { id: 'a2', time: '11:00', title: 'Smielatura' },
+    { id: 'a3', time: '14:30', title: 'Trattamento varroa' },
+    { id: 'a4', time: '16:00', title: 'Aggiungere melario' },
+  ],
+  quickActions: [
+    { id: 'q1', label: 'Nuova visita', icon: 'visit' },
+    { id: 'q2', label: 'Scatta foto', icon: 'camera' },
+    { id: 'q3', label: 'Note vocali', icon: 'voice' },
+    { id: 'q4', label: 'Scanner QR Code', icon: 'qr' },
+    { id: 'q5', label: 'Promemoria', icon: 'reminder' },
+  ],
+}

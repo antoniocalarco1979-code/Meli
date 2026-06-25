@@ -1,0 +1,79 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--meli-radius-pill);
+  font-family: var(--meli-font);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  transition:
+    transform 0.2s var(--meli-ease-out),
+    box-shadow 0.2s var(--meli-ease-out),
+    background 0.2s var(--meli-ease-out);
+}
+
+.ui-button:active {
+  transform: scale(0.98);
+}
+
+.ui-button--sm {
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.ui-button--md {
+  min-height: var(--meli-touch-min);
+  padding: 0.65rem 1.35rem;
+  font-size: 0.9375rem;
+}
+
+.ui-button--lg {
+  min-height: 56px;
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+}
+
+.ui-button--full {
+  width: 100%;
+}
+
+.ui-button--primary {
+  color: var(--meli-text-inverse);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey), var(--meli-gold));
+  box-shadow: var(--meli-shadow-button);
+}
+
+.ui-button--primary:hover {
+  box-shadow: var(--meli-shadow-float);
+}
+
+.ui-button--secondary {
+  color: var(--meli-brown);
+  background: var(--meli-glass-strong);
+  border: 1px solid var(--meli-border-glass);
+  box-shadow: var(--meli-shadow-sm);
+  backdrop-filter: var(--meli-blur);
+}
+
+.ui-button--ghost {
+  color: var(--meli-brown-soft);
+  background: transparent;
+}
+
+.ui-button--ghost:hover {
+  background: var(--meli-honey-soft);
+}
+
+.ui-button--danger {
+  color: #fff;
+  background: linear-gradient(135deg, #ef5350, #c62828);
+  box-shadow: 0 8px 24px rgba(198, 40, 40, 0.25);
+}
+
+.ui-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

@@ -1,0 +1,25 @@
+.ui-card {
+  border-radius: var(--meli-radius-xl);
+}
+
+.ui-card:not(.meli-glass) {
+  background: var(--meli-cream-soft);
+  border: 1px solid var(--meli-border);
+  box-shadow: var(--meli-shadow-sm);
+}
+
+.ui-card--padding-none {
+  padding: 0;
+}
+
+.ui-card--padding-sm {
+  padding: 1rem;
+}
+
+.ui-card--padding-md {
+  padding: 1.35rem;
+}
+
+.ui-card--padding-lg {
+  padding: 1.75rem;
+}

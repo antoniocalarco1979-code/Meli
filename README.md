@@ -1,32 +1,39 @@
-# React + TypeScript + Vite
+# MELI — Gestione Apiario
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Applicazione web per apicoltori professionali. Dashboard, apiari, arnie, visite, produzione e report.
 
-Currently, two official plugins are available:
+## Struttura
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+docs/      Documentazione
+assets/    Brand e immagini sorgente
+public/    Asset statici (favicon, logo runtime)
+src/       Codice React + TypeScript
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Vedi [docs/structure.md](./docs/structure.md) per i dettagli.
+
+## Documentazione
+
+| File | Descrizione |
+|------|-------------|
+| [ROADMAP.md](./ROADMAP.md) | Piano di sviluppo |
+| [TODO.md](./TODO.md) | Task aperti |
+| [CHANGELOG.md](./CHANGELOG.md) | Storico modifiche |
+| [DATABASE.md](./DATABASE.md) | Schema dati |
+| [ARCHITETTURA.md](./ARCHITETTURA.md) | Architettura software |
+| [STYLE_GUIDE.md](./STYLE_GUIDE.md) | Design e UX |
+| [docs/](./docs/) | Documentazione estesa |
+
+## Comandi
+
+```bash
+npm install
+npm run dev      # sviluppo
+npm run build    # produzione
+npm run preview  # anteprima build
+```
+
+## Stack
+
+React · TypeScript · Vite · React Router · Framer Motion · Dexie · Lucide

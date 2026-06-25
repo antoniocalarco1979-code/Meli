@@ -1,0 +1,23 @@
+.ui-page-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.ui-page-title__heading {
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--meli-brown);
+  line-height: 1.1;
+}
+
+.ui-page-title__subtitle {
+  margin-top: 0.4rem;
+  font-size: 1.05rem;
+  color: var(--meli-text-secondary);
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
+  <circle cx="120" cy="120" r="112" stroke="currentColor" stroke-width="3" opacity="0.35"/>
+  <path
+    d="M120 48c-18 28-42 48-42 78a42 42 0 0 0 84 0c0-30-24-50-42-78Z"
+    stroke="currentColor"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <text
+    x="120"
+    y="168"
+    text-anchor="middle"
+    fill="currentColor"
+    font-family="system-ui, sans-serif"
+    font-size="28"
+    font-weight="700"
+    letter-spacing="6"
+  >RANU</text>
+</svg>

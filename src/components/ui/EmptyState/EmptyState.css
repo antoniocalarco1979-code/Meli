@@ -1,0 +1,40 @@
+.ui-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  border-radius: var(--meli-radius-xl);
+  max-width: 420px;
+  margin: 2rem auto;
+}
+
+.ui-empty-state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--meli-radius-md);
+  margin-bottom: 1.25rem;
+  color: var(--meli-sage);
+  background: var(--meli-sage-soft);
+}
+
+.ui-empty-state__title {
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.ui-empty-state__desc {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--meli-text-muted);
+  line-height: 1.5;
+}
+
+.ui-empty-state__action {
+  margin-top: 1.25rem;
+}

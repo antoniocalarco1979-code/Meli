@@ -1,0 +1,35 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--meli-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.ui-badge--default {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--meli-brown-soft);
+  border: 1px solid var(--meli-border);
+}
+
+.ui-badge--honey {
+  background: var(--meli-honey-soft);
+  color: var(--meli-honey);
+}
+
+.ui-badge--gold {
+  background: rgba(201, 162, 39, 0.15);
+  color: var(--meli-gold-dark);
+}
+
+.ui-badge--sage {
+  background: var(--meli-sage-soft);
+  color: var(--meli-sage-dark);
+}
+
+.ui-badge--danger {
+  background: rgba(229, 57, 53, 0.12);
+  color: var(--meli-hive-critical);
+}

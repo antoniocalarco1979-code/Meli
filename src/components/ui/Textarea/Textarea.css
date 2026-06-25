@@ -1,0 +1,35 @@
+.ui-textarea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ui-textarea__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}
+
+.ui-textarea__field {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.85rem 1rem;
+  border-radius: var(--meli-radius-md);
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: -0.018em;
+  color: var(--meli-brown);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--meli-border-glass);
+  resize: vertical;
+  outline: none;
+}
+
+.ui-textarea__field:focus {
+  box-shadow: 0 0 0 3px var(--meli-honey-soft);
+}
+
+.ui-textarea__hint {
+  font-size: 0.75rem;
+  color: var(--meli-text-muted);
+}

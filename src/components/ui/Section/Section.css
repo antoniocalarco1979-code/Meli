@@ -1,0 +1,21 @@
+.ui-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ui-section__title {
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--meli-brown);
+}
+
+.ui-section__subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--meli-text-muted);
+}

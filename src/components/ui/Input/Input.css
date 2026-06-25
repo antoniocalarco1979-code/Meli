@@ -1,0 +1,43 @@
+.ui-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ui-input__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}
+
+.ui-input__field {
+  width: 100%;
+  min-height: var(--meli-touch-min);
+  padding: 0.65rem 1rem;
+  border-radius: var(--meli-radius-md);
+  font-size: 1rem;
+  letter-spacing: -0.018em;
+  color: var(--meli-brown);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--meli-border-glass);
+  outline: none;
+  transition: box-shadow 0.2s var(--meli-ease-out);
+}
+
+.ui-input__field:focus {
+  box-shadow: 0 0 0 3px var(--meli-honey-soft);
+}
+
+.ui-input__hint {
+  font-size: 0.75rem;
+  color: var(--meli-text-muted);
+}
+
+.ui-input__error {
+  font-size: 0.75rem;
+  color: var(--meli-hive-critical);
+}
+
+.ui-input--error .ui-input__field {
+  border-color: rgba(229, 57, 53, 0.4);
+}

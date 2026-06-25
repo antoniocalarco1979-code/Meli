@@ -1,0 +1,63 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: var(--meli-header-height);
+  padding: 0.75rem 1.75rem;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  flex-shrink: 0;
+}
+
+.app-header__eyebrow {
+  margin-bottom: 0.15rem;
+}
+
+.app-header__title {
+  font-family: var(--meli-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--meli-brown);
+}
+
+.app-header__subtitle {
+  margin-top: 0.1rem;
+  font-size: 0.8125rem;
+  color: var(--meli-text-muted);
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-header__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--meli-radius-sm);
+  color: var(--meli-text-secondary);
+  transition: background 0.2s var(--meli-ease-out), color 0.2s;
+}
+
+.app-header__btn:hover {
+  background: var(--meli-honey-soft);
+  color: var(--meli-brown);
+}
+
+@media (max-width: 767px) {
+  .app-header {
+    padding: 0.65rem 1rem;
+  }
+
+  .app-header__subtitle {
+    display: none;
+  }
+}
