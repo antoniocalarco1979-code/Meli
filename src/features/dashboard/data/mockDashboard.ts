@@ -12,10 +12,11 @@ export const dashboardData: DashboardData = {
     windKmh: 12,
   },
   kpis: [
-    { id: '1', label: 'Arnie totali', value: '28', icon: 'hives' },
-    { id: '2', label: 'Ultima visita', value: '3 giorni fa', icon: 'visit' },
+    { id: '0', label: 'Apiari', value: '0', icon: 'apiari' },
+    { id: '1', label: 'Arnie totali', value: '0', icon: 'hives' },
+    { id: '2', label: 'Ultima visita', value: '—', icon: 'visit' },
     { id: '3', label: 'Produzione anno', value: '428 kg', icon: 'production' },
-    { id: '4', label: 'Regine da sostituire', value: '2', icon: 'queen' },
+    { id: '4', label: 'Indice salute', value: '—', icon: 'queen' },
     { id: '5', label: 'Trattamenti in scadenza', value: '1', icon: 'treatment' },
   ],
   hiveMarkers: [

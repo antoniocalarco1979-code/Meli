@@ -1,0 +1,60 @@
+.queen-card {
+  padding: 1.5rem 1.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.queen-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.15rem;
+  color: var(--meli-gold-dark);
+}
+
+.queen-card__header .arnia-section-title {
+  margin: 0;
+}
+
+.queen-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.queen-card__grid dt {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--meli-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.queen-card__grid dd {
+  font-family: var(--meli-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.queen-card__full {
+  grid-column: 1 / -1;
+}
+
+.queen-card__empty {
+  padding: 1rem 0 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+  text-align: center;
+}
+
+.queen-card__replace {
+  min-height: 52px;
+  font-weight: 700;
+}
+
+.queen-card__replace svg {
+  margin-right: 0.35rem;
+}

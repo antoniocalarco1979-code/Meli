@@ -1,0 +1,39 @@
+.floating-visit-btn {
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 64px;
+  padding: 0 1.75rem;
+  border: none;
+  border-radius: var(--meli-radius-pill);
+  background: linear-gradient(135deg, var(--meli-honey), var(--meli-gold));
+  color: #fff;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  box-shadow: var(--meli-shadow-button);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .floating-visit-btn {
+    min-height: 72px;
+    padding: 0 2.25rem;
+    font-size: 1.125rem;
+    right: max(2rem, env(safe-area-inset-right));
+    bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 1024px) {
+  .floating-visit-btn {
+    right: calc(var(--meli-sidebar-width, 240px) + 2rem);
+  }
+}

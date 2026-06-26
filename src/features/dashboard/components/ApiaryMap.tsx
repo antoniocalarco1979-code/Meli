@@ -6,6 +6,8 @@ import './ApiaryMap.css'
 type ApiaryMapProps = {
   apiaryName: string
   markers: HiveMarker[]
+  onHiveClick?: (numero: string) => void
+  onMapClick?: () => void
 }
 
 const statusClass = {
@@ -15,7 +17,7 @@ const statusClass = {
   inactive: 'apiary-map__hive--inactive',
 } as const
 
-export function ApiaryMap({ apiaryName, markers }: ApiaryMapProps) {
+export function ApiaryMap({ apiaryName, markers, onHiveClick, onMapClick }: ApiaryMapProps) {
   return (
     <motion.section
       className="apiary-map meli-glass meli-glass--deep"
@@ -28,6 +30,19 @@ export function ApiaryMap({ apiaryName, markers }: ApiaryMapProps) {
         transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
       }}
       aria-label={`Mappa ${apiaryName}`}
+      onClick={onMapClick}
+      role={onMapClick ? 'button' : undefined}
+      tabIndex={onMapClick ? 0 : undefined}
+      onKeyDown={
+        onMapClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onMapClick()
+              }
+            }
+          : undefined
+      }
     >
       <header className="apiary-map__header">
         <Map size={24} strokeWidth={1.65} aria-hidden="true" />
@@ -53,6 +68,10 @@ export function ApiaryMap({ apiaryName, markers }: ApiaryMapProps) {
                 damping: 22,
               }}
               whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+              onClick={(e) => {
+                e.stopPropagation()
+                onHiveClick?.(marker.label)
+              }}
             >
               <Hexagon size={18} fill="currentColor" strokeWidth={0} aria-hidden="true" />
               <span className="apiary-map__hive-label">{marker.label}</span>

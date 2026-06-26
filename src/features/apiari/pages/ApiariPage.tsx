@@ -1,5 +1,145 @@
-import { FeaturePage } from '../../../components/common/FeaturePage'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Leaf, Plus } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { Button } from '../../../components/ui/Button'
+import { ConfirmDialog } from '../../../components/ui/ConfirmDialog'
+import { EmptyState } from '../../../components/ui/EmptyState'
+import { FloatingActionButton } from '../../../components/ui/FloatingActionButton'
+import { Loading } from '../../../components/ui/Loading'
+import { ApiarioCard } from '../components/ApiarioCard'
+import { ApiarioModal } from '../components/ApiarioModal'
+import { useApiari } from '../hooks/useApiari'
+import { createApiario, deleteApiario, updateApiario } from '../services/apiariService'
+import type { ApiarioInput, ApiarioView } from '../types'
+import './ApiariPage.css'
 
 export function ApiariPage() {
-  return <FeaturePage title="Apiari" description="Gestione siti apistici" />
+  const { apiari, loading } = useApiari()
+  const location = useLocation()
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editing, setEditing] = useState<ApiarioView | undefined>()
+  const [deleteTarget, setDeleteTarget] = useState<ApiarioView | null>(null)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const editId = (location.state as { editId?: string } | null)?.editId
+    if (!editId || loading) return
+
+    const target = apiari.find((a) => a.id === editId)
+    if (target) {
+      setEditing(target)
+      setModalOpen(true)
+      window.history.replaceState({}, '')
+    }
+  }, [location.state, apiari, loading])
+
+  const openCreate = () => {
+    setEditing(undefined)
+    setModalOpen(true)
+  }
+
+  const openEdit = (apiario: ApiarioView) => {
+    setEditing(apiario)
+    setModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+    setEditing(undefined)
+  }
+
+  const handleSubmit = async (data: ApiarioInput) => {
+    if (editing) {
+      await updateApiario(editing.id, data)
+    } else {
+      await createApiario(data)
+    }
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return
+    setDeleting(true)
+    try {
+      await deleteApiario(deleteTarget.id)
+      setDeleteTarget(null)
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="apiari-page">
+        <Loading size="lg" label="Caricamento apiari…" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="apiari-page">
+      <motion.header
+        className="apiari-page__header"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <h1 className="apiari-page__title">
+          <Leaf size={28} strokeWidth={1.75} aria-hidden="true" />
+          APIARI
+        </h1>
+        <Button variant="secondary" size="md" className="apiari-page__new" onClick={openCreate}>
+          <Plus size={20} strokeWidth={2} aria-hidden="true" />
+          Nuovo Apiario
+        </Button>
+      </motion.header>
+
+      {apiari.length === 0 ? (
+        <EmptyState
+          title="Nessun apiario"
+          description="Crea il tuo primo apiario per iniziare a gestire le colonie."
+          action={
+            <Button variant="primary" size="md" onClick={openCreate}>
+              Nuovo Apiario
+            </Button>
+          }
+        />
+      ) : (
+        <div className="apiari-page__grid">
+          {apiari.map((apiario, index) => (
+            <ApiarioCard
+              key={apiario.id}
+              apiario={apiario}
+              index={index}
+              onEdit={openEdit}
+              onDelete={setDeleteTarget}
+            />
+          ))}
+        </div>
+      )}
+
+      <FloatingActionButton
+        icon={<Plus size={26} strokeWidth={2} />}
+        label="Nuovo apiario"
+        onClick={openCreate}
+      />
+
+      <ApiarioModal
+        open={modalOpen}
+        apiario={editing}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        message="Eliminare definitivamente questo apiario?"
+        confirmLabel="Elimina"
+        loading={deleting}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTarget(null)}
+      />
+    </div>
+  )
 }

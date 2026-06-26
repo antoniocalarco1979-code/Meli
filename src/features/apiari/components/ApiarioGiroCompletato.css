@@ -1,0 +1,87 @@
+.apiario-giro-completato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.25rem 1.5rem 2rem;
+  border-radius: var(--meli-radius-xl);
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.apiario-giro-completato__emoji {
+  margin: 0 0 0.35rem;
+  font-size: clamp(2.75rem, 9vw, 3.5rem);
+  line-height: 1;
+}
+
+.apiario-giro-completato__title {
+  margin: 0 0 1.75rem;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.5rem, 4.5vw, 1.875rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--meli-brown);
+}
+
+.apiario-giro-completato__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+  margin-bottom: 1.75rem;
+}
+
+.apiario-giro-completato__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.apiario-giro-completato__stat-value {
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.75rem, 5vw, 2.125rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--meli-honey-dark);
+}
+
+.apiario-giro-completato__stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--meli-brown-soft);
+}
+
+.apiario-giro-completato__export {
+  min-height: 56px;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.apiario-giro-completato__back {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-honey);
+  cursor: pointer;
+}
+
+.apiario-giro-completato__back:hover {
+  color: var(--meli-gold-dark);
+}
+
+@media (min-width: 768px) {
+  .apiario-giro-completato {
+    padding: 2.5rem 2rem 2.25rem;
+  }
+
+  .apiario-giro-completato__export {
+    min-height: 64px;
+    font-size: 1.125rem;
+  }
+}

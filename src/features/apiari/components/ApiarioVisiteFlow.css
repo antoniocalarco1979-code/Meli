@@ -1,0 +1,36 @@
+.apiario-visite-flow {
+  padding: 1.35rem 1.5rem 1.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.apiario-visite-flow__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.apiario-visite-flow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.apiario-visite-flow__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0;
+  color: var(--meli-honey);
+  opacity: 0.75;
+}
+
+.apiario-visite-flow__empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}

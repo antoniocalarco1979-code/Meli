@@ -5,6 +5,7 @@ import './TodayActivities.css'
 
 type TodayActivitiesProps = {
   activities: TodayActivity[]
+  onActivityClick?: (activity: TodayActivity) => void
 }
 
 const container = {
@@ -24,7 +25,7 @@ const item = {
   },
 }
 
-export function TodayActivities({ activities }: TodayActivitiesProps) {
+export function TodayActivities({ activities, onActivityClick }: TodayActivitiesProps) {
   return (
     <motion.section
       className="today-activities meli-glass meli-glass--deep"
@@ -50,6 +51,19 @@ export function TodayActivities({ activities }: TodayActivitiesProps) {
               className="today-activities__item"
               variants={item}
               whileHover={{ x: 4, transition: { duration: 0.2 } }}
+              onClick={() => onActivityClick?.(activity)}
+              role={onActivityClick ? 'button' : undefined}
+              tabIndex={onActivityClick ? 0 : undefined}
+              onKeyDown={
+                onActivityClick
+                  ? (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        onActivityClick(activity)
+                      }
+                    }
+                  : undefined
+              }
             >
               <div className="today-activities__node-wrap">
                 <span

@@ -1,0 +1,75 @@
+.trattamenti-card {
+  padding: 1.5rem 1.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.trattamenti-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.15rem;
+  color: var(--meli-honey-dark);
+}
+
+.trattamenti-card__header .arnia-section-title {
+  margin: 0;
+}
+
+.trattamenti-card__count {
+  margin-left: auto;
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.15);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  text-align: center;
+}
+
+.trattamenti-card__empty {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}
+
+.trattamenti-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.trattamenti-card__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  min-height: var(--meli-touch-min);
+  border-radius: var(--meli-radius-lg);
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid var(--meli-border);
+}
+
+.trattamenti-card__item svg {
+  flex-shrink: 0;
+  color: var(--meli-honey);
+  margin-top: 0.15rem;
+}
+
+.trattamenti-card__name {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.trattamenti-card__meta {
+  margin-top: 0.2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}

@@ -1,14 +1,7 @@
-import Dexie from 'dexie'
+export { db } from './database'
+export { DATABASE_NAME, DATABASE_VERSION, STORE_SCHEMA, TABLES } from './schema'
+export type { StoreName } from './schema'
 
-/**
- * Database locale IndexedDB via Dexie.
- * Schema da definire negli sprint successivi.
- */
-class MeliDatabase extends Dexie {
-  constructor() {
-    super('MeliDatabase')
-    this.version(1).stores({})
-  }
-}
-
-export const db = new MeliDatabase()
+export * from './types'
+export * from './repositories'
+export * from './services'

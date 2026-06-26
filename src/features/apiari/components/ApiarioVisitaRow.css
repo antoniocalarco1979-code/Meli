@@ -1,0 +1,36 @@
+.apiario-visita-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  max-width: 520px;
+  min-height: var(--meli-touch-min);
+  padding: 0.85rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: var(--meli-radius-lg);
+  background: rgba(255, 255, 255, 0.22);
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.125rem, 3.5vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--meli-brown-soft);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.apiario-visita-row:hover {
+  background: rgba(255, 255, 255, 0.38);
+  color: var(--meli-brown);
+}
+
+.apiario-visita-row--done {
+  color: var(--meli-sage);
+  opacity: 0.85;
+}
+
+.apiario-visita-row__check {
+  font-size: 1rem;
+  font-weight: 800;
+}

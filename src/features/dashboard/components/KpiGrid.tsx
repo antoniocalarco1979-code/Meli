@@ -5,6 +5,7 @@ import {
   Crown,
   Droplets,
   Hexagon,
+  MapPin,
 } from 'lucide-react'
 import type { KpiItem } from '../types'
 import { KpiSparkline } from './KpiSparkline'
@@ -12,9 +13,12 @@ import './KpiGrid.css'
 
 type KpiGridProps = {
   items: KpiItem[]
+  onApiariClick?: () => void
+  onArnieClick?: () => void
 }
 
 const iconMap = {
+  apiari: MapPin,
   hives: Hexagon,
   visit: CalendarClock,
   production: Droplets,
@@ -40,11 +44,14 @@ const item = {
   },
 }
 
-export function KpiGrid({ items }: KpiGridProps) {
+export function KpiGrid({ items, onApiariClick, onArnieClick }: KpiGridProps) {
   return (
     <motion.div className="kpi-grid" variants={container} initial="hidden" animate="show">
       {items.map((kpi, index) => {
         const Icon = iconMap[kpi.icon]
+        const onClick =
+          kpi.icon === 'apiari' ? onApiariClick : kpi.icon === 'hives' ? onArnieClick : undefined
+
         return (
           <motion.article
             key={kpi.id}
@@ -55,6 +62,19 @@ export function KpiGrid({ items }: KpiGridProps) {
               boxShadow: 'var(--meli-shadow-lg)',
               transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
             }}
+            onClick={onClick}
+            role={onClick ? 'button' : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            onKeyDown={
+              onClick
+                ? (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onClick()
+                    }
+                  }
+                : undefined
+            }
           >
             <div className="kpi-grid__top">
               <div className="kpi-grid__icon" aria-hidden="true">

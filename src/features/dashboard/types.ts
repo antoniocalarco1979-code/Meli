@@ -9,7 +9,7 @@ export type KpiItem = {
   id: string
   label: string
   value: string
-  icon: 'hives' | 'visit' | 'production' | 'queen' | 'treatment'
+  icon: 'apiari' | 'hives' | 'visit' | 'production' | 'queen' | 'treatment'
 }
 
 export type HiveMarker = {

@@ -11,6 +11,7 @@ import './QuickActions.css'
 
 type QuickActionsProps = {
   actions: QuickAction[]
+  onActionClick?: (action: QuickAction) => void
 }
 
 const iconMap = {
@@ -39,7 +40,7 @@ const item = {
   },
 }
 
-export function QuickActions({ actions }: QuickActionsProps) {
+export function QuickActions({ actions, onActionClick }: QuickActionsProps) {
   return (
     <motion.nav
       className="quick-actions"
@@ -63,6 +64,7 @@ export function QuickActions({ actions }: QuickActionsProps) {
               transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
             }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => onActionClick?.(action)}
           >
             <span className="quick-actions__icon" aria-hidden="true">
               <Icon size={26} strokeWidth={1.65} />

@@ -1,0 +1,118 @@
+.apiario-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  max-width: 720px;
+}
+
+.apiario-detail__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.65rem;
+  padding: 0.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.apiario-detail__photo {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--meli-radius-md);
+}
+
+.apiario-detail__no-photo {
+  padding: 3rem;
+  text-align: center;
+  border-radius: var(--meli-radius-xl);
+  color: var(--meli-text-muted);
+  font-weight: 500;
+}
+
+.apiario-detail__main {
+  padding: 1.5rem 1.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.apiario-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.35rem;
+}
+
+.apiario-detail__title {
+  font-family: var(--meli-font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--meli-brown);
+}
+
+.apiario-detail__location {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  color: var(--meli-text-secondary);
+}
+
+.apiario-detail__location svg {
+  color: var(--meli-honey);
+}
+
+.apiario-detail__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--meli-border);
+  border-bottom: 1px solid var(--meli-border);
+}
+
+.apiario-detail__stats dt {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--meli-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.apiario-detail__stats dd {
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.apiario-detail__notes {
+  margin-top: 1.25rem;
+}
+
+.apiario-detail__notes h2 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--meli-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.apiario-detail__notes p {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--meli-text-secondary);
+  white-space: pre-wrap;
+}
+
+.apiario-detail__actions {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--meli-border);
+}

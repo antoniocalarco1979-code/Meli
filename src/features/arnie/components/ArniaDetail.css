@@ -1,0 +1,30 @@
+.arnia-premium {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  max-width: 960px;
+  padding-bottom: 7.5rem;
+}
+
+@media (min-width: 768px) {
+  .arnia-premium {
+    gap: 1.5rem;
+    padding-bottom: 8.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .arnia-premium {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .arnia-premium > :nth-child(1),
+    .arnia-premium > :nth-child(5),
+    .arnia-premium > :nth-child(6),
+    .arnia-premium > :nth-child(7),
+    .arnia-premium > :nth-child(8) {
+      grid-column: 1 / -1;
+    }
+  }
+}

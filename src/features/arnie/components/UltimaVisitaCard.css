@@ -1,0 +1,57 @@
+.ultima-visita-card {
+  padding: 1.5rem 1.65rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.ultima-visita-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  color: #5b7fa5;
+}
+
+.ultima-visita-card__header .arnia-section-title {
+  margin: 0;
+}
+
+.ultima-visita-card__date {
+  font-family: var(--meli-font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  margin-bottom: 1rem;
+}
+
+.ultima-visita-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.ultima-visita-card__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+  line-height: 1.45;
+}
+
+.ultima-visita-card__list svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--meli-honey);
+}
+
+.ultima-visita-card__empty {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+  text-align: center;
+  padding: 1.5rem 0;
+}

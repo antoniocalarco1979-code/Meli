@@ -33,6 +33,9 @@
   border-radius: var(--meli-radius-pill);
   color: var(--meli-brown-soft);
   min-height: var(--meli-touch-min);
+  border: none;
+  cursor: pointer;
+  text-align: left;
 }
 
 .dashboard-header__selector svg:first-child {
@@ -49,7 +52,6 @@
 }
 
 .dashboard-header__select {
-  appearance: none;
   border: none;
   background: transparent;
   font-family: var(--meli-font);

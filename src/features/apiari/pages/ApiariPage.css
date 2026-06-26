@@ -1,0 +1,65 @@
+.apiari-page {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.75rem 2rem 5rem;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.apiari-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--meli-border);
+}
+
+.apiari-page__title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.5rem, 3vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--meli-brown);
+}
+
+.apiari-page__title svg {
+  color: var(--meli-sage-dark);
+}
+
+.apiari-page__new {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.apiari-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.35rem;
+  max-width: 960px;
+}
+
+@media (max-width: 767px) {
+  .apiari-page {
+    padding: 1.25rem 1rem 5rem;
+  }
+
+  .apiari-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apiari-page__new {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .apiari-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

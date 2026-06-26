@@ -22,6 +22,7 @@ Vedi [docs/structure.md](./docs/structure.md) per i dettagli.
 | [CHANGELOG.md](./CHANGELOG.md) | Storico modifiche |
 | [DATABASE.md](./DATABASE.md) | Schema dati |
 | [ARCHITETTURA.md](./ARCHITETTURA.md) | Architettura software |
+| [MELI_PRODUCT_SPEC.md](./MELI_PRODUCT_SPEC.md) | Specifica prodotto |
 | [STYLE_GUIDE.md](./STYLE_GUIDE.md) | Design e UX |
 | [docs/](./docs/) | Documentazione estesa |
 

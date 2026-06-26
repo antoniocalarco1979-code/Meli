@@ -1,0 +1,59 @@
+.salute-semaforo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.salute-semaforo__dot {
+  flex-shrink: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.salute-semaforo--md .salute-semaforo__dot {
+  width: 14px;
+  height: 14px;
+}
+
+.salute-semaforo--lg .salute-semaforo__dot {
+  width: 18px;
+  height: 18px;
+}
+
+.salute-semaforo__dot--green {
+  background: var(--meli-hive-healthy);
+}
+
+.salute-semaforo__dot--yellow {
+  background: var(--meli-hive-warning);
+}
+
+.salute-semaforo__dot--red {
+  background: var(--meli-hive-critical);
+}
+
+.salute-semaforo__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.2;
+}
+
+.salute-semaforo__text strong {
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.salute-semaforo--lg .salute-semaforo__text strong {
+  font-size: 1.25rem;
+}
+
+.salute-semaforo__text span:last-child {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--meli-text-muted);
+}

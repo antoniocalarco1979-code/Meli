@@ -16,16 +16,17 @@ Piano di sviluppo per l'applicazione di gestione apiari.
 
 ---
 
-## Fase 1 — Core Apiario
+## Fase 1 — Core Apiario 🔄
 
 **Obiettivo:** gestione operativa quotidiana sul campo (iPad).
 
-| Modulo | Deliverable |
-|--------|-------------|
-| Apiari | CRUD siti, geolocalizzazione, mappa |
-| Arnie | Inventario colonie, stato, QR code |
-| Visite | Checklist ispezione, note, foto |
-| Dashboard | Dati reali da IndexedDB |
+| Modulo | Deliverable | Stato |
+|--------|-------------|-------|
+| Apiari | Lista, dettaglio, flusso visite sequenziale | 🔄 parziale |
+| Arnie | Inventario, scheda premium, semaforo salute | ✅ |
+| Visite | Modal guidato, foto, GPS, persistenza | ✅ |
+| Dashboard | KPI live da IndexedDB | ✅ |
+| Database | Dexie v5, seed, migrazioni | ✅ |
 
 ---
 
@@ -73,10 +74,12 @@ Piano di sviluppo per l'applicazione di gestione apiari.
 
 ## Priorità corrente
 
-1. Schema database Dexie (vedi `DATABASE.md`)
-2. Modulo **Apiari** (primo CRUD reale)
-3. Collegamento Dashboard → dati persistenti
-4. PWA base
+1. PWA base (offline-first)
+2. CRUD apiari / modifica arnia e regina
+3. Moduli Regine, Trattamenti, Produzione (oltre placeholder)
+4. Capacitor iPad (camera, GPS nativi)
+
+Vedi anche [docs/](./docs/) per moduli implementati.
 
 ---
 

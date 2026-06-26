@@ -10,10 +10,20 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it/1.1.0/).
 
 ### Pianificato
 
-- Schema database Dexie v1
-- CRUD Apiari
-- Dashboard con dati persistenti
-- PWA offline
+- PWA offline (`vite-plugin-pwa`)
+- CRUD completo apiari / modifica arnia
+- Modulo Regine, Trattamenti, Produzione (UI oltre placeholder)
+- Capacitor (camera/GPS nativi)
+
+### Aggiunto
+
+- Database Dexie v5: apiari, arnie, regine, visite, foto, produzione, trattamenti
+- Modulo Arnie: lista `ArniaCard`, scheda premium (9 sezioni)
+- `NuovaVisitaModal` fullscreen con checklist guidata
+- `ApiarioVisiteFlow` — percorso visite sequenziale in apiario
+- Device services (`src/services/device/`) — Capacitor-ready
+- Dashboard KPI live da IndexedDB (`useDashboardLiveStats`)
+- Seed demo Apiario Acquacalda (12 arnie)
 
 ---
 

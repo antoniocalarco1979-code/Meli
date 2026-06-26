@@ -7,13 +7,14 @@ type DashboardHeaderProps = {
   subtitle: string
   selectedApiary: string
   apiaries: string[]
+  onApiaryOpen?: () => void
 }
 
 export function DashboardHeader({
   userName,
   subtitle,
   selectedApiary,
-  apiaries,
+  onApiaryOpen,
 }: DashboardHeaderProps) {
   return (
     <motion.header
@@ -27,28 +28,18 @@ export function DashboardHeader({
         <p className="dashboard-header__subtitle">{subtitle}</p>
       </div>
 
-      <motion.div
+      <motion.button
+        type="button"
         className="dashboard-header__selector meli-glass"
         whileHover={{ y: -2, boxShadow: 'var(--meli-shadow-lg)' }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        onClick={onApiaryOpen}
       >
         <MapPin size={22} strokeWidth={1.75} aria-hidden="true" />
-        <label className="dashboard-header__selector-label" htmlFor="apiary-select">
-          Apiario
-        </label>
-        <select
-          id="apiary-select"
-          className="dashboard-header__select"
-          defaultValue={selectedApiary}
-        >
-          {apiaries.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+        <span className="dashboard-header__selector-label">Apiario</span>
+        <span className="dashboard-header__select">{selectedApiary}</span>
         <ChevronDown size={20} className="dashboard-header__chevron" aria-hidden="true" />
-      </motion.div>
+      </motion.button>
     </motion.header>
   )
 }

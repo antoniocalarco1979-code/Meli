@@ -49,6 +49,7 @@ MELI/
 ├── CHANGELOG.md
 ├── DATABASE.md
 ├── ARCHITETTURA.md
+├── MELI_PRODUCT_SPEC.md
 └── STYLE_GUIDE.md
 ```
 

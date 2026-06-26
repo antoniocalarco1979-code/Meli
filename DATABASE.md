@@ -1,7 +1,7 @@
 # MELI — Database
 
 Persistenza locale con **Dexie.js** (IndexedDB).  
-Implementazione attuale: `src/database/index.ts` (schema vuoto v1).
+Implementazione attuale: `src/database/` — **schema v5** con migrazioni v1→v5, seed demo e `liveQuery`.
 
 ---
 

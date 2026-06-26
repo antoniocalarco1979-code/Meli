@@ -6,16 +6,14 @@ Backlog operativo. Aggiornare man mano che i task vengono completati.
 
 ## 🔴 Priorità alta
 
-- [ ] Definire schema Dexie v1 (`DATABASE.md`)
-- [ ] Implementare store Zustand per apiario selezionato
-- [ ] Modulo Apiari: lista + dettaglio + form creazione
-- [ ] Sostituire mock Dashboard con query IndexedDB
 - [ ] Configurare PWA (`vite-plugin-pwa` già in devDependencies)
+- [ ] Modulo Apiari: form creazione / modifica sito
+- [ ] Modifica arnia e sostituzione regina (UI placeholder presente)
+- [ ] Integrazione Capacitor (camera, GPS nativi)
 
 ## 🟡 Priorità media
 
-- [ ] Modulo Arnie: griglia stati (OK / attenzione / critico)
-- [ ] Modulo Visite: timeline e checklist
+- [ ] Store Zustand per apiario selezionato (persistenza sessione)
 - [ ] Modulo Regine: alert sostituzione
 - [ ] Modulo Trattamenti: scadenze e promemoria
 - [ ] Modulo Produzione: registrazione kg
@@ -36,7 +34,13 @@ Backlog operativo. Aggiornare man mano che i task vengono completati.
 - [x] Dashboard Sprint 3 (UI premium)
 - [x] MainLayout + routing completo
 - [x] Design system e componenti UI base
-- [x] Documentazione progetto
+- [x] Database Dexie v5 + seed Acquacalda
+- [x] Modulo Arnie (lista, scheda premium, `ArniaCard`)
+- [x] Visite modal guidato + `visitaSaveService`
+- [x] `ApiarioVisiteFlow` sequenziale
+- [x] Device services (camera, GPS, notifications, storage)
+- [x] Dashboard KPI live (`useDashboardLiveStats`)
+- [x] Documentazione `docs/` moduli
 - [x] Build produzione senza errori
 
 ---

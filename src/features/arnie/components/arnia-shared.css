@@ -1,0 +1,7 @@
+.arnia-section-title {
+  font-family: var(--meli-font-display);
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--meli-brown);
+}

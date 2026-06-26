@@ -2,7 +2,11 @@ import { motion } from 'framer-motion'
 import { Play } from 'lucide-react'
 import './StartDayButton.css'
 
-export function StartDayButton() {
+type StartDayButtonProps = {
+  onClick?: () => void
+}
+
+export function StartDayButton({ onClick }: StartDayButtonProps) {
   return (
     <motion.div
       className="start-day"
@@ -13,6 +17,7 @@ export function StartDayButton() {
       <motion.button
         type="button"
         className="start-day__btn"
+        onClick={onClick}
         whileHover={{
           scale: 1.02,
           boxShadow: 'var(--meli-shadow-button)',

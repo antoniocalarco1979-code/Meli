@@ -4,14 +4,14 @@ import { MainLayout } from '../components/layout/MainLayout'
 import { Loading } from '../components/ui/Loading'
 import { DashboardPage } from '../features/dashboard'
 
-const ApiariPage = lazy(() =>
-  import('../features/apiari/pages/ApiariPage').then((m) => ({ default: m.ApiariPage })),
+const ApiariRoutes = lazy(() =>
+  import('../features/apiari/pages/ApiariRoutes').then((m) => ({ default: m.ApiariRoutes })),
 )
-const ArniePage = lazy(() =>
-  import('../features/arnie/pages/ArniePage').then((m) => ({ default: m.ArniePage })),
+const ArnieRoutes = lazy(() =>
+  import('../features/arnie/pages/ArnieRoutes').then((m) => ({ default: m.ArnieRoutes })),
 )
-const VisitePage = lazy(() =>
-  import('../features/visite/pages/VisitePage').then((m) => ({ default: m.VisitePage })),
+const VisiteRoutes = lazy(() =>
+  import('../features/visite/pages/VisiteRoutes').then((m) => ({ default: m.VisiteRoutes })),
 )
 const ReginePage = lazy(() =>
   import('../features/regine/pages/ReginePage').then((m) => ({ default: m.ReginePage })),
@@ -39,26 +39,26 @@ export function AppRouter() {
       <Route element={<MainLayout />}>
         <Route index element={<DashboardPage />} />
         <Route
-          path="apiari"
+          path="apiari/*"
           element={
             <Suspense fallback={<PageLoader />}>
-              <ApiariPage />
+              <ApiariRoutes />
             </Suspense>
           }
         />
         <Route
-          path="arnie"
+          path="arnie/*"
           element={
             <Suspense fallback={<PageLoader />}>
-              <ArniePage />
+              <ArnieRoutes />
             </Suspense>
           }
         />
         <Route
-          path="visite"
+          path="visite/*"
           element={
             <Suspense fallback={<PageLoader />}>
-              <VisitePage />
+              <VisiteRoutes />
             </Suspense>
           }
         />
