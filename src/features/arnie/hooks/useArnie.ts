@@ -1,70 +1,43 @@
-import { useEffect, useState } from 'react'
-import { liveQuery } from 'dexie'
+import { useLiveQuery } from '../../../hooks/useLiveQuery'
 import { getArniaById } from '../../../database/services/arnieService'
-import { seedArnieIfEmpty } from '../data/seedArnie'
+import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
 import {
   buildArniaDetailView,
   getAllArnieEnriched,
-  type ArniaDetailView,
+  getArnieEnrichedByApiarioId,
 } from '../services/arniaDetailService'
 
 export function useArnieList() {
-  const [arnie, setArnie] = useState<Awaited<ReturnType<typeof getAllArnieEnriched>>>([])
-  const [loading, setLoading] = useState(true)
+  const { data, loading, error } = useLiveQuery(
+    () => getAllArnieEnriched(),
+    [],
+    { seed: ensureWorkspaceSeeded },
+  )
 
-  useEffect(() => {
-    let seeded = false
-
-    const subscription = liveQuery(async () => {
-      if (!seeded) {
-        await seedArnieIfEmpty()
-        seeded = true
-      }
-      return getAllArnieEnriched()
-    }).subscribe({
-      next: (data) => {
-        setArnie(data)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  return { arnie, loading }
+  return { arnie: data ?? [], loading, error }
 }
 
 export function useArniaDetail(id: string | undefined) {
-  const [detail, setDetail] = useState<ArniaDetailView | undefined>()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!id) {
-      setLoading(false)
-      return
-    }
-
-    let seeded = false
-
-    const subscription = liveQuery(async () => {
-      if (!seeded) {
-        await seedArnieIfEmpty()
-        seeded = true
-      }
+  const { data, loading, error } = useLiveQuery(
+    async () => {
+      if (!id) return undefined
       const arnia = await getArniaById(id)
       if (!arnia) return undefined
       return buildArniaDetailView(arnia)
-    }).subscribe({
-      next: (data) => {
-        setDetail(data)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
+    },
+    [id],
+    { seed: ensureWorkspaceSeeded },
+  )
 
-    return () => subscription.unsubscribe()
-  }, [id])
+  return { detail: data, loading: id ? loading : false, error: id ? error : null }
+}
 
-  return { detail, loading }
+export function useArnieByApiarioId(apiarioId: string) {
+  const { data, loading, error } = useLiveQuery(
+    () => getArnieEnrichedByApiarioId(apiarioId),
+    [apiarioId],
+    { seed: ensureWorkspaceSeeded },
+  )
+
+  return { arnie: data ?? [], loading, error }
 }

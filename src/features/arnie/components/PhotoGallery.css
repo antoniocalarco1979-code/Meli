@@ -1,6 +1,12 @@
 .photo-gallery {
-  padding: 1.5rem 1.65rem;
+  padding: 1.35rem 1.25rem;
   border-radius: var(--meli-radius-xl);
+}
+
+.photo-gallery--secondary .arnia-section-title {
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .photo-gallery__header {

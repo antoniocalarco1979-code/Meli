@@ -1,18 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
-import { liveQuery } from 'dexie'
-import { Loading } from '../../../components/ui/Loading'
-import type { VisitaSaveSummary } from '../../arnie/services/visitaSaveService'
-import { NuovaVisitaModal } from '../../arnie/components/NuovaVisitaModal'
-import { getArnieEnrichedByApiarioId } from '../../arnie/services/arniaDetailService'
-import type { ArniaListItem } from '../../arnie/types'
-import {
-  accumulateGiroStats,
-  emptyGiroSessionStats,
-  exportGiroReport,
-  type GiroSessionStats,
-} from '../services/giroReportService'
+import { ChevronDown } from '../../../theme/icons'
+import { ErrorPage } from '../../../components/common/ErrorPage'
+import { parseDexieError } from '../../../database/errors'
+import { EmptyState } from '../../../components/ui/EmptyState'
+import { PageSkeleton } from '../../../components/ui/Skeleton'
+import { useArnieByApiarioId } from '../../arnie/hooks/useArnie'
+import { exportGiroReport } from '../../visite/services/giroReportService'
+import { useApiarioGiroFlow } from '../hooks/useApiarioGiroFlow'
 import { ApiarioGiroCompletato } from './ApiarioGiroCompletato'
 import { ApiarioGiroHero } from './ApiarioGiroHero'
 import { ApiarioVisitaCard } from './ApiarioVisitaCard'
@@ -25,99 +19,27 @@ type ApiarioVisiteFlowProps = {
 }
 
 export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowProps) {
-  const [arnie, setArnie] = useState<ArniaListItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [visitaOpen, setVisitaOpen] = useState(false)
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [expandedIndex, setExpandedIndex] = useState(0)
-  const [completedThrough, setCompletedThrough] = useState(-1)
-  const [giroActive, setGiroActive] = useState(false)
-  const [giroComplete, setGiroComplete] = useState(false)
-  const [giroStats, setGiroStats] = useState<GiroSessionStats>(emptyGiroSessionStats)
-  const stepRefs = useRef<Map<number, HTMLLIElement>>(new Map())
+  const { arnie, loading, error } = useArnieByApiarioId(apiarioId)
+  const {
+    expandedIndex,
+    completedThrough,
+    giroComplete,
+    giroStats,
+    stepRefs,
+    openVisita,
+    startGiro,
+    resetGiroView,
+    expandStep,
+  } = useApiarioGiroFlow({ apiarioId, apiarioNome, arnie, loading })
 
-  useEffect(() => {
-    const subscription = liveQuery(() => getArnieEnrichedByApiarioId(apiarioId)).subscribe({
-      next: (data) => {
-        setArnie(data)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
-
-    return () => subscription.unsubscribe()
-  }, [apiarioId])
-
-  const active = activeIndex !== null ? arnie[activeIndex] : undefined
-
-  const scrollToStep = (index: number) => {
-    window.setTimeout(() => {
-      stepRefs.current.get(index)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }, 100)
-  }
-
-  const expandStep = (index: number) => {
-    setExpandedIndex(index)
-    scrollToStep(index)
-  }
-
-  const openVisita = (index: number) => {
-    expandStep(index)
-    setActiveIndex(index)
-    setVisitaOpen(true)
-  }
-
-  const startGiro = () => {
-    if (arnie.length === 0) return
-    setGiroActive(true)
-    setGiroComplete(false)
-    setGiroStats(emptyGiroSessionStats())
-    setCompletedThrough(-1)
-    openVisita(0)
-  }
-
-  const closeVisita = () => {
-    setVisitaOpen(false)
-    setActiveIndex(null)
-  }
-
-  const resetGiroView = () => {
-    setGiroComplete(false)
-    setGiroActive(false)
-    setCompletedThrough(-1)
-    setExpandedIndex(0)
-    setGiroStats(emptyGiroSessionStats())
-  }
-
-  const handleSaved = (summary: VisitaSaveSummary) => {
-    if (activeIndex === null) return
-
-    if (giroActive) {
-      setGiroStats((current) => accumulateGiroStats(current, summary))
-    }
-
-    setCompletedThrough(activeIndex)
-
-    const nextIndex = activeIndex + 1
-    if (nextIndex < arnie.length) {
-      window.setTimeout(() => {
-        expandStep(nextIndex)
-        setActiveIndex(nextIndex)
-        setVisitaOpen(true)
-      }, 400)
-      return
-    }
-
-    setActiveIndex(null)
-    setVisitaOpen(false)
-
-    if (giroActive) {
-      setGiroComplete(true)
-      setGiroActive(false)
-      window.setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }, 200)
-    }
+  if (error) {
+    return (
+      <ErrorPage
+        title="Errore caricamento arnie"
+        message={parseDexieError(error)}
+        onRetry={() => window.location.reload()}
+      />
+    )
   }
 
   if (loading) {
@@ -130,7 +52,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
           disabled
         />
         <section className="apiario-visite-flow meli-glass meli-glass--deep">
-          <Loading size="md" label="Caricamento arnie…" />
+          <PageSkeleton variant="list" />
         </section>
       </>
     )
@@ -154,9 +76,10 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
           onTornaPercorso={resetGiroView}
         />
       ) : arnie.length === 0 ? (
-        <section className="apiario-visite-flow meli-glass meli-glass--deep">
-          <p className="apiario-visite-flow__empty">Nessuna arnia in questo apiario.</p>
-        </section>
+        <EmptyState
+          title="Nessuna arnia"
+          description="Non ci sono arnie registrate in questo apiario."
+        />
       ) : (
         <motion.section
           className="apiario-visite-flow meli-glass meli-glass--deep"
@@ -169,7 +92,6 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
             {arnie.map((item, index) => {
               const { arnia, salute, ultimaVisitaLabel } = item
               const isExpanded = index === expandedIndex
-              const isActive = activeIndex === index && visitaOpen
               const isDone = index <= completedThrough
 
               return (
@@ -192,7 +114,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
                         numero={arnia.numero}
                         salute={salute}
                         ultimaVisitaLabel={ultimaVisitaLabel}
-                        active={isActive}
+                        active={false}
                         onVisita={() => openVisita(index)}
                       />
                     ) : (
@@ -215,17 +137,6 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
             })}
           </ol>
         </motion.section>
-      )}
-
-      {active && (
-        <NuovaVisitaModal
-          open={visitaOpen}
-          arniaId={active.arnia.id}
-          arniaNumero={active.arnia.numero}
-          apiarioNome={apiarioNome}
-          onClose={closeVisita}
-          onSaved={handleSaved}
-        />
       )}
     </>
   )

@@ -83,4 +83,23 @@
   /* Blur */
   --meli-blur: blur(40px) saturate(1.8);
   --meli-blur-heavy: blur(56px) saturate(2);
+
+  /* Spacing scale */
+  --meli-space-2xs: 0.25rem;
+  --meli-space-xs: 0.5rem;
+  --meli-space-sm: 0.75rem;
+  --meli-space-md: 1rem;
+  --meli-space-lg: 1.35rem;
+  --meli-space-xl: 1.65rem;
+  --meli-space-2xl: 2rem;
+  --meli-space-3xl: 2.5rem;
+
+  /* Feedback */
+  --meli-error: #c0392b;
+  --meli-error-light: #e57373;
+  --meli-error-soft: rgba(229, 57, 53, 0.12);
+  --meli-success: var(--meli-hive-healthy);
+  --meli-success-soft: rgba(67, 160, 71, 0.14);
+  --meli-info: var(--meli-honey);
+  --meli-info-soft: var(--meli-honey-soft);
 }

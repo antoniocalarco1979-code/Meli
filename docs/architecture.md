@@ -13,7 +13,7 @@ Layout (MainLayout, Header, Sidebar)
     ↓
 Features (dashboard, apiari, arnie, visite, …)
     ↓
-Feature services (arniaDetailService, visitaSaveService, …)
+Feature services (arniaDetailService, visitSaveService, …)
     ↓
 Database layer (repositories, Dexie services)
     ↓

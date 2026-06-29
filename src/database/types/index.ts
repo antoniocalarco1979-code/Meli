@@ -2,6 +2,7 @@ export type {
   Apiario,
   ApiarioView,
   Arnia,
+  ArniaModelloId,
   ArniaStato,
   ArniaView,
   Foto,

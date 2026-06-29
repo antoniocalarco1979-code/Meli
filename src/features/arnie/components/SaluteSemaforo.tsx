@@ -1,5 +1,5 @@
-import type { SaluteLevel } from '../utils/arniaFormatters'
-import { getSaluteLevel } from '../utils/arniaFormatters'
+import type { SaluteLevel } from '../../../utils/salute'
+import { getSaluteLevel } from '../../../utils/salute'
 import './SaluteSemaforo.css'
 
 type SaluteSemaforoProps = {

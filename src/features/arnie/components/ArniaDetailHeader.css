@@ -1,0 +1,110 @@
+.arnia-detail-header {
+  padding: 1.35rem 1.25rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.arnia-detail-header__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.arnia-detail-header__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.625rem, 5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--meli-brown);
+}
+
+.arnia-detail-header__bee {
+  margin-right: 0.15rem;
+}
+
+.arnia-detail-header__stato {
+  flex-shrink: 0;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--meli-radius-pill);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  border: 2px solid transparent;
+}
+
+.arnia-detail-header__stato--ottima {
+  background: rgba(67, 160, 71, 0.18);
+  color: #2e7d32;
+  border-color: rgba(67, 160, 71, 0.35);
+}
+
+.arnia-detail-header__stato--buona {
+  background: var(--meli-sage-soft);
+  color: var(--meli-sage-dark);
+  border-color: rgba(122, 158, 126, 0.35);
+}
+
+.arnia-detail-header__stato--attenzione {
+  background: rgba(251, 140, 0, 0.16);
+  color: #e65100;
+  border-color: rgba(251, 140, 0, 0.35);
+}
+
+.arnia-detail-header__stato--critica {
+  background: rgba(229, 57, 53, 0.14);
+  color: #c62828;
+  border-color: rgba(229, 57, 53, 0.35);
+}
+
+.arnia-detail-header__meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 1rem;
+}
+
+.arnia-detail-header__row {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--meli-radius-md);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--meli-border);
+}
+
+.arnia-detail-header__row dt {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.arnia-detail-header__row dd {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--meli-brown);
+}
+
+.arnia-detail-header__stato-inline {
+  font-size: 1.0625rem;
+  font-weight: 800;
+}
+
+@media (min-width: 768px) {
+  .arnia-detail-header {
+    padding: 1.5rem 1.65rem;
+  }
+
+  .arnia-detail-header__row dd {
+    font-size: 1.1875rem;
+  }
+}

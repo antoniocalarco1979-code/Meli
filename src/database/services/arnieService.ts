@@ -1,11 +1,32 @@
 import { deleteArniaWithRelations } from './apiariService'
 import { apiariRepository, arnieRepository } from '../repositories'
+import {
+  DEFAULT_ARNIA_MODELLO_ID,
+  isModelloPersonalizzato,
+  resolveArniaModello,
+} from '../../features/arnie/models/arniaModelli'
 import type { Arnia, ArniaInput, ArniaUpdate } from '../types'
 
 function normalizeArniaInput(input: ArniaInput): Omit<Arnia, 'id' | 'createdAt' | 'updatedAt'> {
+  const modelloId = input.modelloId ?? DEFAULT_ARNIA_MODELLO_ID
+
+  if (isModelloPersonalizzato(modelloId)) {
+    const telai = input.telaiPersonalizzati
+    if (telai == null || telai < 1) {
+      throw new Error('Indica il numero dei telaini per il modello personalizzato.')
+    }
+  }
+
+  const modello = resolveArniaModello(modelloId, input.telaiPersonalizzati)
+
   return {
     apiarioId: input.apiarioId,
     numero: input.numero ?? input.codice ?? '',
+    modelloId: modello.modelloId,
+    numeroTelai: modello.numeroTelai,
+    hasMelario: modello.hasMelario,
+    hasVassoioAntivarroa: modello.hasVassoioAntivarroa,
+    modelloExtensions: modello.modelloExtensions,
     nome: input.nome,
     qrCode: input.qrCode,
     stato: input.stato ?? 'attiva',

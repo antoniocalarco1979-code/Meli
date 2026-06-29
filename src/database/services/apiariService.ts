@@ -8,7 +8,7 @@ import {
   visiteRepository,
 } from '../repositories'
 import type { Apiario, ApiarioInput, ApiarioUpdate, ApiarioView } from '../types'
-import { db } from '../database'
+import { getDb } from '../activeDatabase'
 
 /** Normalizza alias UI legacy verso campi schema definitivo. */
 function normalizeApiarioInput(input: ApiarioInput): Omit<Apiario, 'id' | 'createdAt' | 'updatedAt'> {
@@ -106,9 +106,18 @@ export async function deleteArniaWithRelations(arniaId: string): Promise<void> {
 
 /** Elimina un apiario e tutte le arnie collegate (cascade). */
 export async function deleteApiario(id: string): Promise<void> {
-  await db.transaction(
+  const database = getDb()
+  await database.transaction(
     'rw',
-    [db.apiari, db.arnie, db.visite, db.regine, db.trattamenti, db.produzione, db.foto],
+    [
+      database.apiari,
+      database.arnie,
+      database.visite,
+      database.regine,
+      database.trattamenti,
+      database.produzione,
+      database.foto,
+    ],
     async () => {
       const arnie = await arnieRepository.getByApiarioId(id)
       for (const arnia of arnie) {

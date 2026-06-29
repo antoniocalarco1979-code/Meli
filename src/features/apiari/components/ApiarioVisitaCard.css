@@ -24,12 +24,22 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--meli-brown);
-  text-decoration: none;
   text-align: center;
 }
 
-.apiario-visita-card__title:hover {
-  color: var(--meli-honey-dark);
+.apiario-visita-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--meli-space-sm);
+}
+
+.apiario-visita-card__btn {
+  min-height: 56px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-align: center;
 }
 
 .apiario-visita-card__stato {
@@ -67,16 +77,9 @@
   color: var(--meli-brown);
 }
 
-.apiario-visita-card__btn {
-  min-height: 56px;
-  font-size: 1.125rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
 @media (min-width: 768px) {
   .apiario-visita-card__btn {
     min-height: 64px;
-    font-size: 1.1875rem;
+    font-size: 1.125rem;
   }
 }

@@ -1,0 +1,135 @@
+.onboarding {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--meli-cream);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+.onboarding__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--meli-space-2xs);
+  padding: 1.25rem 1.5rem 0.5rem;
+  text-align: center;
+}
+
+.onboarding__logo {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--meli-honey);
+  line-height: 1.2;
+}
+
+.onboarding__byline {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.onboarding__main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.onboarding__flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 1.5rem 0;
+}
+
+.onboarding-flow__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.onboarding-flow__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--meli-text-muted);
+  transition: color 0.2s;
+}
+
+.onboarding-flow__label--active {
+  color: var(--meli-brown-soft);
+}
+
+.onboarding-flow__label--current {
+  color: var(--meli-honey);
+  font-weight: 700;
+}
+
+.onboarding-flow__arrow {
+  margin: 0.15rem 0;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: rgba(61, 44, 24, 0.25);
+}
+
+.onboarding-step {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.onboarding-step--form {
+  text-align: left;
+}
+
+.onboarding-step--form .onboarding-step__title {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.onboarding-step__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--meli-brown);
+}
+
+.onboarding-step--welcome .onboarding-step__title {
+  margin-bottom: 1.75rem;
+}
+
+.onboarding-step__lead {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--meli-brown-soft);
+}
+
+.onboarding-step__success {
+  margin: 0 0 0.5rem;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--meli-honey);
+}
+
+.onboarding-step__cta {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .onboarding__main {
+    padding: 2rem;
+  }
+}

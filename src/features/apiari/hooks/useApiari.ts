@@ -1,97 +1,51 @@
-import { useEffect, useState } from 'react'
-import { liveQuery } from 'dexie'
-import type { ApiarioView } from '../../../database/types'
-import { db } from '../../../database'
+import { useLiveQuery } from '../../../hooks/useLiveQuery'
+import { getDb } from '../../../database'
 import {
   getAllApiari,
   getApiarioById,
   sumNumeroArnie,
-} from '../../../database/services/apiariService'
-import { seedApiariIfEmpty } from '../data/seedApiari'
+} from '../services/apiariService'
+import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
 
 export function useApiari() {
-  const [apiari, setApiari] = useState<ApiarioView[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data, loading, error } = useLiveQuery(
+    () => getAllApiari(),
+    [],
+    { seed: ensureWorkspaceSeeded },
+  )
 
-  useEffect(() => {
-    let seeded = false
-
-    const subscription = liveQuery(async () => {
-      if (!seeded) {
-        await seedApiariIfEmpty()
-        seeded = true
-      }
-      return getAllApiari()
-    }).subscribe({
-      next: (data) => {
-        setApiari(data)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  return { apiari, loading }
+  return { apiari: data ?? [], loading, error }
 }
 
 export function useApiario(id: string | undefined) {
-  const [apiario, setApiario] = useState<ApiarioView | undefined>()
-  const [loading, setLoading] = useState(true)
+  const { data, loading, error } = useLiveQuery(
+    () => (id ? getApiarioById(id) : Promise.resolve(undefined)),
+    [id],
+    { seed: ensureWorkspaceSeeded },
+  )
 
-  useEffect(() => {
-    if (!id) {
-      setLoading(false)
-      return
-    }
-
-    const subscription = liveQuery(() => getApiarioById(id)).subscribe({
-      next: (data) => {
-        setApiario(data)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
-
-    return () => subscription.unsubscribe()
-  }, [id])
-
-  return { apiario, loading }
+  return { apiario: data, loading: id ? loading : false, error: id ? error : null }
 }
 
 export function useApiariStats() {
-  const [count, setCount] = useState(0)
-  const [totalArnie, setTotalArnie] = useState(0)
-  const [names, setNames] = useState<string[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    let seeded = false
-
-    const subscription = liveQuery(async () => {
-      if (!seeded) {
-        await seedApiariIfEmpty()
-        seeded = true
-      }
-      const all = await db.apiari.orderBy('nome').toArray()
+  const { data, loading, error } = useLiveQuery(
+    async () => {
+      const all = await getDb().apiari.orderBy('nome').toArray()
       return {
         count: all.length,
         totalArnie: await sumNumeroArnie(),
         names: all.map((a) => a.nome),
       }
-    }).subscribe({
-      next: (data) => {
-        setCount(data.count)
-        setTotalArnie(data.totalArnie)
-        setNames(data.names)
-        setLoading(false)
-      },
-      error: () => setLoading(false),
-    })
+    },
+    [],
+    { seed: ensureWorkspaceSeeded },
+  )
 
-    return () => subscription.unsubscribe()
-  }, [])
-
-  return { count, totalArnie, names, loading }
+  return {
+    count: data?.count ?? 0,
+    totalArnie: data?.totalArnie ?? 0,
+    names: data?.names ?? [],
+    loading,
+    error,
+  }
 }

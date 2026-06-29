@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from '../../../theme/icons'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { EntityNotFound } from '../../../components/common/NotFoundPage'
+import { PageQueryState } from '../../../components/common/PageQueryState'
 import { Button } from '../../../components/ui/Button'
 import { ConfirmDialog } from '../../../components/ui/ConfirmDialog'
-import { Loading } from '../../../components/ui/Loading'
-import { PageTitle } from '../../../components/ui/PageTitle'
+import { parseDexieError } from '../../../database/errors'
+import { useAppPath } from '../../../demo/useAppPath'
+import { useToast } from '../../../hooks/useToast'
 import { ApiarioVisiteFlow } from '../components/ApiarioVisiteFlow'
 import { ApiarioDetail } from '../components/ApiarioDetail'
 import { useApiario } from '../hooks/useApiari'
@@ -14,71 +17,75 @@ import './ApiarioDetailPage.css'
 export function ApiarioDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { apiario, loading } = useApiario(id)
+  const appPath = useAppPath()
+  const toast = useToast()
+  const { apiario, loading, error } = useApiario(id)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
-  if (loading) {
+  if (!loading && !error && !apiario) {
     return (
-      <div className="apiario-detail-page">
-        <Loading size="lg" />
-      </div>
-    )
-  }
-
-  if (!apiario) {
-    return (
-      <div className="apiario-detail-page">
-        <PageTitle title="Apiario non trovato" />
-        <Link to="/apiari">← Torna agli apiari</Link>
-      </div>
+      <EntityNotFound
+        title="Apiario non trovato"
+        backTo={appPath('/apiari')}
+        backLabel="Torna agli apiari"
+      />
     )
   }
 
   const handleEdit = () => {
-    navigate('/apiari', { state: { editId: apiario.id } })
+    if (!apiario) return
+    navigate(appPath('/apiari'), { state: { editId: apiario.id } })
   }
 
   const handleDelete = async () => {
+    if (!apiario) return
     setDeleting(true)
     try {
       await deleteApiario(apiario.id)
-      navigate('/apiari')
+      toast.success('Apiario eliminato')
+      navigate(appPath('/apiari'))
+    } catch (err) {
+      toast.error(parseDexieError(err))
     } finally {
       setDeleting(false)
     }
   }
 
   return (
-    <div className="apiario-detail-page">
-      <Link to="/apiari" className="apiario-detail-page__back">
-        <ArrowLeft size={20} aria-hidden="true" />
-        Apiari
-      </Link>
+    <PageQueryState loading={loading} error={error} skeleton="detail">
+      {apiario && (
+        <div className="apiario-detail-page">
+          <Link to={appPath('/apiari')} className="apiario-detail-page__back">
+            <ArrowLeft size={20} aria-hidden="true" />
+            Apiari
+          </Link>
 
-      <ApiarioVisiteFlow apiarioId={apiario.id} apiarioNome={apiario.nome} />
+          <ApiarioVisiteFlow apiarioId={apiario.id} apiarioNome={apiario.nome} />
 
-      <details className="apiario-detail-page__admin">
-        <summary>Gestione apiario</summary>
-        <ApiarioDetail
-          apiario={apiario}
-          onEdit={handleEdit}
-          actions={
-            <Button type="button" variant="danger" size="md" onClick={() => setDeleteOpen(true)}>
-              Elimina apiario
-            </Button>
-          }
-        />
-      </details>
+          <details className="apiario-detail-page__admin">
+            <summary>Gestione apiario</summary>
+            <ApiarioDetail
+              apiario={apiario}
+              onEdit={handleEdit}
+              actions={
+                <Button type="button" variant="danger" size="md" onClick={() => setDeleteOpen(true)}>
+                  Elimina apiario
+                </Button>
+              }
+            />
+          </details>
 
-      <ConfirmDialog
-        open={deleteOpen}
-        message="Eliminare definitivamente questo apiario?"
-        confirmLabel="Elimina"
-        loading={deleting}
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteOpen(false)}
-      />
-    </div>
+          <ConfirmDialog
+            open={deleteOpen}
+            message="Eliminare definitivamente questo apiario?"
+            confirmLabel="Elimina"
+            loading={deleting}
+            onConfirm={handleDelete}
+            onCancel={() => setDeleteOpen(false)}
+          />
+        </div>
+      )}
+    </PageQueryState>
   )
 }

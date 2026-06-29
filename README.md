@@ -15,16 +15,21 @@ Vedi [docs/structure.md](./docs/structure.md) per i dettagli.
 
 ## Documentazione
 
+Indice principale: **[docs/README.md](./docs/README.md)**
+
 | File | Descrizione |
 |------|-------------|
-| [ROADMAP.md](./ROADMAP.md) | Piano di sviluppo |
+| [docs/MELI_PRODUCT_SPEC.md](./docs/MELI_PRODUCT_SPEC.md) | Visione, moduli, entità |
+| [docs/USER_FLOW.md](./docs/USER_FLOW.md) | Flussi utente sul campo |
+| [docs/UI_GUIDELINES.md](./docs/UI_GUIDELINES.md) | Design system e UX |
+| [docs/DATABASE.md](./docs/DATABASE.md) | Schema IndexedDB |
+| [docs/ROADMAP.md](./docs/ROADMAP.md) | Piano di sviluppo |
+| [docs/BUSINESS_MODEL.md](./docs/BUSINESS_MODEL.md) | Modello di business |
+| [docs/RELEASES.md](./docs/RELEASES.md) | Storico rilasci |
+| [docs/FUTURE_IDEAS.md](./docs/FUTURE_IDEAS.md) | Idee future |
+| [ARCHITETTURA.md](./ARCHITETTURA.md) | Architettura software |
 | [TODO.md](./TODO.md) | Task aperti |
 | [CHANGELOG.md](./CHANGELOG.md) | Storico modifiche |
-| [DATABASE.md](./DATABASE.md) | Schema dati |
-| [ARCHITETTURA.md](./ARCHITETTURA.md) | Architettura software |
-| [MELI_PRODUCT_SPEC.md](./MELI_PRODUCT_SPEC.md) | Specifica prodotto |
-| [STYLE_GUIDE.md](./STYLE_GUIDE.md) | Design e UX |
-| [docs/](./docs/) | Documentazione estesa |
 
 ## Comandi
 

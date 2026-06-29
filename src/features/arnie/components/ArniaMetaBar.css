@@ -1,0 +1,60 @@
+.arnia-meta-bar {
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.arnia-meta-bar__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.arnia-meta-bar__name {
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--meli-brown);
+  line-height: 1.08;
+}
+
+.arnia-meta-bar__numero {
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--meli-honey-dark);
+}
+
+.arnia-meta-bar__apiario {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--meli-honey-dark);
+  text-decoration: none;
+}
+
+.arnia-meta-bar__apiario:hover {
+  color: var(--meli-honey);
+}
+
+.arnia-meta-bar__qr {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(122, 158, 126, 0.14);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-sage-dark);
+}
+
+.arnia-meta-bar__top .ui-button {
+  min-height: 48px;
+  flex-shrink: 0;
+}

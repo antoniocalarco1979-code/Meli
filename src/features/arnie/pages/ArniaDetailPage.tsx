@@ -1,76 +1,61 @@
-import { useEffect, useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import { Loading } from '../../../components/ui/Loading'
-import { PageTitle } from '../../../components/ui/PageTitle'
+import { useEffect } from 'react'
+import { ArrowLeft } from '../../../theme/icons'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { EntityNotFound } from '../../../components/common/NotFoundPage'
+import { PageQueryState } from '../../../components/common/PageQueryState'
+import { useAppPath } from '../../../demo/useAppPath'
 import { ArniaDetail } from '../components/ArniaDetail'
-import { NuovaVisitaModal } from '../components/NuovaVisitaModal'
+import type { ArniaVisitLocationState } from '../../visite/types/visitFlow.types'
 import { useArniaDetail } from '../hooks/useArnie'
 import './ArniaDetailPage.css'
-
-type LocationState = {
-  openVisita?: boolean
-}
 
 export function ArniaDetailPage() {
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
-  const { detail, loading } = useArniaDetail(id)
-  const [visitaOpen, setVisitaOpen] = useState(false)
+  const navigate = useNavigate()
+  const appPath = useAppPath()
+  const { detail, loading, error } = useArniaDetail(id)
 
   useEffect(() => {
-    const state = location.state as LocationState | null
-    if (state?.openVisita) {
-      setVisitaOpen(true)
-      window.history.replaceState({}, document.title)
+    const state = location.state as ArniaVisitLocationState | null
+    if (state?.openVisita && id) {
+      navigate(appPath(`/arnie/${id}/visita`), {
+        replace: true,
+        state: state.giroReturn ? { giroReturn: state.giroReturn } : undefined,
+      })
     }
-  }, [location.state])
+  }, [appPath, id, location.state, navigate])
 
-  if (loading) {
-    return (
-      <div className="arnia-detail-page">
-        <Loading size="lg" label="Caricamento arnia…" />
-      </div>
-    )
+  const openVisitWizard = () => {
+    if (!id) return
+    navigate(appPath(`/arnie/${id}/visita`))
   }
 
-  if (!detail) {
+  if (!loading && !error && !detail) {
     return (
-      <div className="arnia-detail-page">
-        <PageTitle title="Arnia non trovata" />
-        <Link to="/arnie">← Torna alle arnie</Link>
-      </div>
+      <EntityNotFound
+        title="Arnia non trovata"
+        backTo={appPath('/arnie')}
+        backLabel="Torna alle arnie"
+      />
     )
   }
 
   return (
-    <div className="arnia-detail-page">
-      <Link
-        to={detail.apiario ? `/apiari/${detail.apiario.id}` : '/arnie'}
-        className="arnia-detail-page__back"
-      >
-        <ArrowLeft size={20} aria-hidden="true" />
-        {detail.apiario?.nome ?? 'Arnie'}
-      </Link>
+    <PageQueryState loading={loading} error={error} skeleton="detail">
+      {detail && (
+        <div className="arnia-detail-page">
+          <Link
+            to={detail.apiario ? appPath(`/apiari/${detail.apiario.id}`) : appPath('/arnie')}
+            className="arnia-detail-page__back"
+          >
+            <ArrowLeft size={20} aria-hidden="true" />
+            {detail.apiario?.nome ?? 'Arnie'}
+          </Link>
 
-      <ArniaDetail
-        data={detail}
-        onNuovaVisita={() => setVisitaOpen(true)}
-        onEdit={() => {
-          /* Modifica arnia — prossimo sprint */
-        }}
-      />
-
-      <NuovaVisitaModal
-        open={visitaOpen}
-        arniaId={detail.arnia.id}
-        arniaNumero={detail.arnia.numero}
-        apiarioNome={detail.apiario?.nome}
-        onClose={() => setVisitaOpen(false)}
-        onSaved={() => {
-          /* liveQuery aggiorna timeline, ultima visita e dashboard */
-        }}
-      />
-    </div>
+          <ArniaDetail data={detail} onIniziaIspezione={openVisitWizard} />
+        </div>
+      )}
+    </PageQueryState>
   )
 }

@@ -1,51 +1,49 @@
 import { motion } from 'framer-motion'
 import type { ArniaDetailView } from '../services/arniaDetailService'
-import { ArniaHeader } from './ArniaHeader'
-import { FloatingVisitButton } from './FloatingVisitButton'
-import { HealthCard } from './HealthCard'
+import { ArniaAzioneConsigliata } from './ArniaAzioneConsigliata'
+import { ArniaDetailHeader } from './ArniaDetailHeader'
+import { ArniaStatusSummary } from './ArniaStatusSummary'
+import { IniziaIspezioneButton } from './IniziaIspezioneButton'
 import { PhotoGallery } from './PhotoGallery'
-import { ProductionCard } from './ProductionCard'
-import { QueenCard } from './QueenCard'
 import { TimelineCard } from './TimelineCard'
-import { TrattamentiCard } from './TrattamentiCard'
-import { UltimaVisitaCard } from './UltimaVisitaCard'
 import './arnia-shared.css'
 import './ArniaDetail.css'
 
 type ArniaDetailProps = {
   data: ArniaDetailView
-  onNuovaVisita: () => void
-  onEdit?: () => void
+  onIniziaIspezione: () => void
 }
 
-export function ArniaDetail({ data, onNuovaVisita, onEdit }: ArniaDetailProps) {
-  const { arnia, apiario, coverFoto, foto, detail } = data
+export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
+  const { arnia, foto, detail } = data
 
   return (
-    <>
-      <motion.div
-        className="arnia-premium"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
-      >
-        <ArniaHeader
+    <motion.div
+      className="arnia-premium"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="arnia-premium__primary">
+        <ArniaDetailHeader
           arnia={arnia}
-          apiario={apiario}
-          coverFoto={coverFoto}
-          onEdit={onEdit}
+          reginaColore={detail.queen.colore}
+          salute={detail.salute}
         />
 
-        <HealthCard health={detail.health} />
-        <QueenCard queen={detail.queen} />
-        <ProductionCard production={detail.production} />
-        <UltimaVisitaCard visit={detail.ultimaVisita} />
-        <TimelineCard visits={detail.visitTimeline} />
-        <PhotoGallery photos={foto} />
-        <TrattamentiCard trattamenti={detail.trattamenti} />
-      </motion.div>
+        <ArniaStatusSummary visit={detail.ultimaVisita} />
 
-      <FloatingVisitButton onClick={onNuovaVisita} />
-    </>
+        <ArniaAzioneConsigliata visit={detail.ultimaVisita} />
+      </div>
+
+      <div className="arnia-premium__secondary">
+        <PhotoGallery photos={foto} />
+        <TimelineCard visits={detail.visitTimeline} />
+      </div>
+
+      <div className="arnia-premium__cta">
+        <IniziaIspezioneButton onClick={onIniziaIspezione} />
+      </div>
+    </motion.div>
   )
 }

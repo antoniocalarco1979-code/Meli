@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import type { HealthSummary } from '../types'
-import { getSaluteLevel } from '../utils/arniaFormatters'
+import { getSaluteLevel } from '../../../utils/salute'
 import './HealthCard.css'
 
 type HealthCardProps = {
@@ -21,7 +21,7 @@ export function HealthCard({ health }: HealthCardProps) {
       transition={{ duration: 0.45, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
       aria-label="Stato salute"
     >
-      <h2 className="arnia-section-title">Stato salute</h2>
+      <h2 className="arnia-section-title">🐝 Stato</h2>
 
       <div className="health-card__ring-wrap">
         <svg className="health-card__ring" viewBox="0 0 120 120" aria-hidden="true">

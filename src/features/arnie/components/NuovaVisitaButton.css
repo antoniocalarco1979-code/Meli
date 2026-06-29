@@ -1,0 +1,27 @@
+.nuova-visita-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  min-height: var(--meli-touch-min);
+  padding: 1.1rem 1.5rem;
+  border: none;
+  border-radius: var(--meli-radius-xl);
+  background: linear-gradient(135deg, var(--meli-honey), var(--meli-gold));
+  color: #fff;
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: var(--meli-shadow-button);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .nuova-visita-btn {
+    min-height: 72px;
+    font-size: 1.1875rem;
+  }
+}

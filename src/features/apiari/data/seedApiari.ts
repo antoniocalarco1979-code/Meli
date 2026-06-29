@@ -1,5 +1,6 @@
-import { db } from '../../../database'
+import { getDb } from '../../../database/activeDatabase'
 import { apiariRepository } from '../../../database/repositories'
+import { shouldSeedDemoData } from '../../../config/demoSeed'
 
 const SEED = [
   {
@@ -29,8 +30,9 @@ const SEED = [
   },
 ]
 
-export async function seedApiariIfEmpty(): Promise<void> {
-  const count = await db.apiari.count()
+export async function seedApiariIfEmpty(options?: { force?: boolean }): Promise<void> {
+  if (!options?.force && !shouldSeedDemoData()) return
+  const count = await getDb().apiari.count()
   if (count > 0) return
 
   for (const item of SEED) {

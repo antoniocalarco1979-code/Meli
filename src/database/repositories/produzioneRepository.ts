@@ -1,4 +1,4 @@
-import { db } from '../database'
+import { getDb } from '../activeDatabase'
 import type { Produzione } from '../types'
 import { generateId } from './utils'
 
@@ -7,28 +7,28 @@ import { generateId } from './utils'
  */
 export const produzioneRepository = {
   getById(id: string): Promise<Produzione | undefined> {
-    return db.produzione.get(id)
+    return getDb().produzione.get(id)
   },
 
   getByArniaId(arniaId: string): Promise<Produzione[]> {
-    return db.produzione.where('arniaId').equals(arniaId).reverse().sortBy('data')
+    return getDb().produzione.where('arniaId').equals(arniaId).reverse().sortBy('data')
   },
 
   async create(data: Omit<Produzione, 'id'>): Promise<Produzione> {
     const record: Produzione = { id: generateId(), ...data }
-    await db.produzione.add(record)
+    await getDb().produzione.add(record)
     return record
   },
 
   async update(id: string, changes: Partial<Omit<Produzione, 'id' | 'arniaId'>>): Promise<void> {
-    await db.produzione.update(id, changes)
+    await getDb().produzione.update(id, changes)
   },
 
   delete(id: string): Promise<void> {
-    return db.produzione.delete(id)
+    return getDb().produzione.delete(id)
   },
 
   deleteByArniaId(arniaId: string): Promise<number> {
-    return db.produzione.where('arniaId').equals(arniaId).delete()
+    return getDb().produzione.where('arniaId').equals(arniaId).delete()
   },
 }

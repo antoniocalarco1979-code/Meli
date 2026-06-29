@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="28" fill="url(#meliGrad)"/>
+  <path
+    d="M60 28c-10 16-24 28-24 46a24 24 0 0 0 48 0c0-18-14-30-24-46Z"
+    stroke="#fff8e7"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+  <text
+    x="60"
+    y="92"
+    text-anchor="middle"
+    fill="#fff8e7"
+    font-family="system-ui, sans-serif"
+    font-size="14"
+    font-weight="800"
+    letter-spacing="4"
+  >MELI</text>
+  <defs>
+    <linearGradient id="meliGrad" x1="0" y1="0" x2="120" y2="120">
+      <stop stop-color="#ffb347"/>
+      <stop offset="1" stop-color="#c9a227"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import {
   Bell,
   Camera,
+  Hexagon,
   Mic,
   PlusCircle,
   QrCode,
@@ -16,6 +17,7 @@ type QuickActionsProps = {
 
 const iconMap = {
   visit: PlusCircle,
+  arnia: Hexagon,
   camera: Camera,
   voice: Mic,
   qr: QrCode,

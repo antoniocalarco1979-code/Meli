@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { Droplets } from 'lucide-react'
 import type { ProductionSummary } from '../types'
 import { ProduzioneChart } from './ProduzioneChart'
 import './ProductionCard.css'
@@ -18,8 +17,7 @@ export function ProductionCard({ production }: ProductionCardProps) {
       aria-label="Produzione"
     >
       <header className="production-card__header">
-        <Droplets size={24} strokeWidth={1.65} aria-hidden="true" />
-        <h2 className="arnia-section-title">Produzione</h2>
+        <h2 className="arnia-section-title">📈 Produzione</h2>
       </header>
 
       <div className="production-card__stats">

@@ -1,0 +1,82 @@
+.arnia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.arnia-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.arnia-form__error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--meli-radius-md);
+  background: rgba(229, 57, 53, 0.12);
+  color: var(--meli-hive-critical);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.arnia-form__divider {
+  height: 1px;
+  background: var(--meli-border-glass);
+}
+
+.arnia-form__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.arnia-form__submit-full {
+  flex: 1;
+  justify-content: center;
+}
+
+.arnia-form__modello {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.arnia-form__modello-label {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.arnia-form .visit-choices__radio {
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+}
+
+.arnia-form__modello-summary {
+  padding: 0.85rem 1rem;
+  border-radius: var(--meli-radius-lg);
+  background: rgba(255, 255, 255, 0.55);
+  border: 2px solid var(--meli-border);
+}
+
+.arnia-form__modello-summary-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.arnia-form__modello-summary-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--meli-brown-soft);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}

@@ -1,10 +1,20 @@
 import { motion } from 'framer-motion'
 import { Hexagon, Settings } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
-import { appRoutes } from '../../router/config'
+import { NavLink, useLocation } from 'react-router-dom'
+import { appRoutes } from '../../app/router/config'
+import '../../demo/demo.css'
 import './Sidebar.css'
 
 export function Sidebar() {
+  const { pathname } = useLocation()
+  const isDemoActive = pathname === '/demo' || pathname.startsWith('/demo/')
+
+  const linkFor = (path: string, end?: boolean) => {
+    if (!isDemoActive) return { to: path, end }
+    if (path === '/') return { to: '/demo/dashboard', end: true }
+    return { to: `/demo${path}`, end }
+  }
+
   return (
     <motion.aside
       className="sidebar"
@@ -24,7 +34,9 @@ export function Sidebar() {
 
       <nav className="sidebar__nav" aria-label="Navigazione principale">
         <ul>
-          {appRoutes.map(({ path, label, icon: Icon, end }, index) => (
+          {appRoutes.map(({ path, label, icon: Icon, end }, index) => {
+            const route = linkFor(path, end)
+            return (
             <motion.li
               key={path}
               initial={{ opacity: 0, x: -10 }}
@@ -32,8 +44,8 @@ export function Sidebar() {
               transition={{ delay: 0.05 + index * 0.04, duration: 0.35 }}
             >
               <NavLink
-                to={path}
-                end={end}
+                to={route.to}
+                end={route.end}
                 className={({ isActive }) =>
                   `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
                 }
@@ -42,7 +54,23 @@ export function Sidebar() {
                 <span>{label}</span>
               </NavLink>
             </motion.li>
-          ))}
+            )
+          })}
+        </ul>
+
+        <ul className="sidebar__demo">
+          <li>
+            <NavLink
+              to="/demo"
+              end
+              className={() =>
+                `sidebar__link sidebar__link--demo${isDemoActive ? ' sidebar__link--active' : ''}`
+              }
+            >
+              <span aria-hidden="true">🚧</span>
+              <span>Demo</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
 

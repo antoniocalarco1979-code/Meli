@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CalendarClock, CloudSun, Crown, StickyNote } from 'lucide-react'
+import { CloudSun, Crown, StickyNote } from 'lucide-react'
 import type { UltimaVisitaSummary } from '../types'
 import './UltimaVisitaCard.css'
 
@@ -17,8 +17,7 @@ export function UltimaVisitaCard({ visit }: UltimaVisitaCardProps) {
       aria-label="Ultima visita"
     >
       <header className="ultima-visita-card__header">
-        <CalendarClock size={24} strokeWidth={1.65} aria-hidden="true" />
-        <h2 className="arnia-section-title">Ultima visita</h2>
+        <h2 className="arnia-section-title">📅 Ultima visita</h2>
       </header>
 
       {!visit.data ? (

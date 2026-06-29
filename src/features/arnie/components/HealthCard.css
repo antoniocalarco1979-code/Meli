@@ -1,5 +1,5 @@
 .health-card {
-  padding: 1.5rem 1.65rem;
+  padding: var(--meli-space-xl) var(--meli-space-xl);
   border-radius: var(--meli-radius-xl);
   text-align: center;
 }
@@ -19,7 +19,7 @@
 
 .health-card__ring-bg {
   fill: none;
-  stroke: rgba(201, 162, 39, 0.12);
+  stroke: var(--meli-honey-soft);
   stroke-width: 10;
 }
 
@@ -30,15 +30,15 @@
 }
 
 .health-card__ring-fill--green {
-  stroke: #2d8a4e;
+  stroke: var(--meli-hive-healthy);
 }
 
 .health-card__ring-fill--yellow {
-  stroke: #d4a017;
+  stroke: var(--meli-hive-warning);
 }
 
 .health-card__ring-fill--red {
-  stroke: #c0392b;
+  stroke: var(--meli-hive-critical);
 }
 
 .health-card__value-wrap {
@@ -59,15 +59,15 @@
 }
 
 .health-card__value--green {
-  color: #2d8a4e;
+  color: var(--meli-hive-healthy);
 }
 
 .health-card__value--yellow {
-  color: #b8860b;
+  color: var(--meli-hive-warning);
 }
 
 .health-card__value--red {
-  color: #c0392b;
+  color: var(--meli-hive-critical);
 }
 
 .health-card__unit {

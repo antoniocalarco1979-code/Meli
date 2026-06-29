@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Crown, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import { Button } from '../../../components/ui/Button'
 import type { QueenSummary } from '../types'
 import './QueenCard.css'
@@ -24,8 +24,7 @@ export function QueenCard({ queen, onReplace }: QueenCardProps) {
       aria-label="Regina"
     >
       <header className="queen-card__header">
-        <Crown size={24} strokeWidth={1.65} aria-hidden="true" />
-        <h2 className="arnia-section-title">Regina</h2>
+        <h2 className="arnia-section-title">👑 Regina</h2>
       </header>
 
       {!queen.present ? (

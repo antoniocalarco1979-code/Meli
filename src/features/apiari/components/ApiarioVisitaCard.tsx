@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/ui/Button'
-import { getSaluteLevel } from '../../arnie/utils/arniaFormatters'
+import { getSaluteLevel } from '../../../utils/salute'
 import './ApiarioVisitaCard.css'
 
 const STATO_EMOJI = {
@@ -32,10 +32,10 @@ export function ApiarioVisitaCard({
     <article
       className={`apiario-visita-card${active ? ' apiario-visita-card--active' : ''}`}
     >
-      <Link to={`/arnie/${arniaId}`} className="apiario-visita-card__title">
+      <h2 className="apiario-visita-card__title">
         <span aria-hidden="true">🐝</span>
         ARNIA {numero}
-      </Link>
+      </h2>
 
       <p className="apiario-visita-card__stato">
         <span aria-hidden="true">{STATO_EMOJI[level]}</span>
@@ -47,15 +47,23 @@ export function ApiarioVisitaCard({
         <span className="apiario-visita-card__visita-value">{ultimaVisitaLabel}</span>
       </div>
 
-      <Button
-        variant="primary"
-        size="lg"
-        fullWidth
-        className="apiario-visita-card__btn"
-        onClick={onVisita}
-      >
-        VISITA
-      </Button>
+      <div className="apiario-visita-card__actions">
+        <Link
+          to={`/arnie/${arniaId}`}
+          className="ui-button ui-button--secondary ui-button--lg ui-button--full apiario-visita-card__btn"
+        >
+          Apri arnia
+        </Link>
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          className="apiario-visita-card__btn"
+          onClick={onVisita}
+        >
+          Visita
+        </Button>
+      </div>
     </article>
   )
 }

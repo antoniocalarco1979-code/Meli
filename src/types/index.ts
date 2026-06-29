@@ -11,4 +11,4 @@ export type {
   Visita,
 } from '../database/types'
 
-export type { AppRoute } from './routes'
+export type { AppRoute, BottomNavItem } from './routes'

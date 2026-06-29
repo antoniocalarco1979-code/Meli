@@ -1,28 +1,9 @@
 .dashboard-header {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.75rem;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
   position: relative;
   z-index: 2;
-}
-
-.dashboard-header__title {
-  font-family: var(--meli-font-display);
-  font-size: clamp(2rem, 4.2vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  color: var(--meli-brown);
-  line-height: 1.08;
-}
-
-.dashboard-header__subtitle {
-  margin-top: 0.45rem;
-  font-size: 1.125rem;
-  font-weight: 400;
-  letter-spacing: -0.018em;
-  color: var(--meli-text-secondary);
 }
 
 .dashboard-header__selector {

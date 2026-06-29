@@ -40,7 +40,7 @@ export function ApiarioGiroHero({ nome, arnieCount, onIniziaGiro, disabled }: Ap
       >
         <span className="apiario-giro-hero__shine" aria-hidden="true" />
         <Play size={26} fill="currentColor" strokeWidth={0} aria-hidden="true" />
-        <span>Inizia Giro</span>
+        <span>Inizia giro apiario</span>
       </motion.button>
     </motion.header>
   )

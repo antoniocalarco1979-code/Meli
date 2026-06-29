@@ -1,5 +1,7 @@
 # Design system
 
+Riferimento completo: [UI_GUIDELINES.md](./UI_GUIDELINES.md).
+
 Definito in `src/theme/tokens.css` e `src/theme/global.css`.
 
 ## Palette

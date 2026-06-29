@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
-import { Check, X } from 'lucide-react'
+import { Check, X } from '../../../theme/icons'
 import { Button } from '../../../components/ui/Button'
+import { parseDexieError } from '../../../database/errors'
 import { Input } from '../../../components/ui/Input'
 import { Textarea } from '../../../components/ui/Textarea'
 import type { ApiarioInput, ApiarioView } from '../types'
@@ -9,8 +10,10 @@ import './ApiarioForm.css'
 type ApiarioFormProps = {
   initial?: ApiarioView
   onSubmit: (data: ApiarioInput) => Promise<void>
-  onCancel: () => void
+  onCancel?: () => void
   submitLabel?: string
+  compact?: boolean
+  onboarding?: boolean
 }
 
 const emptyForm: ApiarioInput = {
@@ -31,6 +34,8 @@ export function ApiarioForm({
   onSubmit,
   onCancel,
   submitLabel = 'Salva',
+  compact = false,
+  onboarding = false,
 }: ApiarioFormProps) {
   const photoInputRef = useRef<HTMLInputElement>(null)
 
@@ -104,8 +109,8 @@ export function ApiarioForm({
         note: form.note?.trim() ?? '',
         numeroArnie: Math.max(0, form.numeroArnie),
       })
-    } catch {
-      setError('Errore durante il salvataggio. Riprova.')
+    } catch (err) {
+      setError(parseDexieError(err))
       throw new Error('save failed')
     } finally {
       setSaving(false)
@@ -116,7 +121,7 @@ export function ApiarioForm({
     <form className="apiario-form" onSubmit={handleSubmit}>
       <div className="apiario-form__fields">
         <Input
-          label="Nome Apiario *"
+          label={onboarding ? 'Nome apiario *' : 'Nome Apiario *'}
           value={form.nome}
           onChange={(e) => setForm({ ...form, nome: e.target.value })}
           placeholder="Es. Apiario Acquacalda"
@@ -130,24 +135,30 @@ export function ApiarioForm({
           placeholder="Es. San Roberto (RC)"
         />
 
-        <Input
-          label="Numero iniziale di arnie"
-          type="number"
-          min={0}
-          value={form.numeroArnie || ''}
-          onChange={(e) =>
-            setForm({ ...form, numeroArnie: parseInt(e.target.value, 10) || 0 })
-          }
-        />
+        {!onboarding && (
+          <Input
+            label={compact ? 'Numero arnie (opzionale)' : 'Numero iniziale di arnie'}
+            type="number"
+            min={0}
+            value={form.numeroArnie || ''}
+            onChange={(e) =>
+              setForm({ ...form, numeroArnie: parseInt(e.target.value, 10) || 0 })
+            }
+          />
+        )}
 
-        <Textarea
-          label="Note"
-          value={form.note ?? ''}
-          onChange={(e) => setForm({ ...form, note: e.target.value })}
-          placeholder="Osservazioni, accessi, fioriture…"
-          rows={3}
-        />
+        {(onboarding || !compact) && (
+          <Textarea
+            label="Note"
+            value={form.note ?? ''}
+            onChange={(e) => setForm({ ...form, note: e.target.value })}
+            placeholder="Accessi, fioriture, osservazioni…"
+            rows={onboarding ? 4 : 3}
+          />
+        )}
 
+        {!compact && !onboarding && (
+          <>
         {hasGeolocation && (
           <Button
             type="button"
@@ -193,6 +204,8 @@ export function ApiarioForm({
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
 
       {error && <p className="apiario-form__error">{error}</p>}
@@ -200,10 +213,12 @@ export function ApiarioForm({
       <div className="apiario-form__divider" aria-hidden="true" />
 
       <div className="apiario-form__actions">
-        <Button type="button" variant="ghost" size="md" onClick={onCancel} disabled={saving}>
-          Annulla
-        </Button>
-        <Button type="submit" variant="primary" size="md" disabled={saving}>
+        {onCancel && (
+          <Button type="button" variant="ghost" size="md" onClick={onCancel} disabled={saving}>
+            Annulla
+          </Button>
+        )}
+        <Button type="submit" variant="primary" size="md" disabled={saving} className={onCancel ? undefined : 'apiario-form__submit-full'}>
           <Check size={18} strokeWidth={2.5} aria-hidden="true" />
           {saving ? 'Salvataggio…' : submitLabel}
         </Button>

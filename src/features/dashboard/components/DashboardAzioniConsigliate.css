@@ -1,0 +1,46 @@
+.dashboard-azioni {
+  padding: 1.35rem 1.5rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.dashboard-azioni__header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  color: var(--meli-honey-dark);
+}
+
+.dashboard-azioni__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--meli-brown);
+}
+
+.dashboard-azioni__badge {
+  margin-left: auto;
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.15);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  text-align: center;
+}
+
+.dashboard-azioni__loading {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}
+
+@media (max-width: 767px) {
+  .dashboard-azioni {
+    padding: 1.15rem 1.25rem;
+  }
+}

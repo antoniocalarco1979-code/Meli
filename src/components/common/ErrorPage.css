@@ -1,0 +1,46 @@
+.ui-error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--meli-space-lg);
+  min-height: min(60vh, 520px);
+  padding: var(--meli-space-2xl);
+  text-align: center;
+}
+
+.ui-error-page--full {
+  min-height: 100vh;
+}
+
+.ui-error-page__code {
+  font-family: var(--meli-font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--meli-honey);
+  line-height: 1;
+}
+
+.ui-error-page__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--meli-text);
+}
+
+.ui-error-page__message {
+  margin: 0;
+  max-width: 420px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--meli-text-muted);
+}
+
+.ui-error-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--meli-space-sm);
+  justify-content: center;
+}

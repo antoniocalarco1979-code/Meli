@@ -76,6 +76,11 @@
   gap: 0.35rem;
 }
 
+.apiario-form__submit-full {
+  flex: 1;
+  justify-content: center;
+}
+
 @media (max-width: 767px) {
   .apiario-form__action-btn {
     width: 100%;

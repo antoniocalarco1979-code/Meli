@@ -6,6 +6,16 @@
 /** Stati operativi di un'alveare in campo. */
 export type ArniaStato = 'attiva' | 'debole' | 'senza_regina' | 'morta' | 'inattiva'
 
+/** Modello costruttivo dell'arnia — determina telaini e attrezzatura di base. */
+export type ArniaModelloId =
+  | 'dadant_blatt_10'
+  | 'dadant_blatt_12'
+  | 'langstroth'
+  | 'warre'
+  | 'top_bar'
+  | 'orizzontale'
+  | 'personalizzata'
+
 /**
  * Apiario — sito apistico.
  * Relazione: 1 Apiario → N Arnie.
@@ -36,6 +46,16 @@ export type Arnia = {
   nome?: string
   qrCode?: string
   stato: ArniaStato
+  /** Modello costruttivo selezionato in creazione. */
+  modelloId: ArniaModelloId
+  /** Numero telaini corpo/nucleo derivato dal modello. */
+  numeroTelai: number
+  /** Presenza melario prevista dal modello. */
+  hasMelario: boolean
+  /** Supporto vassoio antivarroa previsto dal modello. */
+  hasVassoioAntivarroa: boolean
+  /** Estensioni modello — struttura aperta per feature future. */
+  modelloExtensions?: Record<string, unknown>
   /** Indice di forza famiglia (0–100). */
   forzaFamiglia?: number
   /** FK alla regina attualmente operativa. */

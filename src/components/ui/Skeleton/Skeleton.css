@@ -1,0 +1,62 @@
+.ui-skeleton {
+  border-radius: var(--meli-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--meli-cream-muted) 0%,
+    var(--meli-cream-soft) 50%,
+    var(--meli-cream-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.ui-skeleton--text {
+  height: 1rem;
+  border-radius: var(--meli-radius-pill);
+}
+
+.ui-skeleton--title {
+  height: 1.75rem;
+  width: 55%;
+}
+
+.ui-skeleton--card {
+  height: 140px;
+  border-radius: var(--meli-radius-md);
+}
+
+.ui-skeleton--hero {
+  height: 220px;
+  border-radius: var(--meli-radius-lg);
+}
+
+.ui-skeleton-grid {
+  display: grid;
+  gap: var(--meli-space-lg);
+}
+
+.ui-skeleton-grid--cards {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.ui-skeleton-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--meli-space-lg);
+  padding: var(--meli-space-md) 0;
+}
+
+.ui-skeleton-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--meli-space-sm);
+}
+
+@keyframes ui-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

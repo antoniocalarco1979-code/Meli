@@ -1,11 +1,11 @@
 import { useLocation } from 'react-router-dom'
 import { Bell, Settings } from 'lucide-react'
-import { routeMeta } from '../../router/config'
+import { resolveRouteMeta } from '../../app/router/config'
 import './Header.css'
 
 export function Header() {
   const { pathname } = useLocation()
-  const meta = routeMeta[pathname] ?? routeMeta['/']
+  const meta = resolveRouteMeta(pathname)
 
   return (
     <header className="app-header meli-glass">

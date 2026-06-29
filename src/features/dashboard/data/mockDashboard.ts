@@ -42,10 +42,19 @@ export const dashboardData: DashboardData = {
     { id: 'a4', time: '16:00', title: 'Aggiungere melario' },
   ],
   quickActions: [
+    { id: 'q0', label: 'Apri arnia', icon: 'arnia' },
     { id: 'q1', label: 'Nuova visita', icon: 'visit' },
     { id: 'q2', label: 'Scatta foto', icon: 'camera' },
     { id: 'q3', label: 'Note vocali', icon: 'voice' },
     { id: 'q4', label: 'Scanner QR Code', icon: 'qr' },
     { id: 'q5', label: 'Promemoria', icon: 'reminder' },
   ],
+}
+
+export function getWeatherVisitHint(condition: string): string {
+  const value = condition.toLowerCase()
+  if (value.includes('piogg') || value.includes('temporal') || value.includes('rovesci')) {
+    return 'Meteo difficile — valuta di posticipare'
+  }
+  return 'Meteo ideale'
 }

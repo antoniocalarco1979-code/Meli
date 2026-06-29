@@ -18,13 +18,21 @@
   text-align: center;
 }
 
+.ui-confirm__title {
+  margin: 0 0 0.65rem;
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--meli-text);
+}
+
 .ui-confirm__message {
   font-family: var(--meli-font-display);
-  font-size: 1.0625rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 500;
   line-height: 1.45;
-  color: var(--meli-brown);
-  margin-bottom: 1.35rem;
+  color: var(--meli-text-secondary);
+  margin-bottom: var(--meli-space-lg);
 }
 
 .ui-confirm__actions {

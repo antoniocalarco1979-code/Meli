@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Camera, ChevronRight, Droplets, QrCode } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
 import type { ArniaListItem } from '../types'
 import { SaluteSemaforo } from './SaluteSemaforo'
 import './ArniaCard.css'
@@ -12,6 +13,7 @@ type ArniaCardProps = {
 }
 
 export function ArniaCard({ item, index = 0, compact = false }: ArniaCardProps) {
+  const appPath = useAppPath()
   const { arnia, coverFoto, salute, reginaLabel, ultimaVisitaLabel, produzioneAnnoLabel } = item
   const displayName = arnia.nome ?? `Arnia ${arnia.numero}`
 
@@ -23,7 +25,7 @@ export function ArniaCard({ item, index = 0, compact = false }: ArniaCardProps) 
       whileTap={{ scale: 0.985 }}
     >
       <Link
-        to={`/arnie/${arnia.id}`}
+        to={appPath(`/arnie/${arnia.id}`)}
         className={`arnia-card meli-glass meli-glass--deep${compact ? ' arnia-card--compact' : ''}`}
         aria-label={`Apri ${displayName}`}
       >

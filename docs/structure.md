@@ -1,56 +1,39 @@
 # Struttura progetto
 
 ```
-MELI/
-├── docs/              Documentazione tecnica e moduli
-│   ├── modules/       Apiari, Arnie, Visite
-│   ├── architecture.md
-│   ├── device-services.md
-│   ├── design-system.md
-│   └── structure.md
-├── assets/            Asset sorgente (brand, immagini)
-│   ├── brand/         Logo MELI, RANU
-│   └── images/
-├── public/            Statici Vite (favicon, logo runtime)
-└── src/
-    ├── components/    ui/, layout/, common/
-    ├── features/      Moduli dominio
-    │   ├── dashboard/
-    │   ├── apiari/
-    │   ├── arnie/
-    │   └── visite/
-    ├── router/
-    ├── theme/
-    ├── services/
-    │   └── device/    camera, GPS, notifications, storage
-    ├── platform/      Re-export deprecati (compatibilità)
-    ├── database/      Dexie v5, repositories, services
-    ├── hooks/
-    └── types/
+src/
+├── app/                     Shell applicazione (App, router)
+├── database/                Dexie v5, repositories, services
+├── features/
+│   ├── dashboard/           pages, components, hooks, services
+│   ├── apiari/
+│   ├── arnie/
+│   ├── visite/
+│   ├── regine/
+│   ├── produzione/
+│   ├── trattamenti/
+│   └── report/
+├── components/              ui/, layout/, common/
+├── services/                device/ (camera, GPS, platform, …)
+├── hooks/                   useLiveQuery
+├── utils/                   dateFormatters, salute/
+├── types/                   route, entità condivise
+└── theme/                   token CSS, stili globali
 ```
 
-Documentazione root (collegata da `docs/README.md`):
+## Layer e responsabilità
 
-```
-ROADMAP.md  TODO.md  CHANGELOG.md
-DATABASE.md  ARCHITETTURA.md  STYLE_GUIDE.md
-```
+| Layer | Contenuto | Regola |
+|-------|-----------|--------|
+| `app/` | Routing, bootstrap React | Nessuna logica di dominio |
+| `database/` | Persistenza IndexedDB | Features usano `database/services`, non repositories diretti |
+| `features/*/services` | Orchestrazione dominio per modulo | Un modulo = un bounded context |
+| `utils/` | Logica condivisa (date, salute) | Nessun import da `features/` |
+| `services/device/` | Web API + stub Capacitor | Unico punto per camera, GPS, platform |
+| `components/` | UI riutilizzabile | Nessun accesso al database |
+
+Documentazione prodotto: cartella `docs/` alla root.
 
 ---
 
-## Convenzioni
-
-- **`assets/`** — master design; copiare in `public/` per URL runtime (`/ranu-logo.svg`).
-- **`public/`** — percorsi assoluti, non passano dal bundler.
-- **`src/services/device/`** — unico punto per API device (web o Capacitor).
-- **`src/features/*/services/`** — logica di dominio legata alla feature, usa il database layer.
-- **`src/database/`** — schema, migrazioni, repository; nessuna UI.
-
----
-
-## Alias Vite
-
-| Alias | Percorso |
-|-------|----------|
-| `@` | `src/` |
-| `@assets` | `assets/` |
+*Ultimo aggiornamento: giugno 2026*

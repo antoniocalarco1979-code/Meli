@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Button } from '../../../components/ui/Button'
-import type { GiroSessionStats } from '../services/giroReportService'
+import type { GiroSessionStats } from '../../visite/types/giro.types'
 import './ApiarioGiroCompletato.css'
 
 type ApiarioGiroCompletatoProps = {

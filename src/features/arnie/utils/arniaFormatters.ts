@@ -1,5 +1,9 @@
 import type { ArniaStato, Trattamento, Visita } from '../../../database/types'
-import { computeSaluteFromVisita } from './saluteScore'
+import { computeSaluteFromVisita } from '../../../utils/salute'
+
+export { formatFullDate, formatRelativeDate } from '../../../utils/dateFormatters'
+export { getSaluteLevel } from '../../../utils/salute'
+export type { SaluteLevel } from '../../../utils/salute'
 
 const SALUTE_BASE: Record<ArniaStato, number> = {
   attiva: 70,
@@ -25,46 +29,58 @@ export function computeSalute(
   return SALUTE_BASE[stato] ?? 50
 }
 
-export function formatRelativeDate(timestamp: number): string {
-  const diff = Date.now() - timestamp
-  const days = Math.floor(diff / 86_400_000)
-
-  if (days <= 0) return 'Oggi'
-  if (days === 1) return 'Ieri'
-  if (days < 7) return `${days} giorni fa`
-  if (days < 30) return `${Math.floor(days / 7)} sett. fa`
-  return new Date(timestamp).toLocaleDateString('it-IT', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  })
-}
-
 export function formatReginaLabel(anno?: number, colore?: string): string {
   if (!anno && !colore) return '—'
   const colorLabel = colore ? colore.charAt(0).toUpperCase() + colore.slice(1) : ''
   return [anno, colorLabel].filter(Boolean).join(' ')
 }
 
+const REGINA_COLORE_EMOJI: Record<string, string> = {
+  bianca: '⚪',
+  gialla: '🟡',
+  rossa: '🔴',
+  verde: '🟢',
+  blu: '🔵',
+}
+
+export function formatReginaColoreDisplay(colore?: string): string | undefined {
+  if (!colore?.trim()) return undefined
+  const key = colore.trim().toLowerCase()
+  const emoji = REGINA_COLORE_EMOJI[key]
+  const label = colore.charAt(0).toUpperCase() + colore.slice(1).toLowerCase()
+  return emoji ? `${emoji} ${label}` : label
+}
+
+export function saluteLevelEmoji(level: 'green' | 'yellow' | 'red'): string {
+  return { green: '🟢', yellow: '🟡', red: '🔴' }[level]
+}
+
+export type SaluteStatoLabel = 'Ottima' | 'Buona' | 'Attenzione' | 'Critica'
+
+export function formatSaluteStatoLabel(value: number): SaluteStatoLabel {
+  if (value >= 85) return 'Ottima'
+  if (value >= 70) return 'Buona'
+  if (value >= 40) return 'Attenzione'
+  return 'Critica'
+}
+
+export function saluteStatoModifier(label: SaluteStatoLabel): string {
+  return label.toLowerCase()
+}
+
+export function buildVisitaRiepilogo(visita: Pick<Visita, 'reginaVista' | 'comportamento' | 'covata' | 'scorte'>): string {
+  const parts: string[] = []
+  const regina = formatReginaVisitaDisplay(visita)
+  if (regina !== '—') parts.push(`Regina ${regina.toLowerCase()}`)
+  const covata = formatCovataDisplay(visita.covata)
+  if (covata !== '—') parts.push(`Covata ${covata.toLowerCase()}`)
+  const scorte = formatScorteDisplay(visita.scorte)
+  if (scorte !== '—') parts.push(`Scorte ${scorte.toLowerCase()}`)
+  return parts.length > 0 ? parts.join(' · ') : 'Visita registrata'
+}
+
 export function formatProduzioneKg(kg: number): string {
   return `${Math.round(kg)} Kg`
-}
-
-export function formatFullDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('it-IT', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
-
-export type SaluteLevel = 'green' | 'yellow' | 'red'
-
-export function getSaluteLevel(value: number): SaluteLevel {
-  if (value >= 70) return 'green'
-  if (value >= 40) return 'yellow'
-  return 'red'
 }
 
 export function computeReginaEta(anno?: number): string {
@@ -82,5 +98,44 @@ export function formatReginaStato(stato: ArniaStato, hasRegina: boolean): string
   return 'Attiva'
 }
 
-export { SALUTE_WEIGHTS, buildSaluteScoreRows, computeSaluteBreakdown, computeSaluteScore } from './saluteScore'
-export type { SaluteScoreBreakdown, SaluteScoreFlags } from './saluteScore'
+export function formatReginaVisitaDisplay(
+  visita?: Pick<Visita, 'reginaVista' | 'comportamento'>,
+): string {
+  if (!visita) return '—'
+  if (visita.comportamento?.toLowerCase().includes('sostituire')) return 'Da sostituire'
+  if (visita.reginaVista) return 'Vista'
+  if (visita.comportamento?.toLowerCase().includes('non controllata')) return 'Non controllata'
+  return 'Non vista'
+}
+
+export function formatCovataDisplay(covata?: string): string {
+  if (!covata) return '—'
+  const lower = covata.toLowerCase()
+  if (lower.includes('ottima')) return 'Ottima'
+  if (lower.includes('buona') || lower.includes('compatta')) return 'Buona'
+  if (lower.includes('scarsa') || lower.includes('discontinua')) return 'Scarsa'
+  if (lower.includes('assente')) return 'Assente'
+  return covata.replace(/^Covata\s/i, '')
+}
+
+export function formatScorteDisplay(scorte?: string): string {
+  if (!scorte) return '—'
+  const lower = scorte.toLowerCase()
+  if (lower.includes('ottime') || lower.includes('abbondant')) return 'Ottime'
+  if (lower.includes('buone') || lower.includes('normal')) return 'Normali'
+  if (lower.includes('scarse')) return 'Scarse'
+  return scorte.replace(/^Scorte\s/i, '')
+}
+
+export function parseMelarioFromNote(note?: string): string {
+  if (!note) return '—'
+  const match = note.match(/- Melario:\s*(.+)/i)
+  if (!match) return '—'
+  const val = match[1].trim()
+  if (val === 'Assente' || val === 'Presente' || val === 'Opercolato' || val === 'Da smielare') {
+    return val
+  }
+  if (val === 'Sì' || val.toLowerCase() === 'si') return 'Presente'
+  if (val === 'No') return 'Assente'
+  return val
+}

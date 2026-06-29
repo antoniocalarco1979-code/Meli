@@ -4,6 +4,7 @@ import './ConfirmDialog.css'
 
 type ConfirmDialogProps = {
   open: boolean
+  title?: string
   message: string
   confirmLabel?: string
   cancelLabel?: string
@@ -14,6 +15,7 @@ type ConfirmDialogProps = {
 
 export function ConfirmDialog({
   open,
+  title = 'Conferma eliminazione',
   message,
   confirmLabel = 'Elimina',
   cancelLabel = 'Annulla',
@@ -42,9 +44,13 @@ export function ConfirmDialog({
         className="ui-confirm__dialog meli-glass meli-glass--deep"
         role="alertdialog"
         aria-modal="true"
-        aria-labelledby="confirm-message"
+        aria-labelledby="confirm-title"
+        aria-describedby="confirm-message"
         onClick={(e) => e.stopPropagation()}
       >
+        <h2 id="confirm-title" className="ui-confirm__title">
+          {title}
+        </h2>
         <p id="confirm-message" className="ui-confirm__message">
           {message}
         </p>

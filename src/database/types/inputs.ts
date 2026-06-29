@@ -1,4 +1,14 @@
-import type { Apiario, Arnia, ArniaStato, Foto, Produzione, Regina, Trattamento, Visita } from './entities'
+import type {
+  Apiario,
+  Arnia,
+  ArniaModelloId,
+  ArniaStato,
+  Foto,
+  Produzione,
+  Regina,
+  Trattamento,
+  Visita,
+} from './entities'
 
 /** Payload creazione Apiario. */
 export type ApiarioInput = {
@@ -21,6 +31,9 @@ export type ApiarioUpdate = Partial<ApiarioInput>
 export type ArniaInput = {
   apiarioId: string
   numero: string
+  modelloId: ArniaModelloId
+  /** Obbligatorio se modelloId === 'personalizzata'. */
+  telaiPersonalizzati?: number
   nome?: string
   qrCode?: string
   stato?: ArniaStato

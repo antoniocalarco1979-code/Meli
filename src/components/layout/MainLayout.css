@@ -5,6 +5,10 @@
     env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+.main-layout--with-bottom-nav {
+  --meli-bottom-nav-height: 72px;
+}
+
 .main-layout__body {
   flex: 1;
   display: flex;
@@ -19,6 +23,16 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .main-layout {
+    flex-direction: column;
+  }
+
+  .main-layout--with-bottom-nav .main-layout__content {
+    padding-bottom: calc(var(--meli-bottom-nav-height) + env(safe-area-inset-bottom));
+  }
 }
 
 @media (max-width: 767px) {

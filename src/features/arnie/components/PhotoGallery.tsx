@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { Images } from 'lucide-react'
+import { Camera } from 'lucide-react'
+import { EmptyState } from '../../../components/ui/EmptyState/EmptyState'
 import type { Foto } from '../../../database/types'
 import './PhotoGallery.css'
 
@@ -10,22 +11,24 @@ type PhotoGalleryProps = {
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
   return (
     <motion.section
-      className="photo-gallery meli-glass meli-glass--deep"
+      className="photo-gallery photo-gallery--secondary meli-glass meli-glass--deep"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-      aria-label="Galleria fotografica"
+      transition={{ duration: 0.45, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+      aria-label="Foto arnia"
     >
       <header className="photo-gallery__header">
-        <Images size={24} strokeWidth={1.65} aria-hidden="true" />
-        <h2 className="arnia-section-title">Galleria fotografica</h2>
-        <span className="photo-gallery__count">{photos.length}</span>
+        <h2 className="arnia-section-title">Foto</h2>
+        {photos.length > 0 && (
+          <span className="photo-gallery__count">{photos.length}</span>
+        )}
       </header>
 
-      <p className="photo-gallery__hint">Filtri in arrivo — tutte le foto dell&apos;arnia</p>
-
       {photos.length === 0 ? (
-        <p className="photo-gallery__empty">Nessuna foto in galleria</p>
+        <EmptyState
+          title="Nessuna foto disponibile"
+          icon={<Camera size={40} strokeWidth={1.5} />}
+        />
       ) : (
         <div className="photo-gallery__grid">
           {photos.map((photo, index) => (

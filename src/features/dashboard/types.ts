@@ -29,7 +29,7 @@ export type TodayActivity = {
 export type QuickAction = {
   id: string
   label: string
-  icon: 'visit' | 'camera' | 'voice' | 'qr' | 'reminder'
+  icon: 'visit' | 'arnia' | 'camera' | 'voice' | 'qr' | 'reminder'
 }
 
 export type DashboardData = {

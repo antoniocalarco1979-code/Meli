@@ -1,5 +1,7 @@
 import Dexie, { type EntityTable, type Transaction } from 'dexie'
+import { DEFAULT_ARNIA_MODELLO_ID, resolveArniaModello } from '../features/arnie/models/arniaModelli'
 import { DATABASE_NAME, DATABASE_VERSION, STORE_SCHEMA } from './schema'
+import { setupDexieErrorHandlers } from './setupDexieHandlers'
 import type { Apiario, Arnia, Foto, Produzione, Regina, Trattamento, Visita } from './types'
 
 /** Record legacy pre-migrazione v5 (campi deprecati). */
@@ -36,7 +38,7 @@ type LegacyTrattamento = Trattamento & {
 
 /**
  * Database MELI — singleton Dexie su IndexedDB.
- * Gestisce migrazioni incrementali da v1 a v5.
+ * Gestisce migrazioni incrementali da v1 a v6.
  */
 class MeliDatabase extends Dexie {
   apiari!: EntityTable<Apiario, 'id'>
@@ -47,8 +49,8 @@ class MeliDatabase extends Dexie {
   produzione!: EntityTable<Produzione, 'id'>
   trattamenti!: EntityTable<Trattamento, 'id'>
 
-  constructor() {
-    super(DATABASE_NAME)
+  constructor(dbName: string = DATABASE_NAME) {
+    super(dbName)
 
     this.version(1).stores({})
 
@@ -78,7 +80,7 @@ class MeliDatabase extends Dexie {
       impostazioni: 'id, updatedAt',
     })
 
-    this.version(DATABASE_VERSION)
+    this.version(5)
       .stores(STORE_SCHEMA)
       .upgrade(async (tx) => {
         await migrateApiariV5(tx)
@@ -88,6 +90,12 @@ class MeliDatabase extends Dexie {
         await migrateFotoV5(tx)
         await migrateProduzioneV5(tx)
         await migrateTrattamentiV5(tx)
+      })
+
+    this.version(DATABASE_VERSION)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateArnieV6(tx)
       })
   }
 }
@@ -197,4 +205,20 @@ async function migrateTrattamentiV5(tx: Transaction): Promise<void> {
   })
 }
 
-export const db = new MeliDatabase()
+async function migrateArnieV6(tx: Transaction): Promise<void> {
+  await tx.table('arnie').toCollection().modify((row: LegacyArnia & Partial<Arnia>) => {
+    if (row.modelloId) return
+
+    const resolved = resolveArniaModello(DEFAULT_ARNIA_MODELLO_ID)
+    row.modelloId = resolved.modelloId
+    row.numeroTelai = resolved.numeroTelai
+    row.hasMelario = resolved.hasMelario
+    row.hasVassoioAntivarroa = resolved.hasVassoioAntivarroa
+  })
+}
+
+export const db = new MeliDatabase(DATABASE_NAME)
+export const demoDb = new MeliDatabase('MeliDemoDatabase')
+
+setupDexieErrorHandlers(db)
+setupDexieErrorHandlers(demoDb)

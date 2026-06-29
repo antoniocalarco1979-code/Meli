@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, Camera, Hexagon, MapPin, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
 import { Button } from '../../../components/ui/Button'
 import type { ApiarioView } from '../types'
 import './ApiarioCard.css'
@@ -14,6 +15,7 @@ type ApiarioCardProps = {
 }
 
 export function ApiarioCard({ apiario, index = 0, onEdit, onDelete }: ApiarioCardProps) {
+  const appPath = useAppPath()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -114,7 +116,7 @@ export function ApiarioCard({ apiario, index = 0, onEdit, onDelete }: ApiarioCar
           </li>
         </ul>
 
-        <Link to={`/apiari/${apiario.id}`} className="apiario-card__link">
+        <Link to={appPath(`/apiari/${apiario.id}`)} className="apiario-card__link">
           <Button variant="primary" size="md" fullWidth>
             Apri
           </Button>

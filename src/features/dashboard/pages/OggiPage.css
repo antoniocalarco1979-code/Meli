@@ -1,0 +1,21 @@
+.oggi-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.oggi-page__inner {
+  max-width: var(--meli-content-max);
+  margin: 0 auto;
+  padding: 1.25rem 1.65rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+@media (max-width: 767px) {
+  .oggi-page__inner {
+    padding: 1rem 1rem 1.25rem;
+  }
+}
