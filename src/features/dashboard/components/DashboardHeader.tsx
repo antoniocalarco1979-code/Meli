@@ -25,7 +25,7 @@ export function DashboardHeader({
     >
       <motion.button
         type="button"
-        className="dashboard-header__selector meli-glass"
+        className="dashboard-header__selector"
         whileHover={{ y: -2, boxShadow: 'var(--meli-shadow-lg)' }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         onClick={handleClick}

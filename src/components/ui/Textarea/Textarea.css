@@ -18,14 +18,16 @@
   font-size: 1rem;
   line-height: 1.5;
   letter-spacing: -0.018em;
-  color: var(--meli-brown);
-  background: rgba(255, 255, 255, 0.55);
+  color: var(--meli-text);
+  background: var(--meli-charcoal-elevated);
   border: 1px solid var(--meli-border-glass);
   resize: vertical;
   outline: none;
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .ui-textarea__field:focus {
+  border-color: var(--meli-border-accent);
   box-shadow: 0 0 0 3px var(--meli-honey-soft);
 }
 

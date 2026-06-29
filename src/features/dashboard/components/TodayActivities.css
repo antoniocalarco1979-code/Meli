@@ -1,5 +1,5 @@
 .today-activities {
-  padding: 1.35rem 1.4rem 1.45rem;
+  padding: var(--meli-space-lg);
   border-radius: var(--meli-radius-xl);
   height: 100%;
   position: relative;
@@ -10,16 +10,20 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin-bottom: 1.35rem;
-  color: var(--meli-gold-dark);
+  margin-bottom: var(--meli-space-lg);
+  color: var(--meli-honey-light);
+}
+
+.today-activities__header svg {
+  stroke-width: 1.75;
 }
 
 .today-activities__title {
   font-family: var(--meli-font-display);
-  font-size: 1.1875rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 .today-activities__badge {
@@ -31,11 +35,11 @@
   height: 28px;
   padding: 0 0.5rem;
   border-radius: var(--meli-radius-pill);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--meli-text-inverse);
-  background: linear-gradient(135deg, var(--meli-honey), var(--meli-gold));
-  box-shadow: 0 3px 10px rgba(232, 150, 12, 0.3);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey));
+  box-shadow: 0 2px 10px rgba(232, 150, 12, 0.25);
 }
 
 .today-activities__timeline {
@@ -53,21 +57,21 @@
   background: linear-gradient(
     180deg,
     var(--meli-honey) 0%,
-    rgba(201, 162, 39, 0.35) 60%,
-    rgba(201, 162, 39, 0.12) 100%
+    rgba(232, 150, 12, 0.25) 60%,
+    transparent 100%
   );
 }
 
 .today-activities__list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: var(--meli-space-sm);
 }
 
 .today-activities__item {
   display: grid;
   grid-template-columns: 24px 1fr;
-  gap: 0.85rem;
+  gap: var(--meli-space-sm);
   align-items: stretch;
   cursor: pointer;
 }
@@ -82,49 +86,45 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--meli-cream-muted);
-  border: 2px solid rgba(201, 162, 39, 0.45);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6);
-  transition:
-    transform 0.25s var(--meli-ease-out),
-    background 0.25s var(--meli-ease-out);
+  background: var(--meli-charcoal-elevated);
+  border: 2px solid rgba(232, 150, 12, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+  transition: transform 0.25s, background 0.25s;
 }
 
 .today-activities__node--active {
   background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey));
-  border-color: var(--meli-honey);
-  box-shadow:
-    0 0 0 3px rgba(232, 150, 12, 0.2),
-    0 0 12px rgba(232, 150, 12, 0.35);
+  border-color: var(--meli-honey-light);
+  box-shadow: 0 0 0 3px rgba(232, 150, 12, 0.18), 0 0 10px rgba(232, 150, 12, 0.25);
 }
 
 .today-activities__item:hover .today-activities__node {
-  transform: scale(1.15);
+  transform: scale(1.12);
 }
 
 .today-activities__card {
   padding: 0.85rem 1rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid var(--meli-border-inner);
-  box-shadow: var(--meli-shadow-sm);
-  transition:
-    background 0.25s var(--meli-ease-out),
-    box-shadow 0.25s var(--meli-ease-out);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: background 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
 
 .today-activities__item:hover .today-activities__card {
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: var(--meli-shadow-md);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(232, 150, 12, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 
 .today-activities__time {
   display: block;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  color: var(--meli-honey);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--meli-honey-light);
 }
 
 .today-activities__text {
@@ -132,5 +132,5 @@
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.018em;
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }

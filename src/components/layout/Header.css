@@ -21,7 +21,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 .app-header__subtitle {
@@ -49,7 +49,7 @@
 
 .app-header__btn:hover {
   background: var(--meli-honey-soft);
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 @media (max-width: 767px) {

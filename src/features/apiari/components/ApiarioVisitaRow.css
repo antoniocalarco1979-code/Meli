@@ -9,7 +9,7 @@
   padding: 0.85rem 1.25rem;
   border: 2px solid transparent;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font-display);
   font-size: clamp(1.125rem, 3.5vw, 1.35rem);
   font-weight: 800;
@@ -21,7 +21,7 @@
 }
 
 .apiario-visita-row:hover {
-  background: rgba(255, 255, 255, 0.38);
+  background: var(--meli-surface-hover);
   color: var(--meli-brown);
 }
 

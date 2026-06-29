@@ -41,7 +41,7 @@
 
 .ui-button--primary {
   color: var(--meli-text-inverse);
-  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey), var(--meli-gold));
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey), var(--meli-amber));
   box-shadow: var(--meli-shadow-button);
 }
 
@@ -50,30 +50,34 @@
 }
 
 .ui-button--secondary {
-  color: var(--meli-brown);
-  background: var(--meli-glass-strong);
+  color: var(--meli-text);
+  background: var(--meli-surface-strong);
   border: 1px solid var(--meli-border-glass);
   box-shadow: var(--meli-shadow-sm);
-  backdrop-filter: var(--meli-blur);
+}
+
+.ui-button--secondary:hover {
+  background: var(--meli-surface-active);
 }
 
 .ui-button--ghost {
-  color: var(--meli-brown-soft);
+  color: var(--meli-text-secondary);
   background: transparent;
 }
 
 .ui-button--ghost:hover {
   background: var(--meli-honey-soft);
+  color: var(--meli-honey-light);
 }
 
 .ui-button--danger {
   color: #fff;
-  background: linear-gradient(135deg, #ef5350, #c62828);
-  box-shadow: 0 8px 24px rgba(198, 40, 40, 0.25);
+  background: linear-gradient(135deg, var(--meli-alert-red-light), var(--meli-alert-red));
+  box-shadow: 0 8px 24px rgba(255, 69, 58, 0.28);
 }
 
 .ui-button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   transform: none;
 }

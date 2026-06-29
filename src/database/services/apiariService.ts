@@ -6,6 +6,7 @@ import {
   regineRepository,
   trattamentiRepository,
   visiteRepository,
+  giriRepository,
 } from '../repositories'
 import { getDb } from '../activeDatabase'
 import type { Apiario, ApiarioInput, ApiarioUpdate, ApiarioView } from '../types'
@@ -147,6 +148,7 @@ export async function deleteApiario(id: string): Promise<void> {
       database.trattamenti,
       database.produzione,
       database.foto,
+      database.giri,
     ],
     async () => {
       const arnie = await arnieRepository.getByApiarioId(id)
@@ -154,6 +156,7 @@ export async function deleteApiario(id: string): Promise<void> {
         await deleteArniaWithRelations(arnia.id)
       }
       await fotoRepository.deleteByApiarioId(id)
+      await giriRepository.deleteByApiarioId(id)
       await apiariRepository.delete(id)
     },
   )

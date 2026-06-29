@@ -18,24 +18,24 @@
   height: 0.85rem;
   border-radius: 50%;
   border: 2px solid var(--meli-honey);
-  background: var(--meli-cream, #fff8eb);
+  background: var(--meli-charcoal);
   flex-shrink: 0;
   z-index: 1;
 }
 
 .visita-timeline-item__dot--green {
-  border-color: #2d8a4e;
-  background: #e8f7ee;
+  border-color: var(--meli-status-green);
+  background: var(--meli-status-green-soft);
 }
 
 .visita-timeline-item__dot--yellow {
   border-color: var(--meli-gold);
-  background: #fff6df;
+  background: var(--meli-warning-soft);
 }
 
 .visita-timeline-item__dot--red {
-  border-color: #c0392b;
-  background: #fdecea;
+  border-color: var(--meli-alert-red);
+  background: var(--meli-alert-red-soft);
 }
 
 .visita-timeline-item__line {
@@ -54,7 +54,7 @@
 .visita-timeline-item__card {
   padding: 1.15rem 1.2rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.42);
+  background: var(--meli-surface-raised);
   border: 1px solid var(--meli-border);
   box-shadow: var(--meli-shadow-sm);
 }
@@ -109,7 +109,7 @@
 }
 
 .visita-timeline-item__status-label--green {
-  color: #2d8a4e;
+  color: var(--meli-status-green);
 }
 
 .visita-timeline-item__status-label--yellow {
@@ -117,7 +117,7 @@
 }
 
 .visita-timeline-item__status-label--red {
-  color: #c0392b;
+  color: var(--meli-alert-red);
 }
 
 .visita-timeline-item__meta {
@@ -157,7 +157,7 @@
   gap: 0.5rem;
   padding: 0.65rem 0.7rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--meli-surface-hover);
   border: 1px solid rgba(201, 162, 39, 0.12);
 }
 
@@ -221,7 +221,7 @@
 .visita-timeline-item__azioni .azioni-list__item {
   padding: 0.55rem 0.65rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--meli-surface-hover);
 }
 
 .visita-timeline-item__azioni .azioni-list__message {
@@ -272,7 +272,7 @@
   padding: 0.25rem 0.55rem;
   border-radius: var(--meli-radius-pill);
   background: rgba(91, 127, 165, 0.12);
-  color: #4a6785;
+  color: var(--meli-text-secondary);
 }
 
 @media (min-width: 640px) {

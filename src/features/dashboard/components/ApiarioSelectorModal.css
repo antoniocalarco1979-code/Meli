@@ -14,26 +14,23 @@
   width: 100%;
   min-height: var(--meli-touch-min);
   padding: var(--meli-space-md) var(--meli-space-lg);
-  border: 1px solid var(--meli-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--meli-radius-md);
-  background: var(--meli-cream-soft);
+  background: rgba(255, 255, 255, 0.03);
   text-align: left;
   cursor: pointer;
-  transition:
-    border-color 0.2s var(--meli-ease),
-    background 0.2s var(--meli-ease),
-    box-shadow 0.2s var(--meli-ease);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 .apiario-selector__item:hover {
   border-color: rgba(232, 150, 12, 0.35);
-  background: var(--meli-cream);
+  background: rgba(232, 150, 12, 0.06);
 }
 
 .apiario-selector__item--active {
-  border-color: var(--meli-honey);
-  background: var(--meli-honey-soft);
-  box-shadow: var(--meli-shadow-sm);
+  border-color: rgba(232, 150, 12, 0.45);
+  background: rgba(232, 150, 12, 0.1);
+  box-shadow: 0 0 0 3px rgba(232, 150, 12, 0.1);
 }
 
 .apiario-selector__icon {
@@ -41,7 +38,15 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--meli-honey);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--meli-radius-sm);
+  background: rgba(232, 150, 12, 0.12);
+  color: var(--meli-honey-light);
+}
+
+.apiario-selector__icon svg {
+  stroke-width: 1.75;
 }
 
 .apiario-selector__body {
@@ -60,13 +65,17 @@
 }
 
 .apiario-selector__meta {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--meli-text-muted);
 }
 
 .apiario-selector__count {
   flex-shrink: 0;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--meli-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--meli-honey-light);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(232, 150, 12, 0.1);
 }

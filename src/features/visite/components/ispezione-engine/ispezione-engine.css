@@ -12,7 +12,7 @@
 .ispezione-engine__divider {
   height: 1px;
   margin: 0 1.25rem;
-  background: rgba(61, 44, 24, 0.12);
+  background: var(--meli-border);
   flex-shrink: 0;
 }
 
@@ -46,7 +46,7 @@
   height: var(--meli-touch-min);
   border: none;
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--meli-surface-raised);
   color: var(--meli-brown);
   cursor: pointer;
   flex-shrink: 0;
@@ -120,8 +120,8 @@
   margin: 0;
   padding: 1.25rem 1rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px dashed rgba(61, 44, 24, 0.18);
+  background: var(--meli-surface-hover);
+  border: 1px dashed var(--meli-border-glass);
   text-align: center;
   font-size: 1rem;
   font-weight: 600;
@@ -139,15 +139,15 @@
   min-height: 68px;
   padding: 1rem 1.15rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--meli-surface-hover);
   border: 2px solid var(--meli-border);
   font-size: 1.0625rem;
   letter-spacing: 0.05em;
 }
 
 .ispezione-step .visit-choices__status--selected {
-  border-color: rgba(232, 150, 12, 0.45);
-  background: rgba(255, 179, 71, 0.16);
+  border-color: var(--meli-border-accent);
+  background: var(--meli-amber-soft);
   box-shadow: var(--meli-shadow-sm);
 }
 
@@ -161,17 +161,17 @@
   padding: 0.85rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
   background: linear-gradient(
     to top,
-    var(--meli-cream) 78%,
-    rgba(255, 248, 231, 0.94) 92%,
+    var(--meli-charcoal) 78%,
+    var(--meli-charcoal-soft) 92%,
     transparent 100%
   );
-  border-top: 1px solid rgba(61, 44, 24, 0.08);
+  border-top: 1px solid var(--meli-border);
 }
 
 .ispezione-footer__progress {
   height: 8px;
   border-radius: var(--meli-radius-pill);
-  background: rgba(61, 44, 24, 0.1);
+  background: var(--meli-surface-active);
   overflow: hidden;
 }
 
@@ -198,7 +198,7 @@
   border: none;
   border-radius: var(--meli-radius-xl);
   background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey) 50%, var(--meli-gold));
-  color: #fff;
+  color: var(--meli-text-inverse);
   font-family: var(--meli-font-display);
   font-size: 1.125rem;
   font-weight: 800;
@@ -241,14 +241,14 @@
   min-height: 68px;
   padding: 1rem 1.15rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--meli-surface-hover);
   border: 2px solid var(--meli-border);
   font-size: 1.0625rem;
 }
 
 .ispezione-step .visit-choices__radio--selected {
-  border-color: rgba(232, 150, 12, 0.45);
-  background: rgba(255, 179, 71, 0.16);
+  border-color: var(--meli-border-accent);
+  background: var(--meli-amber-soft);
   box-shadow: var(--meli-shadow-sm);
 }
 
@@ -272,7 +272,7 @@
   padding: 1rem 1.1rem;
   border: 2px solid var(--meli-border);
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font);
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -282,8 +282,8 @@
 
 .ispezione-note__field:focus {
   outline: none;
-  border-color: rgba(232, 150, 12, 0.45);
-  box-shadow: 0 0 0 3px rgba(232, 150, 12, 0.15);
+  border-color: var(--meli-border-accent);
+  box-shadow: 0 0 0 3px var(--meli-honey-soft);
 }
 
 .ispezione-step--salva {
@@ -305,7 +305,7 @@
   border: none;
   border-radius: var(--meli-radius-xl);
   background: linear-gradient(135deg, var(--meli-map-green) 0%, var(--meli-sage-dark) 100%);
-  color: #fff;
+  color: var(--meli-text-inverse);
   font-family: var(--meli-font-display);
   font-size: 1.125rem;
   font-weight: 800;
@@ -325,7 +325,7 @@
   margin: 0 0 0.75rem;
   padding: 0.75rem 1rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(229, 57, 53, 0.12);
+  background: var(--meli-alert-red-soft);
   color: var(--meli-hive-critical);
   font-weight: 600;
   text-align: center;
@@ -361,11 +361,11 @@
 
 .ispezione-dialog__btn--primary {
   background: linear-gradient(135deg, var(--meli-map-green), var(--meli-sage-dark));
-  color: #fff;
+  color: var(--meli-text-inverse);
 }
 
 .ispezione-dialog__btn--ghost {
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--meli-surface-strong);
   border-color: var(--meli-border);
   color: var(--meli-brown);
 }
@@ -404,7 +404,7 @@
   padding: 0.85rem 1rem;
   border: 2px solid var(--meli-border);
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font);
   font-size: 1.125rem;
   color: var(--meli-brown);
@@ -412,8 +412,8 @@
 
 .ispezione-field__number:focus {
   outline: none;
-  border-color: rgba(232, 150, 12, 0.45);
-  box-shadow: 0 0 0 3px rgba(232, 150, 12, 0.15);
+  border-color: var(--meli-border-accent);
+  box-shadow: 0 0 0 3px var(--meli-honey-soft);
 }
 
 /* Telaini */
@@ -426,8 +426,8 @@
 .ispezione-telaino-card {
   padding: 1.15rem 1.1rem 1.25rem;
   border-radius: var(--meli-radius-xl);
-  background: rgba(255, 255, 255, 0.72);
-  border: 2px solid rgba(61, 44, 24, 0.12);
+  background: var(--meli-surface-raised);
+  border: 2px solid var(--meli-border);
   box-shadow: var(--meli-shadow-sm);
 }
 
@@ -438,7 +438,7 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(61, 44, 24, 0.1);
+  border-bottom: 1px solid var(--meli-border);
 }
 
 .ispezione-telaino-card__title {
@@ -458,7 +458,7 @@
   height: var(--meli-touch-min);
   border: none;
   border-radius: var(--meli-radius-pill);
-  background: rgba(229, 57, 53, 0.1);
+  background: var(--meli-alert-red-soft);
   color: var(--meli-hive-critical);
   cursor: pointer;
 }
@@ -493,7 +493,7 @@
   margin-top: 0.5rem;
   border: 2px dashed rgba(232, 150, 12, 0.45);
   border-radius: var(--meli-radius-xl);
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font-display);
   font-size: 1.0625rem;
   font-weight: 800;
@@ -508,8 +508,8 @@
   margin: 0 0 1.5rem;
   padding: 1rem 1.1rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.72);
-  border: 2px solid rgba(61, 44, 24, 0.1);
+  background: var(--meli-surface-raised);
+  border: 2px solid var(--meli-border);
 }
 
 .ispezione-riepilogo__row {
@@ -518,7 +518,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(61, 44, 24, 0.08);
+  border-bottom: 1px solid var(--meli-border);
 }
 
 .ispezione-riepilogo__row:last-child {
@@ -544,7 +544,7 @@
 .ispezione-riepilogo__row--highlight {
   margin-top: 0.25rem;
   padding-top: 0.85rem;
-  border-top: 2px solid rgba(232, 150, 12, 0.2);
+  border-top: 2px solid var(--meli-border-accent);
 }
 
 .ispezione-step--salva .ispezione-riepilogo {

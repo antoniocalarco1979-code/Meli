@@ -43,7 +43,7 @@
   left: 0.85rem;
   padding: 0.4rem 0.85rem;
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--meli-glass);
   backdrop-filter: blur(8px);
   font-size: 0.9375rem;
   font-weight: 800;
@@ -114,7 +114,7 @@
   padding: 0.75rem 1rem;
   border-radius: var(--meli-radius-lg);
   background: linear-gradient(135deg, var(--meli-honey), var(--meli-gold));
-  color: #fff;
+  color: var(--meli-text-inverse);
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.06em;

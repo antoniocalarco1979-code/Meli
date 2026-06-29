@@ -109,7 +109,7 @@
 }
 
 .apiario-card__menu-item--danger:hover {
-  background: rgba(229, 57, 53, 0.1);
+  background: var(--meli-alert-red-soft);
   color: var(--meli-hive-critical);
 }
 

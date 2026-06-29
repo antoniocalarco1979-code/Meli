@@ -35,7 +35,7 @@
   padding: 0.65rem 0.75rem;
   border-radius: var(--meli-radius-md);
   border: 1px solid var(--meli-border);
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--meli-surface-raised);
   font-size: 0.8125rem;
   font-weight: 700;
   color: var(--meli-text-secondary);

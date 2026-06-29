@@ -24,7 +24,7 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: var(--meli-radius-md);
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.22) 0%, rgba(232, 150, 12, 0.12) 100%);
+  background: linear-gradient(135deg, var(--meli-honey-soft) 0%, var(--meli-amber-soft) 100%);
   color: var(--meli-honey-dark);
   flex-shrink: 0;
 }
@@ -52,7 +52,7 @@
   min-width: 2rem;
   padding: 0.2rem 0.6rem;
   border-radius: var(--meli-radius-pill);
-  background: rgba(201, 162, 39, 0.15);
+  background: var(--meli-honey-soft);
   font-size: 0.875rem;
   font-weight: 800;
   color: var(--meli-honey-dark);

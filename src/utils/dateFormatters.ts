@@ -30,6 +30,17 @@ export function formatVisitaDateShort(timestamp: number): string {
   })
 }
 
+export function formatDuration(seconds: number): string {
+  const total = Math.max(0, Math.round(seconds))
+  const hours = Math.floor(total / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  const secs = total % 60
+
+  if (hours > 0) return `${hours}h ${minutes}m`
+  if (minutes > 0) return `${minutes} min${secs > 0 ? ` ${secs}s` : ''}`
+  return `${secs}s`
+}
+
 export function formatDateTime(timestamp: number): string {
   return new Date(timestamp).toLocaleString('it-IT')
 }

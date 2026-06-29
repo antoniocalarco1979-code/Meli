@@ -18,7 +18,7 @@
 export const DATABASE_NAME = 'MeliDatabase'
 
 /** Versione schema — incrementare ad ogni migrazione breaking. */
-export const DATABASE_VERSION = 8
+export const DATABASE_VERSION = 9
 
 /** Definizione store Dexie: tabella → indici indicizzati. */
 export const STORE_SCHEMA = {
@@ -29,6 +29,7 @@ export const STORE_SCHEMA = {
   foto: 'id, visitaId, arniaId, apiarioId, data',
   produzione: 'id, arniaId, data, tipo, [arniaId+data]',
   trattamenti: 'id, arniaId, data, scadenza, [arniaId+data]',
+  giri: 'id, apiarioId, stato, startedAt, completedAt, [apiarioId+startedAt], [apiarioId+stato]',
 } as const
 
 export type StoreName = keyof typeof STORE_SCHEMA
@@ -42,4 +43,5 @@ export const TABLES = {
   FOTO: 'foto',
   PRODUZIONE: 'produzione',
   TRATTAMENTI: 'trattamenti',
+  GIRI: 'giri',
 } as const

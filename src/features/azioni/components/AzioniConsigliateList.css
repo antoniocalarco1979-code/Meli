@@ -22,7 +22,7 @@
   gap: 0.75rem;
   padding: 0.85rem 0.95rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.48);
+  background: var(--meli-surface-raised);
   border: 1px solid var(--meli-border);
 }
 
@@ -36,12 +36,12 @@
 
 .azioni-list__item--urgente .azioni-list__dot {
   background: var(--meli-hive-critical);
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
+  box-shadow: 0 0 0 3px var(--meli-alert-red-soft);
 }
 
 .azioni-list__item--importante .azioni-list__dot {
   background: var(--meli-hive-warning);
-  box-shadow: 0 0 0 3px rgba(251, 140, 0, 0.18);
+  box-shadow: 0 0 0 3px var(--meli-warning-soft);
 }
 
 .azioni-list__item--programmare .azioni-list__dot {
@@ -66,13 +66,13 @@
 }
 
 .azioni-list__badge--urgente {
-  background: rgba(229, 57, 53, 0.14);
-  color: #c62828;
+  background: var(--meli-alert-red-soft);
+  color: var(--meli-alert-red);
 }
 
 .azioni-list__badge--importante {
-  background: rgba(251, 140, 0, 0.16);
-  color: #e65100;
+  background: var(--meli-warning-soft);
+  color: var(--meli-warning);
 }
 
 .azioni-list__badge--programmare {

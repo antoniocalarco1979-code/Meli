@@ -1,342 +1,452 @@
-# MELI — UI Guidelines
+# MELI — UI Guidelines · Design System 2.0
 
-**Implementazione:** `src/theme/tokens.css` · `src/theme/global.css` · `src/components/ui/`  
-**Principio guida:** premium, caldo, naturale — miele, Calabria, campo, iPadOS  
-**Ultimo aggiornamento:** giugno 2026
+**Documento ufficiale del Design System MELI**  
+**Versione:** 2.0 · giugno 2026  
+**Implementazione:** `src/theme/tokens.css` · `src/theme/global.css` · `src/components/ui/`
+
+> Da questo momento **ogni nuova schermata** e **ogni modifica visiva** deve rispettare questo documento.  
+> In caso di conflitto con guide precedenti, **UI_GUIDELINES.md prevale**.
 
 ---
 
 ## 1. Identità visiva
 
-MELI comunica **professionalità apistica** senza cold tech aesthetic. L'utente deve percepire:
-- calore (crema, miele, oro),
-- chiarezza operativa (contrasto, gerarchia netta),
-- fiducia (vetro, ombre morbide, motion controllato).
+MELI UI 2.0 è **moderno, premium, Apple-like e molto pulito**.
 
-**Brand partner:** RANU / Aspromonte — watermark dashboard (`RanuWatermark.tsx`), non invasivo, opacità ~20%.
+| Principio | Descrizione |
+|-----------|-------------|
+| **Dark charcoal** | Sfondo scuro caldo — riduce affaticamento visivo in campo e valorizza gli accenti |
+| **Miele & ambra** | Identità apistica; CTA e focus attivo |
+| **Verde stato** | Conferme, salute, arnie visitate |
+| **Rosso allerta** | Urgenze, errori, criticità sanitarie |
+| **Pulizia** | Un obiettivo per schermata; gerarchia netta; zero decorazione superflua |
+| **Premium** | Glass scuro, ombre profonde, motion controllato, tipografia di sistema |
 
-**Asset brand:**
-
-| Asset | Percorso sorgente | Runtime |
-|-------|-------------------|---------|
-| Logo MELI | `assets/brand/meli-logo.svg` | bundler |
-| Logo RANU | `assets/brand/ranu-logo.svg` | `/ranu-logo.svg` |
-| Favicon | `public/favicon.svg` | static |
+**Brand partner:** RANU / Aspromonte — watermark discreto in dashboard.
 
 ---
 
 ## 2. Palette colori
 
-Definita in `src/theme/tokens.css`. **Usare sempre token CSS — mai hex hardcoded nei componenti feature.**
+Definita in `src/theme/tokens.css`. **Usare sempre token CSS — mai hex hardcoded nei componenti.**
 
-### 2.1 Primari
+### 2.1 Foundation — charcoal
 
-| Nome | Token | Hex | Uso |
-|------|-------|-----|-----|
-| Miele | `--meli-honey` | `#e8960c` | CTA primarie, accenti, icone attive |
-| Miele chiaro | `--meli-honey-light` | `#ffb347` | Gradienti, hover |
-| Oro | `--meli-gold` | `#c9a227` | Highlight, badge |
-| Oro scuro | `--meli-gold-dark` | `#9a7b1a` | Testo enfatizzato |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--meli-charcoal` | `#1c1c1e` | Sfondo app, body |
+| `--meli-charcoal-soft` | `#2c2c2e` | Card, pannelli secondari |
+| `--meli-charcoal-elevated` | `#3a3a3c` | Input, campi form, aree rialzate |
+| `--meli-charcoal-muted` | `#48484a` | Skeleton, separatori forti |
 
-### 2.2 Neutri caldi
+### 2.2 Accents — miele & ambra
 
-| Nome | Token | Hex | Uso |
-|------|-------|-----|-----|
-| Crema | `--meli-cream` | `#fff8e7` | Sfondo app |
-| Crema soft | `--meli-cream-soft` | `#faf3e0` | Sfondo secondario |
-| Marrone | `--meli-brown` | `#3d2c18` | Testo principale |
-| Marrone soft | `--meli-brown-soft` | `#5c4528` | Testo secondario |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--meli-honey` | `#e8960c` | CTA primarie, progress, link attivi |
+| `--meli-honey-light` | `#ffb347` | Hover, gradienti, testo accento |
+| `--meli-honey-soft` | `rgba(232,150,12,0.18)` | Background selezione, focus ring |
+| `--meli-amber` | `#f5a623` | Highlight secondario, badge |
+| `--meli-amber-soft` | `rgba(245,166,35,0.16)` | Badge ambra, stati informativi |
 
-### 2.3 Semantici
+### 2.3 Semantic — stato & allerta
 
-| Nome | Token | Uso |
-|------|-------|-----|
-| Salvia | `--meli-sage` | Stati OK, natura, empty state |
-| Verde mappa | `--meli-map-green` | Mappa apiario, bordi campo |
-| Warning | `--meli-hive-warning` | Arnie da controllare |
-| Critical | `--meli-hive-critical` | Urgenze sanitarie |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--meli-status-green` | `#34c759` | Salute OK, ✓ visitato, successo |
+| `--meli-status-green-soft` | `rgba(52,199,89,0.16)` | Badge verde, sfondo positivo |
+| `--meli-alert-red` | `#ff453a` | Errori, urgenze, pericolo |
+| `--meli-alert-red-soft` | `rgba(255,69,58,0.16)` | Toast errore, badge critico |
+| `--meli-warning` | `#ff9f0a` | Attenzione, controllo consigliato |
 
-### 2.4 Semaforo arnia / salute
+### 2.4 Testo (su sfondo scuro)
 
-| Token | Hex | Livello |
-|-------|-----|---------|
-| `--meli-hive-healthy` | `#43a047` | Salute ≥ 70 |
-| `--meli-hive-warning` | `#fb8c00` | Salute 40–69 |
-| `--meli-hive-critical` | `#e53935` | Salute < 40 |
-| `--meli-hive-inactive` | `#9e9e9e` | Arnia inattiva/morta |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--meli-text` | `#f5f5f7` | Titoli, body principale |
+| `--meli-text-secondary` | `#aeaeb2` | Sottotitoli, label |
+| `--meli-text-muted` | `#8e8e93` | Hint, metadata, caption |
+| `--meli-text-inverse` | `#1c1c1e` | Testo su CTA miele |
 
-Usati in `SaluteSemaforo`, `ArniaCard`, mappa dashboard mock.
+### 2.5 Superfici & overlay
+
+| Token | Uso |
+|-------|-----|
+| `--meli-surface-hover` | Hover righe, link |
+| `--meli-surface-active` | Stato pressed, card attiva |
+| `--meli-surface-raised` | Sfondo riga/card leggera |
+| `--meli-surface-strong` | Button secondary, badge default |
+| `--meli-overlay` | Backdrop modal/dialog |
+| `--meli-glass` / `--meli-glass-strong` | Card vetro, pannelli |
+
+### 2.6 Regole colore
+
+- Contrasto minimo **4.5:1** per body text; **7:1** per etichette critiche outdoor.
+- Stati: **icona + testo + colore** — mai solo colore.
+- Legacy `--meli-brown`, `--meli-cream` mappati ai token 2.0 per compatibilità.
 
 ---
 
 ## 3. Tipografia
 
-Font di sistema — **nessun web font custom** (performance + natività iPadOS):
+Font di sistema Apple-like — **nessun web font custom**:
 
 ```css
 --meli-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', …
 --meli-font-display: … 'SF Pro Display', …
+--meli-font-mono: ui-monospace, 'SF Mono', Menlo, monospace
 ```
 
-| Elemento | Size | Weight | Note |
-|----------|------|--------|------|
-| H1 pagina | 1.75–2.25 rem | 700 | `letter-spacing: -0.035em`, display font |
-| H2 sezione | 1.125 rem | 700 | Display font |
-| Body | 17 px | 400 | Line-height 1.47 |
-| Label | 0.6875 rem | 600 | Uppercase, classe `.meli-label` |
-| KPI value | 1.5 rem | 700 | Display font |
-| Hero apiario | 2+ rem | 700 | Uppercase nome apiario |
+| Livello | Font | Peso | Size | Uso |
+|---------|------|------|------|-----|
+| **Large Title** | Display | 700 | 28–34px | Hero, titolo schermata |
+| **Title 1** | Display | 700 | 22–26px | Sezioni principali |
+| **Title 2** | Display | 700 | 18–20px | Card title, modal title |
+| **Headline** | Text | 600 | 17px | Enfasi inline |
+| **Body** | Text | 400 | 17px | Contenuto, note |
+| **Callout** | Text | 400 | 16px | Descrizioni secondarie |
+| **Subhead** | Text | 600 | 15px | Label form |
+| **Footnote** | Text | 400 | 13px | Hint, timestamp |
+| **Caption** | Text | 600 | 12px | Badge, metadata uppercase |
 
-**Regola:** testo principale sempre `--meli-brown`, mai `#000` puro.
-
----
-
-## 4. Spaziatura e layout
-
-### 4.1 Token layout
-
-| Token | Valore | Uso |
-|-------|--------|-----|
-| `--meli-sidebar-width` | 256 px | Sidebar desktop |
-| `--meli-sidebar-collapsed` | 76 px | Sidebar icone-only |
-| `--meli-header-height` | 64 px | Header app |
-| `--meli-content-max` | 1080 px | Max-width contenuti |
-| `--meli-touch-min` | 50 px | **Minimo touch target iPad/guanti** |
-
-### 4.2 Padding pagina
-
-| Breakpoint | Padding |
-|------------|---------|
-| Desktop (≥ 1024 px) | `1.75rem 2rem` |
-| Mobile (< 768 px) | `1.25rem 1rem` |
-| iPad (768–1024 px) | Intermedio, modal fullscreen con padding generoso |
-
-Gap griglie card: `1.25rem` – `1.65rem`.
-
-### 4.3 Breakpoints
-
-| Range | Comportamento |
-|-------|---------------|
-| < 768 px | Stack mobile, sidebar orizzontale |
-| 768–1024 px | **Range iPad primario** — giro hero, modal visita |
-| ≥ 1024 px | Sidebar collapsed, griglia arnie 3+ colonne |
-| ≥ 1400 px | Griglia arnie espansa |
-
-Viewport height: `100dvh` per evitare jump barra Safari iOS.
-
-Scroll: `-webkit-overflow-scrolling: touch` su regioni scrollabili.
+**Regole:**
+- Letter-spacing negativo su titoli (`-0.025em` … `-0.035em`).
+- Label form: uppercase opzionale con tracking `0.06em` (classe `.meli-label`).
+- Numero arnia: sempre **Display 800**, mai ridotto sotto 18px.
 
 ---
 
-## 5. Border radius
+## 4. Pulsanti
 
-Angoli generosi — identità MELI, mai card squadrate.
+Componente: `Button` · classi `ui-button`
 
-| Token | Valore | Uso |
-|-------|--------|-----|
-| `--meli-radius-sm` | 18 px | Input, icone |
-| `--meli-radius-md` | 24 px | Card interne |
-| `--meli-radius-lg` | 30 px | Card standard |
-| `--meli-radius-xl` | 40 px | Card hero, mappe |
-| `--meli-radius-pill` | 999 px | Button, badge, chip |
+### Varianti
+
+| Variante | Classe | Aspetto | Uso |
+|----------|--------|---------|-----|
+| **Primary** | `--primary` | Gradiente miele→ambra, testo scuro | SALVA, INIZIA GIRO, azione principale |
+| **Secondary** | `--secondary` | `--meli-surface-strong`, bordo glass | Annulla, azioni secondarie |
+| **Ghost** | `--ghost` | Trasparente, testo muted | Link-style, toolbar |
+| **Danger** | `--danger` | Gradiente rosso allerta | Elimina, azioni distruttive |
+
+### Dimensioni
+
+| Size | Min-height | Uso |
+|------|------------|-----|
+| `sm` | 40px | Inline, toolbar |
+| `md` | 50px | Default form |
+| `lg` | 56px | CTA principali mobile |
+| `full` | — | Width 100% |
+
+### Comportamento
+
+- Border-radius: `--meli-radius-pill`
+- Active: `scale(0.98)`
+- Disabled: opacity `0.45`
+- Ombra primary: `--meli-shadow-button`
+- **Un solo primary per schermata**
 
 ---
 
-## 6. Ombre
+## 5. Card
 
-```css
---meli-shadow-sm      /* elementi leggeri */
---meli-shadow-md      /* card standard */
---meli-shadow-lg      /* card hover, modali */
---meli-shadow-button  /* CTA primari */
+Componenti: `Card` · classi `ui-card` · superficie `.meli-glass`
+
+### Struttura
+
+```
+┌─────────────────────────────┐
+│  [Badge]          [Action]  │  ← header opzionale
+│  Title                      │
+│  Subtitle / metadata        │
+│  ─────────────────────────  │
+│  Content                    │
+│  [CTA]                      │  ← footer opzionale
+└─────────────────────────────┘
 ```
 
-**Regola:** ombre sempre tono marrone/miele a bassa opacità. Mai ombre nere dure.
+### Stile
 
-Hover card standard: `translateY(-4px)` + `--meli-shadow-lg`.
+| Proprietà | Valore |
+|-----------|--------|
+| Background | `--meli-charcoal-soft` o `.meli-glass` |
+| Border | `1px solid --meli-border` |
+| Radius | `--meli-radius-xl` (24px) |
+| Shadow | `--meli-shadow-sm` … `--meli-shadow-md` |
+| Padding | `sm` 1rem · `md` 1.35rem · `lg` 1.75rem |
+
+### Stati
+
+- **Default:** bordo `--meli-border`
+- **Hover:** `--meli-surface-hover` (liste cliccabili)
+- **Active/Selected:** bordo `--meli-border-accent` + glow `--meli-honey-soft`
+- **Done:** check verde `--meli-status-green` + opacity 0.9
 
 ---
 
-## 7. Glassmorphism
+## 6. Menu laterale (Sidebar)
 
-Pattern dominante dell'app. Classi globali in `global.css`:
+Componente: `Sidebar` · classe `.sidebar`
 
-```html
-<div class="meli-glass">…</div>
-<div class="meli-glass meli-glass--deep">…</div>
+| Elemento | Stile |
+|----------|-------|
+| Background | `--meli-glass-sidebar` + blur heavy |
+| Larghezza | 256px (76px collapsed tablet) |
+| Logo | 52×52px, gradiente miele, radius md |
+| Link default | `--meli-text-secondary`, radius md |
+| Link hover | `--meli-surface-hover`, translateX 2px |
+| Link active | `--meli-honey-soft`, testo `--meli-honey-light`, bordo accent |
+| Footer | Separatore `--meli-border` |
+
+**Mobile (<1024px):** sidebar nascosta; navigazione via bottom nav.
+
+---
+
+## 7. Navbar
+
+### Header app (`.app-header`)
+
+| Elemento | Stile |
+|----------|-------|
+| Altezza | `--meli-header-height` (64px) |
+| Background | `.meli-glass` o trasparente su charcoal |
+| Titolo | Display 700, `--meli-text` |
+| Sottotitolo | 13px, `--meli-text-muted` |
+| Icon button | 44×44px, radius sm, hover `--meli-honey-soft` |
+
+### Bottom nav (`.bottom-nav`)
+
+| Elemento | Stile |
+|----------|-------|
+| Altezza | 72px + safe area |
+| Background | `--meli-glass-sidebar` |
+| Item default | `--meli-text-muted` |
+| Item active | Label `--meli-honey-light`, emoji scale 1.08 |
+| Border top | `--meli-border` |
+
+**Visibilità:** bottom nav solo mobile/tablet (<1025px).
+
+---
+
+## 8. Dialog
+
+Componenti: `Modal` · `ConfirmDialog`
+
+### Modal (`.ui-modal`)
+
+| Proprietà | Valore |
+|-----------|--------|
+| Overlay | `--meli-overlay` + blur 8px |
+| Dialog max-width | 520px |
+| Radius | `--meli-radius-xl` |
+| Background dialog | `.meli-glass--deep` |
+| Titolo | Display 700, 20px |
+| Close button | 40px circle, hover `--meli-honey-soft` |
+| Body padding | 1.25–1.5rem |
+
+### Confirm dialog (`.ui-confirm`)
+
+| Proprietà | Valore |
+|-----------|--------|
+| Max-width | 400px |
+| Allineamento | Centrato |
+| Azioni | Primary + Ghost, gap 0.75rem |
+
+**Regole:** titolo chiaro; messaggio max 2 righe; azione distruttiva = variant danger.
+
+---
+
+## 9. Form
+
+Componenti: `Input` · `Textarea`
+
+| Elemento | Stile |
+|----------|-------|
+| Label | 13px, 600, `--meli-text-secondary` |
+| Field bg | `--meli-charcoal-elevated` |
+| Field border | `--meli-border-glass` |
+| Field radius | `--meli-radius-md` |
+| Min-height input | `--meli-touch-min` (50px) |
+| Focus | Bordo `--meli-border-accent` + ring `--meli-honey-soft` |
+| Error | Bordo `--meli-alert-red`, testo `--meli-alert-red` |
+| Hint | 12px, `--meli-text-muted` |
+
+### Layout form
+
+- Gap label→field: `--meli-space-xs`
+- Gap tra campi: `--meli-space-lg`
+- CTA submit: full-width, size lg, variant primary
+
+---
+
+## 10. Badge
+
+Componente: `Badge` · classe `ui-badge`
+
+| Variante | Background | Testo | Uso |
+|----------|------------|-------|-----|
+| `default` | `--meli-surface-strong` | secondary | Neutro |
+| `honey` | `--meli-honey-soft` | `--meli-honey-light` | In evidenza |
+| `gold` | `--meli-amber-soft` | `--meli-amber-light` | Premium, oro |
+| `sage` | `--meli-status-green-soft` | `--meli-status-green-light` | OK, attivo |
+| `danger` | `--meli-alert-red-soft` | `--meli-alert-red-light` | Critico |
+
+- Radius: `--meli-radius-pill`
+- Font: 12px, weight 700
+- Padding: `0.25rem 0.65rem`
+
+---
+
+## 11. Notifiche (Toast)
+
+Componente: `ToastContainer` · classe `ui-toast-stack`
+
+| Tipo | Background | Bordo | Icona |
+|------|------------|-------|-------|
+| **Success** | `--meli-glass-strong` | `--meli-border-glass` | Verde gradient |
+| **Error** | `--meli-alert-red-soft` | rosso 25% | Rosso gradient |
+| **Info** | `--meli-honey-soft` | miele 20% | Miele gradient |
+
+- Posizione: centro schermo (overlay non bloccante)
+- Radius: `--meli-radius-xl`
+- Durata consigliata: 3–4s
+- Messaggio: Display 700, 16px, `--meli-text`
+
+---
+
+## 12. Timeline
+
+Componenti: `TimelineCard` · `VisitaTimelineItem`
+
+### Struttura card
+
+```
+● ─── Data · Ora
+│     Stato · Regina · Covata
+│     Azioni · Note
+│     [Foto thumbnails]
 ```
 
-Proprietà chiave:
-- `backdrop-filter: blur(40px) saturate(1.8)`
-- bordo bianco semitrasparente,
-- gradiente highlight superiore (`::before`),
-- sfondo `rgba(255, 255, 255, 0.55–0.72)`.
+| Elemento | Stile |
+|----------|-------|
+| Container | `.meli-glass`, radius xl, padding lg |
+| Linea verticale | 2px, `--meli-border` o `--meli-honey` se attiva |
+| Dot attivo | `--meli-honey`, glow soft |
+| Dot passato | `--meli-status-green` |
+| Data | Display 700, `--meli-text` |
+| Metadata | Caption, `--meli-text-muted` |
+| Foto | Radius sm, bordo `--meli-border` |
 
-Token: `--meli-glass`, `--meli-glass-strong`, `--meli-glass-sidebar`.
+### Animazione
 
-**Quando usare `--deep`:** card hero, modali, sezioni con contenuto denso sopra sfondo crema.
-
----
-
-## 8. Componenti UI
-
-Catalogo ufficiale: `src/components/ui/`. **Non introdurre Bootstrap, Tailwind o librerie UI esterne.**
-
-| Componente | Varianti / note | Quando usarlo |
-|------------|-----------------|---------------|
-| `Button` | `primary`, `secondary`, `ghost`, `danger`; `sm/md/lg` | Tutte le azioni |
-| `Card` | Glass default | Contenitori sezione |
-| `Section` | Titolo + body | Blocchi feature |
-| `Input` / `Textarea` | — | Form apiario, visita |
-| `Badge` | Pill | Stati, contatori |
-| `Modal` | default, **`fullscreen`** | Visite in campo |
-| `ConfirmDialog` | — | Delete apiario/arnia |
-| `PageTitle` | — | Intestazione pagine |
-| `EmptyState` | Icona 40 px | Moduli placeholder |
-| `Loading` | `sm/md/lg` | Suspense lazy routes |
-| `SuccessToast` | — | Post-salvataggio visita |
-| `FloatingActionButton` | — | Nuova visita scheda arnia |
-
-Barrel export: `src/components/ui/index.ts`.
-
-### 8.1 Button — gerarchia azioni
-
-| Variante | Uso tipico |
-|----------|------------|
-| `primary` | Inizia Giro, Salva visita, Inizia Giornata |
-| `secondary` | Esporta Report, Azioni secondarie |
-| `ghost` | Chiudi, Annulla, navigazione soft |
-| `danger` | Elimina apiario |
-
-Tap feedback: `scale: 0.97–0.98` via Framer Motion.
-
-### 8.2 Modal fullscreen — visita
-
-Variant `fullscreen` su `Modal`:
-- occupa viewport (`100dvh`),
-- padding safe-area,
-- step indicator in alto,
-- CTA Salva sempre visibile in fondo.
-
-**Non usare modal default** per flussi campo — troppo piccolo su iPad con guanti.
+- Entrata item: fade + slide Y 10px, 350ms, stagger 40ms
 
 ---
 
-## 9. Icone
+## 13. Grafici
 
-**Lucide React** — stroke `1.65`.
+Componente: `ProduzioneChart` e futuri chart
 
-| Contesto | Size |
-|----------|------|
-| Sidebar | 24 px |
-| Header actions | 22 px |
-| Card / KPI | 20–26 px |
-| Empty state | 40 px |
+| Elemento | Stile |
+|----------|-------|
+| Container | Card glass, padding lg |
+| Asse / griglia | `--meli-border`, opacity 0.5 |
+| Barre / linee | `--meli-honey` → `--meli-amber` gradient |
+| Valori positivi | `--meli-status-green` |
+| Valori negativi / alert | `--meli-alert-red` |
+| Label assi | Caption, `--meli-text-muted` |
+| Tooltip | `--meli-charcoal-elevated`, radius md, shadow lg |
+| Area fill | `--meli-honey-soft` |
 
-Mapping sidebar (`config.ts`): Dashboard, Apiari (MapPin), Arnie (Hexagon), Visite (CalendarDays), Regine (Crown), Trattamenti (Shield), Produzione (Droplets), Magazzino (Package), Report (BarChart3).
-
----
-
-## 10. Animazioni
-
-**Framer Motion** — easing brand:
-
-```typescript
-transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-```
-
-Token CSS: `--meli-ease`, `--meli-ease-out`.
-
-| Pattern | Valore |
-|---------|--------|
-| Page enter | opacity 0→1, 400 ms |
-| Card hover | `y: -4`, shadow lg |
-| Button tap | `scale: 0.97–0.98` |
-| Stagger children | delay 0.05–0.08 s |
-| Health ring | animazione score su `HealthCard` |
-
-**Evitare:** animazioni pesanti su liste lunghe (28+ arnie). Preferire transizioni sul solo step attivo del giro.
+**Regole:** max 2 colori dati per grafico; legenda sempre visibile; numeri in `--meli-font-mono` opzionale.
 
 ---
 
-## 11. Pattern schermata per feature
+## 14. Icone
 
-### 11.1 Dashboard
+Barrel: `src/theme/icons.ts` — **Lucide React**
 
-- Watermark RANU centrale, z-index 0, `pointer-events: none`.
-- KPI row con glass card.
-- **INIZIA GIORNATA** — bottone hero centrato, size lg.
-- Mappa e meteo — card xl radius.
+| Regola | Valore |
+|--------|--------|
+| Stroke width | 1.75 – 2 |
+| Size inline | 18 – 20px |
+| Size button | 22 – 24px |
+| Size hero | 26 – 28px |
+| Colore default | `--meli-text-secondary` |
+| Colore attivo | `--meli-honey-light` |
+| Colore success | `--meli-status-green` |
+| Colore danger | `--meli-alert-red` |
 
-### 11.2 Giro apiario
+**Emoji:** consentite in empty state e bottom nav (max 1 per blocco). Non mischiare emoji + Lucide nello stesso controllo.
 
-- Hero uppercase nome apiario + emoji 🐝.
-- Lista ordinata `<ol>` — un solo item espanso.
-- Row compatta: `🐝 ARNIA N` + ✓ se completata.
-- Card espansa: semaforo stato, data relativa, CTA **[VISITA]** full-width.
-
-### 11.3 Scheda arnia premium
-
-Classe wrapper: `.arnia-premium`. Stack verticale card glass:
-- Header con copertina e badge stato,
-- Health ring animato,
-- Sezioni con titolo `.meli-label`,
-- FAB fisso bottom-right (non coprire contenuto — padding-bottom su scroll).
-
-### 11.4 Placeholder moduli
-
-`FeaturePage` + `EmptyState` con icona modulo e testo "Sezione in sviluppo". Mantenere coerenza glass — non lasciare pagine bianche.
+**Import:** sempre da `theme/icons`, mai direttamente da `lucide-react` nei componenti feature.
 
 ---
 
-## 12. Accessibilità e uso in campo
+## 15. Spacing & layout
 
-| Requisito | Implementazione |
-|-----------|-----------------|
-| Touch ≥ 50 px | `--meli-touch-min`, `ArniaCard`, bottoni lg |
-| Contrasto sole | Testo marrone su crema, semafori saturi |
-| Guanti | No gesture complesse, no swipe obbligatorio |
-| Safe area iPad | `env(safe-area-inset-*)` in `MainLayout` |
-| Focus visibile | Mantenere outline su input form |
+| Token | Valore |
+|-------|--------|
+| `--meli-space-xs` | 0.5rem |
+| `--meli-space-sm` | 0.75rem |
+| `--meli-space-md` | 1rem |
+| `--meli-space-lg` | 1.35rem |
+| `--meli-space-xl` | 1.65rem |
+| `--meli-space-2xl` | 2rem |
+| `--meli-content-max` | 1080px |
 
-**Futuro (FUTURE_IDEAS):** modalità alto contrasto sole, haptic feedback su Capacitor.
-
----
-
-## 13. Do / Don't
-
-### ✅ Do
-
-- Usare token CSS per colori, radius, ombre.
-- Riutilizzare componenti `src/components/ui/`.
-- Testare su iPad 768×1024 e 1024×768 prima di merge UI.
-- Mantenere logica business nei services, non nei componenti UI.
-- Usare `PageTitle` + `Section` per nuove pagine feature.
-
-### ❌ Don't
-
-- Introdurre font web pesanti o librerie UI esterne.
-- Usare `#000` per testo o ombre nere pure.
-- Angoli < 12 px su card.
-- Modal piccolo per flussi visita.
-- Hardcodare colori semaforo — usare token `--meli-hive-*`.
-- Duplicare stili glass — estendere `.meli-glass`.
+- Padding schermata: min 1.25rem mobile, 1.5–2rem tablet
+- Gap sezioni: min `--meli-space-xl`
+- Touch target: min `--meli-touch-min` (50px)
 
 ---
 
-## 14. Checklist nuova feature UI
+## 16. Motion
 
-Prima di aprire PR con UI nuova, verificare:
+| Tipo | Durata | Easing |
+|------|--------|--------|
+| Tap feedback | 150ms | ease |
+| Transizione UI | 200–280ms | `--meli-ease-out` |
+| Entrata schermata | 350–450ms | `--meli-ease-out` |
+| Modal open | 280ms | `--meli-ease-out` |
 
-- [ ] Token CSS usati, zero hex sparsi
-- [ ] Touch target ≥ 50 px su azioni primarie
-- [ ] Testato breakpoint iPad 768–1024 px
-- [ ] Componenti da `src/components/ui/`
-- [ ] Empty state se lista vuota
-- [ ] Loading state se fetch async
-- [ ] Motion ≤ 450 ms, no stagger su liste > 20 item
-- [ ] Safe area rispettata su modal fullscreen
+**Vietato:** loop infiniti, parallax, blur animato su grandi superfici.
 
 ---
 
-*Riferimento rapido token: `docs/design-system.md`. Flussi UX: [USER_FLOW.md](./USER_FLOW.md).*
+## 17. Checklist nuova schermata
+
+- [ ] Token `--meli-*` only (zero hex sparsi)
+- [ ] Sfondo charcoal; testo chiaro
+- [ ] Un CTA primary evidente
+- [ ] Form/input conformi §9
+- [ ] Card conformi §5
+- [ ] Stati loading / empty / error
+- [ ] Touch ≥ 50px
+- [ ] Icone da `theme/icons`
+- [ ] Motion ≤ 280ms funzionale
+
+---
+
+## 18. Riferimenti
+
+| Risorsa | Path |
+|---------|------|
+| Token CSS | `src/theme/tokens.css` |
+| Global + glass | `src/theme/global.css` |
+| Componenti UI | `src/components/ui/` |
+| Design Reference (UX) | `docs/DESIGN_REFERENCE.md` |
+| Product Spec | `docs/MELI_PRODUCT_SPEC.md` |
+
+---
+
+## Changelog
+
+| Versione | Data | Note |
+|----------|------|------|
+| 2.0 | giugno 2026 | UI 2.0 — dark charcoal, miele, ambra, verde, rosso |
+| 1.x | — | Tema crema/chiaro (deprecato) |
+
+---
+
+*MELI · UI Guidelines 2.0 · RANU / Aspromonte*

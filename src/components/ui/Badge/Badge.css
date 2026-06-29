@@ -9,27 +9,27 @@
 }
 
 .ui-badge--default {
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--meli-brown-soft);
+  background: var(--meli-surface-strong);
+  color: var(--meli-text-secondary);
   border: 1px solid var(--meli-border);
 }
 
 .ui-badge--honey {
   background: var(--meli-honey-soft);
-  color: var(--meli-honey);
+  color: var(--meli-honey-light);
 }
 
 .ui-badge--gold {
-  background: rgba(201, 162, 39, 0.15);
-  color: var(--meli-gold-dark);
+  background: var(--meli-amber-soft);
+  color: var(--meli-amber-light);
 }
 
 .ui-badge--sage {
-  background: var(--meli-sage-soft);
-  color: var(--meli-sage-dark);
+  background: var(--meli-status-green-soft);
+  color: var(--meli-status-green-light);
 }
 
 .ui-badge--danger {
-  background: rgba(229, 57, 53, 0.12);
-  color: var(--meli-hive-critical);
+  background: var(--meli-alert-red-soft);
+  color: var(--meli-alert-red-light);
 }

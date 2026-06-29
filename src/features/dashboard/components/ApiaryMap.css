@@ -1,5 +1,5 @@
 .apiary-map {
-  padding: 1.35rem 1.45rem 1.2rem;
+  padding: var(--meli-space-lg) var(--meli-space-lg) var(--meli-space-md);
   border-radius: var(--meli-radius-xl);
   display: flex;
   flex-direction: column;
@@ -12,39 +12,43 @@
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  margin-bottom: 1.1rem;
-  color: var(--meli-map-green);
+  margin-bottom: var(--meli-space-md);
+  color: var(--meli-status-green-light);
+}
+
+.apiary-map__header svg {
+  stroke-width: 1.75;
 }
 
 .apiary-map__title {
   font-family: var(--meli-font-display);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 .apiary-map__name {
   margin-left: auto;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--meli-text-muted);
   padding: 0.3rem 0.65rem;
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .apiary-map__frame {
   flex: 1;
   min-height: 230px;
-  padding: 5px;
+  padding: 4px;
   border-radius: var(--meli-radius-lg);
-  border: 3px solid var(--meli-map-green);
-  background: var(--meli-map-green-bg);
-  box-shadow:
-    inset 0 3px 16px rgba(90, 158, 75, 0.1),
-    0 4px 16px rgba(90, 158, 75, 0.08);
+  border: 2px solid rgba(52, 199, 89, 0.35);
+  background: rgba(52, 199, 89, 0.06);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .apiary-map__terrain {
@@ -52,13 +56,13 @@
   width: 100%;
   height: 100%;
   min-height: 218px;
-  border-radius: calc(var(--meli-radius-lg) - 8px);
+  border-radius: calc(var(--meli-radius-lg) - 6px);
   background:
-    radial-gradient(circle at 25% 35%, rgba(123, 192, 106, 0.45), transparent 42%),
-    radial-gradient(circle at 72% 58%, rgba(90, 158, 75, 0.3), transparent 38%),
-    linear-gradient(165deg, #d8f0cc 0%, #bfe5ae 48%, #aed997 100%);
+    radial-gradient(circle at 25% 35%, rgba(52, 199, 89, 0.12), transparent 42%),
+    radial-gradient(circle at 72% 58%, rgba(232, 150, 12, 0.06), transparent 38%),
+    linear-gradient(165deg, var(--meli-charcoal-soft) 0%, var(--meli-charcoal-elevated) 48%, var(--meli-charcoal-muted) 100%);
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .apiary-map__hive {
@@ -70,7 +74,11 @@
   transform: translate(-50%, -50%);
   padding: 0.2rem;
   border-radius: var(--meli-radius-sm);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.apiary-map__hive svg {
+  stroke-width: 1.75;
 }
 
 .apiary-map__hive-label {
@@ -81,15 +89,15 @@
 }
 
 .apiary-map__hive--healthy {
-  color: var(--meli-hive-healthy);
+  color: var(--meli-status-green-light);
 }
 
 .apiary-map__hive--warning {
-  color: var(--meli-hive-warning);
+  color: var(--meli-warning);
 }
 
 .apiary-map__hive--critical {
-  color: var(--meli-hive-critical);
+  color: var(--meli-alert-red-light);
 }
 
 .apiary-map__hive--inactive {
@@ -99,39 +107,44 @@
 .apiary-map__legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
-  margin-top: 0.95rem;
-  font-size: 0.75rem;
+  gap: var(--meli-space-sm);
+  margin-top: var(--meli-space-sm);
+  font-size: 0.6875rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--meli-text-muted);
 }
 
 .apiary-map__legend span {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .apiary-map__dot {
   display: inline-block;
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 6px currentColor;
 }
 
 .apiary-map__dot--healthy {
-  background: var(--meli-hive-healthy);
+  background: var(--meli-status-green);
+  color: var(--meli-status-green);
 }
 
 .apiary-map__dot--warning {
-  background: var(--meli-hive-warning);
+  background: var(--meli-warning);
+  color: var(--meli-warning);
 }
 
 .apiary-map__dot--critical {
-  background: var(--meli-hive-critical);
+  background: var(--meli-alert-red);
+  color: var(--meli-alert-red);
 }
 
 .apiary-map__dot--inactive {
   background: var(--meli-hive-inactive);
+  color: var(--meli-hive-inactive);
 }

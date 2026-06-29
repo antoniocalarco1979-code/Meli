@@ -9,7 +9,7 @@
   border: none;
   border-radius: var(--meli-radius-xl);
   background: linear-gradient(135deg, var(--meli-honey), var(--meli-gold));
-  color: #fff;
+  color: var(--meli-text-inverse);
   font-family: var(--meli-font-display);
   font-size: 1.125rem;
   font-weight: 800;

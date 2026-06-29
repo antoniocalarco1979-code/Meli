@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: rgba(61, 44, 24, 0.35);
+  background: var(--meli-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -30,7 +30,7 @@
   font-family: var(--meli-font-display);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 .ui-modal__close {
@@ -46,7 +46,7 @@
 
 .ui-modal__close:hover {
   background: var(--meli-honey-soft);
-  color: var(--meli-brown);
+  color: var(--meli-text);
 }
 
 .ui-modal__body {

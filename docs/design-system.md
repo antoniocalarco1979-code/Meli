@@ -1,31 +1,31 @@
 # Design system
 
-Riferimento completo: [UI_GUIDELINES.md](./UI_GUIDELINES.md).
+**Riferimento ufficiale:** [UI_GUIDELINES.md](./UI_GUIDELINES.md) (Design System 2.0)
 
 Definito in `src/theme/tokens.css` e `src/theme/global.css`.
 
-## Palette
+## UI 2.0 — Tema
 
 | Token | Uso |
 |-------|-----|
-| `--meli-honey` | Accenti primari, CTA |
-| `--meli-cream` | Sfondo, superfici calde |
-| `--meli-gold` | Highlight, icone attive |
-| `--meli-brown` | Testo principale |
-| `--meli-sage` | Stati positivi, natura |
+| `--meli-charcoal` | Sfondo app |
+| `--meli-honey` / `--meli-amber` | Accenti, CTA |
+| `--meli-status-green` | Stati positivi |
+| `--meli-alert-red` | Errori, urgenze |
+| `--meli-text` | Testo principale (chiaro su scuro) |
 
 ## Superfici
 
-- **Glassmorphism** — classi `.meli-glass`, `.meli-glass--deep`
-- **Border radius** — `--meli-radius-sm` … `--meli-radius-xl`
+- **Glass dark** — classi `.meli-glass`, `.meli-glass--deep`
+- **Border radius** — `--meli-radius-sm` (12px) … `--meli-radius-xl` (24px)
 - **Ombre** — `--meli-shadow-sm`, `--meli-shadow-md`, `--meli-shadow-lg`
 
 ## Componenti UI
 
 Catalogo in `src/components/ui/`:
 
-Button, Card, Section, Input, Textarea, Badge, Modal, FloatingActionButton, PageTitle, EmptyState, Loading.
+Button, Card, Section, Input, Textarea, Badge, Modal, ConfirmDialog, Toast, FloatingActionButton, PageTitle, EmptyState, Loading, Skeleton.
 
 ## Target device
 
-Ottimizzato per **iPad** (touch 50px, sidebar 256px, layout fluido 768–1024px).
+Ottimizzato per **tablet Android** e **smartphone** (touch 50px, bottom nav mobile, sidebar desktop).

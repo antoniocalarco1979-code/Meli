@@ -2,7 +2,7 @@ import Dexie, { type EntityTable, type Transaction } from 'dexie'
 import { DEFAULT_ARNIA_MODELLO_ID, resolveArniaModello } from '../features/arnie/models/arniaModelli'
 import { DATABASE_NAME, DATABASE_VERSION, STORE_SCHEMA } from './schema'
 import { setupDexieErrorHandlers } from './setupDexieHandlers'
-import type { Apiario, Arnia, Foto, Produzione, Regina, Trattamento, Visita } from './types'
+import type { Apiario, Arnia, Foto, Produzione, Regina, Trattamento, Visita, GiroApiario } from './types'
 
 /** Record legacy pre-migrazione v5 (campi deprecati). */
 type LegacyApiario = Apiario & { note?: string; foto?: string }
@@ -48,6 +48,7 @@ class MeliDatabase extends Dexie {
   foto!: EntityTable<Foto, 'id'>
   produzione!: EntityTable<Produzione, 'id'>
   trattamenti!: EntityTable<Trattamento, 'id'>
+  giri!: EntityTable<GiroApiario, 'id'>
 
   constructor(dbName: string = DATABASE_NAME) {
     super(dbName)
@@ -99,6 +100,8 @@ class MeliDatabase extends Dexie {
       })
 
     this.version(7).stores(STORE_SCHEMA)
+
+    this.version(8).stores(STORE_SCHEMA)
 
     this.version(DATABASE_VERSION).stores(STORE_SCHEMA)
   }

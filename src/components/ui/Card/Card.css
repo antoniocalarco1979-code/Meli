@@ -3,7 +3,7 @@
 }
 
 .ui-card:not(.meli-glass) {
-  background: var(--meli-cream-soft);
+  background: var(--meli-charcoal-soft);
   border: 1px solid var(--meli-border);
   box-shadow: var(--meli-shadow-sm);
 }

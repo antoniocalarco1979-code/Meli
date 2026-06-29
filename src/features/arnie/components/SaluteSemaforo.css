@@ -7,7 +7,7 @@
 .salute-semaforo__dot {
   flex-shrink: 0;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 3px var(--meli-surface-strong);
 }
 
 .salute-semaforo--md .salute-semaforo__dot {

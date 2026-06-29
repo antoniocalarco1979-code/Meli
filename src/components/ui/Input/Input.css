@@ -17,14 +17,15 @@
   border-radius: var(--meli-radius-md);
   font-size: 1rem;
   letter-spacing: -0.018em;
-  color: var(--meli-brown);
-  background: rgba(255, 255, 255, 0.55);
+  color: var(--meli-text);
+  background: var(--meli-charcoal-elevated);
   border: 1px solid var(--meli-border-glass);
   outline: none;
-  transition: box-shadow 0.2s var(--meli-ease-out);
+  transition: box-shadow 0.2s var(--meli-ease-out), border-color 0.2s;
 }
 
 .ui-input__field:focus {
+  border-color: var(--meli-border-accent);
   box-shadow: 0 0 0 3px var(--meli-honey-soft);
 }
 
@@ -35,9 +36,9 @@
 
 .ui-input__error {
   font-size: 0.75rem;
-  color: var(--meli-hive-critical);
+  color: var(--meli-alert-red);
 }
 
 .ui-input--error .ui-input__field {
-  border-color: rgba(229, 57, 53, 0.4);
+  border-color: rgba(255, 69, 58, 0.45);
 }

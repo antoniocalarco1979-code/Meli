@@ -50,7 +50,7 @@
 }
 
 .visit-engine__nav-btn--ghost {
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--meli-surface-strong);
   color: var(--meli-brown-soft);
   border: 1px solid var(--meli-border-glass);
 }
@@ -75,7 +75,7 @@
   margin: 0 1.25rem 0.5rem;
   padding: 0.75rem 1rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(229, 57, 53, 0.12);
+  background: var(--meli-alert-red-soft);
   color: var(--meli-hive-critical);
   font-weight: 600;
   text-align: center;
@@ -88,7 +88,7 @@
   gap: 1rem;
   padding: 0.85rem 1.25rem;
   border-bottom: 1px solid var(--meli-border-glass);
-  background: rgba(255, 252, 245, 0.92);
+  background: var(--meli-glass-strong);
   flex-shrink: 0;
 }
 
@@ -100,7 +100,7 @@
   height: var(--meli-touch-min);
   border: none;
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--meli-surface-raised);
   color: var(--meli-brown);
   cursor: pointer;
   flex-shrink: 0;
@@ -153,7 +153,7 @@
 .visit-progress__bar {
   height: 10px;
   border-radius: var(--meli-radius-pill);
-  background: rgba(61, 44, 24, 0.1);
+  background: var(--meli-surface-active);
   overflow: hidden;
 }
 
@@ -244,9 +244,9 @@
   width: 100%;
   min-height: 72px;
   padding: 1rem 1.25rem;
-  border: 2px solid rgba(61, 44, 24, 0.12);
+  border: 2px solid var(--meli-border);
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font-display);
   font-size: 1.2rem;
   font-weight: 700;
@@ -268,8 +268,8 @@
   border-color: var(--meli-honey);
   background: linear-gradient(
     135deg,
-    rgba(255, 179, 71, 0.25),
-    rgba(232, 150, 12, 0.18)
+    var(--meli-amber-soft),
+    var(--meli-honey-soft)
   );
   box-shadow: var(--meli-shadow-md);
 }
@@ -309,7 +309,7 @@
 
 .visit-choices__radio--selected,
 .visit-choices__check--selected {
-  background: rgba(255, 179, 71, 0.14);
+  background: var(--meli-amber-soft);
   color: var(--meli-brown);
 }
 
@@ -357,7 +357,7 @@
 }
 
 .visit-choices__status--selected {
-  background: rgba(255, 179, 71, 0.14);
+  background: var(--meli-amber-soft);
 }
 
 .visit-choices__status-icon {
@@ -383,7 +383,7 @@
   padding: 1.5rem;
   border: 2px dashed rgba(232, 150, 12, 0.45);
   border-radius: var(--meli-radius-xl);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--meli-surface-hover);
   font-family: var(--meli-font-display);
   font-size: 1.15rem;
   font-weight: 700;
@@ -425,9 +425,9 @@
   width: 100%;
   min-height: 120px;
   padding: 1rem 1.15rem;
-  border: 2px solid rgba(61, 44, 24, 0.12);
+  border: 2px solid var(--meli-border);
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--meli-glass);
   font-family: var(--meli-font);
   font-size: 1.125rem;
   line-height: 1.45;
@@ -438,7 +438,7 @@
 .visit-field:focus {
   outline: none;
   border-color: var(--meli-honey);
-  box-shadow: 0 0 0 3px rgba(232, 150, 12, 0.2);
+  box-shadow: 0 0 0 3px var(--meli-honey-soft);
 }
 
 .visit-field--single {
@@ -460,7 +460,7 @@
   gap: 1rem;
   padding: 0.85rem 1rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--meli-surface-strong);
   font-size: 1rem;
   color: var(--meli-brown);
 }
@@ -540,14 +540,14 @@
 .visit-telai__divider {
   margin: 0.85rem 0 0;
   border: none;
-  border-top: 1px dashed rgba(61, 44, 24, 0.2);
+  border-top: 1px dashed var(--meli-border-glass);
 }
 
 .visit-telai-form {
   margin-top: auto;
   padding: 1rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--meli-surface-hover);
   border: 1px solid var(--meli-border-glass);
 }
 
@@ -568,9 +568,9 @@
 
 .visit-telai-form__type {
   padding: 0.45rem 0.75rem;
-  border: 1px solid rgba(61, 44, 24, 0.15);
+  border: 1px solid var(--meli-border);
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--meli-surface-strong);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--meli-brown-soft);
@@ -580,7 +580,7 @@
 .visit-telai-form__type--active {
   border-color: var(--meli-honey);
   color: var(--meli-brown);
-  background: rgba(255, 179, 71, 0.18);
+  background: var(--meli-honey-soft);
 }
 
 .visit-telai-form__regina {
@@ -590,9 +590,9 @@
   width: 100%;
   min-height: 56px;
   margin-bottom: 0.85rem;
-  border: 2px solid rgba(61, 44, 24, 0.12);
+  border: 2px solid var(--meli-border);
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--meli-surface-raised);
   font-family: var(--meli-font-display);
   font-size: 1.15rem;
   font-weight: 700;
@@ -603,7 +603,7 @@
 .visit-telai-form__regina--on {
   border-color: var(--meli-honey);
   color: var(--meli-brown);
-  background: rgba(255, 179, 71, 0.14);
+  background: var(--meli-amber-soft);
 }
 
 .visit-telai-form__add {
@@ -647,7 +647,7 @@
   background: transparent;
   font-size: 1.5rem;
   letter-spacing: 0.1em;
-  color: rgba(61, 44, 24, 0.35);
+  color: var(--meli-text-muted);
   cursor: pointer;
   transition:
     background 0.2s,
@@ -660,7 +660,7 @@
 }
 
 .visit-stars-list__btn--selected {
-  background: rgba(255, 179, 71, 0.14);
+  background: var(--meli-amber-soft);
   color: var(--meli-honey);
 }
 
@@ -681,7 +681,7 @@
   align-items: center;
   padding: 0.65rem 0.85rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--meli-surface-strong);
   font-size: 0.9375rem;
   color: var(--meli-brown);
 }

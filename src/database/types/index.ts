@@ -10,6 +10,8 @@ export type {
   Regina,
   Trattamento,
   Visita,
+  GiroApiario,
+  GiroApiarioStato,
 } from './entities'
 
 export type {
@@ -29,4 +31,6 @@ export type {
   TrattamentoUpdate,
   VisitaInput,
   VisitaUpdate,
+  GiroApiarioInput,
+  GiroApiarioUpdate,
 } from './inputs'

@@ -8,6 +8,7 @@ import type {
   Regina,
   Trattamento,
   Visita,
+  GiroApiario,
 } from './entities'
 
 /** Payload creazione Apiario. */
@@ -79,6 +80,14 @@ export type VisitaInput = {
 }
 
 export type VisitaUpdate = Partial<Omit<Visita, 'id' | 'arniaId'>>
+
+export type GiroApiarioInput = {
+  apiarioId: string
+}
+
+export type GiroApiarioUpdate = Partial<
+  Omit<GiroApiario, 'id' | 'apiarioId' | 'createdAt'>
+>
 
 export type FotoInput = {
   path: string

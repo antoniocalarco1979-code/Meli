@@ -28,7 +28,7 @@
   gap: 0.35rem;
   padding: 1rem 1.1rem;
   border-radius: var(--meli-radius-lg);
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--meli-surface-raised);
   border: 1px solid var(--meli-border);
 }
 

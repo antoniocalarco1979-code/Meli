@@ -78,7 +78,7 @@
   margin: 0.15rem 0;
   font-size: 0.875rem;
   line-height: 1;
-  color: rgba(61, 44, 24, 0.25);
+  color: var(--meli-border-glass);
 }
 
 .onboarding-step {

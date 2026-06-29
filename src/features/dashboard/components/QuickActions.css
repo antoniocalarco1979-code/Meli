@@ -1,7 +1,7 @@
 .quick-actions {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: var(--meli-space-sm);
   position: relative;
   z-index: 2;
 }
@@ -11,33 +11,42 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
+  gap: var(--meli-space-sm);
   min-height: 96px;
-  padding: 0.95rem 0.55rem;
-  border-radius: var(--meli-radius-xl);
+  padding: var(--meli-space-sm) var(--meli-space-xs);
+  border-radius: var(--meli-radius-lg);
+  transition: transform 0.25s var(--meli-ease-out);
 }
 
 .quick-actions__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--meli-radius-md);
   background: linear-gradient(145deg, var(--meli-honey-light), var(--meli-honey));
   color: var(--meli-text-inverse);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 6px 18px rgba(232, 150, 12, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 14px rgba(232, 150, 12, 0.22);
+}
+
+.quick-actions__icon svg {
+  stroke-width: 1.75;
 }
 
 .quick-actions__label {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--meli-brown-soft);
+  letter-spacing: -0.01em;
+  color: var(--meli-text-secondary);
   text-align: center;
   line-height: 1.3;
+}
+
+.quick-actions__btn:hover .quick-actions__label {
+  color: var(--meli-text);
 }
 
 @media (max-width: 1024px) {

@@ -33,7 +33,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, calc(-100% + 4px));
-  color: #c0392b;
+  color: var(--meli-alert-red);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
   pointer-events: none;
 }

@@ -33,7 +33,7 @@
   min-width: 2rem;
   padding: 0.2rem 0.6rem;
   border-radius: var(--meli-radius-pill);
-  background: rgba(201, 162, 39, 0.15);
+  background: var(--meli-honey-soft);
   font-size: 0.875rem;
   font-weight: 800;
   color: var(--meli-honey-dark);

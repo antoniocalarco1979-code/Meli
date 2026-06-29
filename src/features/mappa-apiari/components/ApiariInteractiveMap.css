@@ -4,7 +4,7 @@
   height: 100%;
   min-height: 420px;
   touch-action: none;
-  background: #dce7d6;
+  background: var(--meli-charcoal-soft);
 }
 
 .apiari-map--dragging {
@@ -47,12 +47,12 @@
   height: 1rem;
   border-radius: 50%;
   background: var(--meli-honey);
-  border: 2px solid #fff;
+  border: 2px solid var(--meli-text);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 
 .apiari-map__marker--active .apiari-map__marker-dot {
-  background: #c0392b;
+  background: var(--meli-alert-red);
   transform: scale(1.15);
 }
 
@@ -60,7 +60,7 @@
   max-width: 120px;
   padding: 0.15rem 0.45rem;
   border-radius: var(--meli-radius-pill);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--meli-glass-strong);
   font-size: 0.6875rem;
   font-weight: 800;
   color: var(--meli-brown);
@@ -88,7 +88,7 @@
   height: 2.5rem;
   border: none;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--meli-glass-strong);
   color: var(--meli-brown);
   box-shadow: var(--meli-shadow-sm);
   cursor: pointer;

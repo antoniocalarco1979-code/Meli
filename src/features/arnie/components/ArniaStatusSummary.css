@@ -28,7 +28,7 @@
   padding: 0.85rem 0.9rem;
   min-height: 4.5rem;
   border-radius: var(--meli-radius-md);
-  background: rgba(255, 255, 255, 0.48);
+  background: var(--meli-surface-raised);
   border: 1px solid var(--meli-border);
 }
 

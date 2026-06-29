@@ -16,7 +16,7 @@
   flex-direction: column;
   gap: 1rem;
   padding-top: 0.35rem;
-  border-top: 1px solid rgba(61, 44, 24, 0.1);
+  border-top: 1px solid var(--meli-border);
 }
 
 .arnia-premium__cta {
@@ -27,8 +27,8 @@
   padding: 0.75rem 0 calc(0.5rem + env(safe-area-inset-bottom));
   background: linear-gradient(
     to top,
-    var(--meli-cream) 72%,
-    rgba(255, 248, 231, 0.92) 88%,
+    var(--meli-charcoal) 72%,
+    var(--meli-charcoal-soft) 88%,
     transparent 100%
   );
 }

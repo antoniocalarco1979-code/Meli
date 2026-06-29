@@ -146,6 +146,30 @@ export type Trattamento = {
   scadenza?: number
 }
 
+/** Stato di una sessione Giro Apiario. */
+export type GiroApiarioStato = 'in_corso' | 'completato' | 'interrotto'
+
+/**
+ * Giro Apiario — sessione di ispezioni sul campo.
+ * Relazione: N Giri → 1 Apiario.
+ */
+export type GiroApiario = {
+  id: string
+  apiarioId: string
+  startedAt: number
+  completedAt?: number
+  stato: GiroApiarioStato
+  /** Arnie ispezionate durante il giro. */
+  arnieVisitateIds: string[]
+  ispezioniCompletate: number
+  durataSecondi?: number
+  trattamenti?: number
+  foto?: number
+  regineDaControllare?: number
+  createdAt: number
+  updatedAt: number
+}
+
 /**
  * Vista UI — Apiario con alias retrocompatibili per le schermate esistenti.
  */

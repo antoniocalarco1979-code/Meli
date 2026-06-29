@@ -2,9 +2,9 @@
   border-radius: var(--meli-radius-sm);
   background: linear-gradient(
     90deg,
-    var(--meli-cream-muted) 0%,
-    var(--meli-cream-soft) 50%,
-    var(--meli-cream-muted) 100%
+    var(--meli-charcoal-elevated) 0%,
+    var(--meli-charcoal-muted) 50%,
+    var(--meli-charcoal-elevated) 100%
   );
   background-size: 200% 100%;
   animation: ui-skeleton-shimmer 1.4s ease-in-out infinite;
