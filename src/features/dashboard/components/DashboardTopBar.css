@@ -1,0 +1,97 @@
+.dashboard-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--meli-space-md);
+  padding: var(--meli-space-sm) 0 var(--meli-space-md);
+}
+
+.main-layout:has(.dashboard) .app-header {
+  display: none;
+}
+
+.main-layout:has(.dashboard) .dashboard-topbar {
+  display: flex;
+}
+
+.dashboard-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--meli-space-sm);
+  min-width: 0;
+}
+
+.dashboard-topbar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--meli-radius-md);
+  color: var(--dash-honey-text, var(--meli-text-inverse));
+  background: linear-gradient(145deg, var(--dash-honey-light, var(--meli-honey-light)), var(--dash-honey, var(--meli-honey)));
+  box-shadow: 0 4px 16px rgba(232, 164, 0, 0.28);
+}
+
+.dashboard-topbar__name {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--meli-text);
+}
+
+.dashboard-topbar__tag {
+  margin: 0.1rem 0 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.dashboard-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--meli-space-xs);
+}
+
+.dashboard-topbar__btn,
+.dashboard-topbar__profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--meli-radius-md);
+  color: var(--meli-text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.dashboard-topbar__btn:hover,
+.dashboard-topbar__profile:hover {
+  color: var(--dash-honey-light, var(--meli-honey-light));
+  background: rgba(232, 164, 0, 0.1);
+  border-color: rgba(232, 164, 0, 0.25);
+}
+
+.dashboard-topbar__profile {
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(232, 164, 0, 0.18), rgba(232, 164, 0, 0.08));
+}
+
+.dashboard-topbar__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--meli-alert-red);
+  box-shadow: 0 0 0 2px var(--meli-charcoal-soft);
+}
+

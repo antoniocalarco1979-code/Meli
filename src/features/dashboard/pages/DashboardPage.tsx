@@ -1,22 +1,19 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAppPath } from '../../../demo/useAppPath'
 import { useApiariStats } from '../../apiari/hooks/useApiari'
-import { dashboardData, getWeatherVisitHint } from '../data/mockDashboard'
+import { dashboardData } from '../data/mockDashboard'
 import { ApiarioSelectorModal } from '../components/ApiarioSelectorModal'
 import { useDashboardFlow } from '../hooks/useDashboardLiveStats'
 import { useDashboardLiveStats } from '../hooks/useDashboardLiveStats'
 import { useSelectedApiario } from '../hooks/useSelectedApiario'
-import { ApiaryMap } from '../components/ApiaryMap'
-import { DashboardHeader } from '../components/DashboardHeader'
-import { KpiGrid } from '../components/KpiGrid'
-import { MorningBriefing } from '../components/MorningBriefing'
-import { QuickActions } from '../components/QuickActions'
+import { DashboardLastActivity } from '../components/DashboardLastActivity'
+import { DashboardStatCards } from '../components/DashboardStatCards'
+import { DashboardTopBar } from '../components/DashboardTopBar'
+import { DashboardWelcome } from '../components/DashboardWelcome'
 import { RanuWatermark } from '../components/RanuWatermark'
 import { MeliIntelligencePanel, useMeliIntelligence } from '../../intelligence'
-import { TodayActivities } from '../components/TodayActivities'
-import { WeatherCard } from '../components/WeatherCard'
 import './DashboardPage.css'
 
 export function DashboardPage() {
@@ -26,37 +23,17 @@ export function DashboardPage() {
   const { apiari, selectedApiario, selectedApiarioId, setSelectedApiarioId, loading: selecting } =
     useSelectedApiario()
   const { count, totalArnie } = useApiariStats()
-  const { arnieByNumero, defaultArniaId, arnieCount, loading: flowLoading } =
-    useDashboardFlow(selectedApiarioId)
-  const { ultimaVisitaLabel, indiceSalute, trattamentiInScadenza, regineDaSostituire, loading: statsLoading } =
+  const { arnieByNumero, loading: flowLoading } = useDashboardFlow(selectedApiarioId)
+  const { ultimaVisitaLabel, trattamentiInScadenza, regineDaSostituire, loading: statsLoading } =
     useDashboardLiveStats(selectedApiarioId)
 
-  const {
-    userName,
-    weather,
-    kpis: baseKpis,
-    hiveMarkers,
-    todayActivities,
-    quickActions,
-  } = dashboardData
+  const { userName, todayActivities } = dashboardData
 
   const { suggestions, loading: intelligenceLoading } = useMeliIntelligence(selectedApiarioId)
 
   const briefingLoading = selecting || flowLoading || statsLoading
   const selectedApiaryName = selectedApiario?.nome
-
-  const kpis = useMemo(
-    () =>
-      baseKpis.map((kpi) => {
-        if (kpi.id === '0') return { ...kpi, value: String(count) }
-        if (kpi.id === '1') return { ...kpi, value: String(totalArnie) }
-        if (kpi.id === '2') return { ...kpi, value: ultimaVisitaLabel }
-        if (kpi.id === '4') return { ...kpi, value: `${indiceSalute}%` }
-        if (kpi.id === '5') return { ...kpi, value: String(trattamentiInScadenza) }
-        return kpi
-      }),
-    [baseKpis, count, totalArnie, ultimaVisitaLabel, indiceSalute, trattamentiInScadenza],
-  )
+  const visitePending = trattamentiInScadenza + regineDaSostituire
 
   const goToApiario = () => {
     if (selectedApiarioId) navigate(appPath(`/apiari/${selectedApiarioId}`))
@@ -65,16 +42,6 @@ export function DashboardPage() {
   const goToArnia = (numero: string) => {
     const arniaId = arnieByNumero[numero]
     if (arniaId) navigate(appPath(`/arnie/${arniaId}`))
-  }
-
-  const goToDefaultArnia = () => {
-    if (defaultArniaId) navigate(appPath(`/arnie/${defaultArniaId}`))
-  }
-
-  const goToNuovaVisita = () => {
-    if (defaultArniaId) {
-      navigate(appPath(`/arnie/${defaultArniaId}`), { state: { openVisita: true } })
-    }
   }
 
   return (
@@ -88,61 +55,49 @@ export function DashboardPage() {
 
       <div className="dashboard__scroll">
         <div className="dashboard__inner">
-          <MorningBriefing
+          <DashboardTopBar />
+
+          <DashboardWelcome
             userName={userName}
-            totalArnie={arnieCount}
-            trattamentiInScadenza={trattamentiInScadenza}
-            regineDaSostituire={regineDaSostituire}
-            weatherHint={getWeatherVisitHint(weather.condition)}
-            loading={briefingLoading}
             selectedApiarioName={selectedApiaryName}
+            loading={briefingLoading}
             onSelectApiario={() => setSelectorOpen(true)}
             onStartGiro={goToApiario}
           />
 
-          <DashboardHeader
-            selectedApiary={selectedApiaryName}
-            onSelectApiario={() => setSelectorOpen(true)}
+          <DashboardStatCards
+            apiariCount={count}
+            arnieCount={totalArnie}
+            visitePending={visitePending}
+            loading={briefingLoading}
+            onApiariClick={() => navigate(appPath('/apiari'))}
+            onArnieClick={() => navigate(appPath('/arnie'))}
+            onVisiteClick={() => navigate(appPath('/visite'))}
           />
 
-          <section className="dashboard__top" aria-label="Meteo e indicatori">
-            <WeatherCard {...weather} />
-            <KpiGrid
-              items={kpis}
-              onApiariClick={() => navigate(appPath('/apiari'))}
-              onArnieClick={() => navigate(appPath('/arnie'))}
-            />
-          </section>
-
-          <section className="dashboard__middle" aria-label="Mappa e agenda">
-            <ApiaryMap
-              apiaryName={selectedApiaryName ?? 'Apiario'}
-              markers={hiveMarkers}
-              onHiveClick={goToArnia}
-              onMapClick={goToApiario}
-            />
-            <TodayActivities
-              activities={todayActivities}
-              onActivityClick={(activity) => {
-                const match = activity.title.match(/arnia\s+(\d+)/i)
-                if (match) goToArnia(match[1])
-              }}
-            />
-          </section>
-
-          <MeliIntelligencePanel
-            suggestions={suggestions}
-            loading={intelligenceLoading}
-            onOpenArnia={(arniaId) => navigate(appPath(`/arnie/${arniaId}`))}
-          />
-
-          <QuickActions
-            actions={quickActions}
-            onActionClick={(action) => {
-              if (action.icon === 'arnia') goToDefaultArnia()
-              if (action.icon === 'visit') goToNuovaVisita()
+          <DashboardLastActivity
+            ultimaVisitaLabel={ultimaVisitaLabel}
+            activities={todayActivities}
+            loading={briefingLoading}
+            onActivityClick={(activity) => {
+              const match = activity.title.match(/arnia\s+(\d+)/i)
+              if (match) goToArnia(match[1])
             }}
           />
+
+          <section className="dashboard__suggestions" aria-label="Suggerimenti MELI">
+            <header className="dashboard__section-head">
+              <h2 className="dashboard__section-title">Suggerimenti MELI</h2>
+              <p className="dashboard__section-sub">
+                Consigli personalizzati in base al tuo apiario
+              </p>
+            </header>
+            <MeliIntelligencePanel
+              suggestions={suggestions}
+              loading={intelligenceLoading}
+              onOpenArnia={(arniaId) => navigate(appPath(`/arnie/${arniaId}`))}
+            />
+          </section>
         </div>
       </div>
 

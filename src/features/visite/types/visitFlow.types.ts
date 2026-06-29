@@ -2,22 +2,24 @@ import type { GiroSessionStats } from './giro.types'
 
 /** Stato passato da Apiario → Arnia per aprire il wizard visita. */
 export type GiroReturnContext = {
-  giroId: string
+  giroId?: string
   apiarioId: string
   apiarioNome: string
   arniaIndex: number
   giroActive: boolean
   giroStats: GiroSessionStats
-  visitedArniaIds: string[]
+  visitedArniaIds?: string[]
+  completedThrough: number
 }
 
 /** Stato passato da Arnia → Apiario per riprendere il giro. */
 export type GiroResumeContext = {
-  giroId: string
+  giroId?: string
   nextIndex: number
   giroActive: boolean
   giroStats: GiroSessionStats
-  visitedArniaIds: string[]
+  visitedArniaIds?: string[]
+  completedThrough: number
 }
 
 export type ArniaVisitLocationState = {
