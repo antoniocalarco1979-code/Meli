@@ -24,9 +24,14 @@ export type Apiario = {
   id: string
   nome: string
   descrizione?: string
+  /** Etichetta località legacy / sintesi (comune + provincia). */
   localita: string
   latitudine?: number
   longitudine?: number
+  comune?: string
+  provincia?: string
+  regione?: string
+  indirizzo?: string
   quota?: number
   fotoCopertina?: string
   /** Contatore denormalizzato per dashboard e card. */
@@ -54,6 +59,8 @@ export type Arnia = {
   hasMelario: boolean
   /** Supporto vassoio antivarroa previsto dal modello. */
   hasVassoioAntivarroa: boolean
+  /** Colore identificativo scelto in creazione. */
+  colore?: string
   /** Estensioni modello — struttura aperta per feature future. */
   modelloExtensions?: Record<string, unknown>
   /** Indice di forza famiglia (0–100). */

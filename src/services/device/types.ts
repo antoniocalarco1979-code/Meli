@@ -14,6 +14,8 @@ export type GeoCoordinates = {
   latitudine: number
   longitudine: number
   accuratezza?: number
+  /** Quota sul livello del mare (m), se fornita dal dispositivo. */
+  quota?: number
 }
 
 export type GeoOptions = {

@@ -26,6 +26,14 @@ export const ARNIA_MODELLO_OPTIONS: { value: ArniaModelloId; label: string }[] =
   { value: 'personalizzata', label: 'Personalizzata' },
 ]
 
+export const ARNIA_WIZARD_MODELLO_OPTIONS = ARNIA_MODELLO_OPTIONS.filter(
+  (option) => option.value !== 'orizzontale',
+)
+
+export function getArniaWizardModelloOptions() {
+  return ARNIA_WIZARD_MODELLO_OPTIONS
+}
+
 /** Preset per modello — valori di default per telaini, melario e vassoio. */
 export const ARNIA_MODELLI_PRESET: Record<ArniaModelloId, ArniaModelloPreset> = {
   dadant_blatt_10: {

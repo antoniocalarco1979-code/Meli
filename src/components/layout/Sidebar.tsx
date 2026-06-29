@@ -34,7 +34,7 @@ export function Sidebar() {
 
       <nav className="sidebar__nav" aria-label="Navigazione principale">
         <ul>
-          {appRoutes.map(({ path, label, icon: Icon, end }, index) => {
+          {appRoutes.map(({ path, label, icon: Icon, emoji, end }, index) => {
             const route = linkFor(path, end)
             return (
             <motion.li
@@ -50,7 +50,13 @@ export function Sidebar() {
                   `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
                 }
               >
-                <Icon size={24} strokeWidth={1.65} aria-hidden="true" />
+                {emoji ? (
+                  <span className="sidebar__emoji" aria-hidden="true">
+                    {emoji}
+                  </span>
+                ) : (
+                  <Icon size={24} strokeWidth={1.65} aria-hidden="true" />
+                )}
                 <span>{label}</span>
               </NavLink>
             </motion.li>

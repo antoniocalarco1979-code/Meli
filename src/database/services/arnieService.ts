@@ -27,6 +27,7 @@ function normalizeArniaInput(input: ArniaInput): Omit<Arnia, 'id' | 'createdAt' 
     hasMelario: modello.hasMelario,
     hasVassoioAntivarroa: modello.hasVassoioAntivarroa,
     modelloExtensions: modello.modelloExtensions,
+    colore: input.colore,
     nome: input.nome,
     qrCode: input.qrCode,
     stato: input.stato ?? 'attiva',

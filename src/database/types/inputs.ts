@@ -13,10 +13,14 @@ import type {
 /** Payload creazione Apiario. */
 export type ApiarioInput = {
   nome: string
-  localita: string
+  localita?: string
   descrizione?: string
   latitudine?: number
   longitudine?: number
+  comune?: string
+  provincia?: string
+  regione?: string
+  indirizzo?: string
   quota?: number
   fotoCopertina?: string
   numeroArnie: number
@@ -34,6 +38,7 @@ export type ArniaInput = {
   modelloId: ArniaModelloId
   /** Obbligatorio se modelloId === 'personalizzata'. */
   telaiPersonalizzati?: number
+  colore?: string
   nome?: string
   qrCode?: string
   stato?: ArniaStato

@@ -180,7 +180,7 @@ export function OnboardingPage() {
           <ArniaForm
             key={arniaDialogOpen ? 'arnia-open' : 'arnia-closed'}
             apiarioId={apiarioId}
-            submitLabel="Salva"
+            submitLabel="SALVA"
             onCancel={() => setArnialogOpen(false)}
             onSubmit={handleArniaSubmit}
           />

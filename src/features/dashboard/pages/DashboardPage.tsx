@@ -14,8 +14,7 @@ import { KpiGrid } from '../components/KpiGrid'
 import { MorningBriefing } from '../components/MorningBriefing'
 import { QuickActions } from '../components/QuickActions'
 import { RanuWatermark } from '../components/RanuWatermark'
-import { DashboardAzioniConsigliate } from '../components/DashboardAzioniConsigliate'
-import { useApiarioAzioniConsigliate } from '../hooks/useApiarioAzioniConsigliate'
+import { MeliIntelligencePanel, useMeliIntelligence } from '../../intelligence'
 import { TodayActivities } from '../components/TodayActivities'
 import { WeatherCard } from '../components/WeatherCard'
 import './DashboardPage.css'
@@ -41,8 +40,7 @@ export function DashboardPage() {
     quickActions,
   } = dashboardData
 
-  const { azioni: azioniConsigliate, loading: azioniLoading } =
-    useApiarioAzioniConsigliate(selectedApiarioId)
+  const { suggestions, loading: intelligenceLoading } = useMeliIntelligence(selectedApiarioId)
 
   const briefingLoading = selecting || flowLoading || statsLoading
   const selectedApiaryName = selectedApiario?.nome
@@ -132,10 +130,10 @@ export function DashboardPage() {
             />
           </section>
 
-          <DashboardAzioniConsigliate
-            azioni={azioniConsigliate}
-            loading={azioniLoading}
-            onArniaClick={(arniaId) => navigate(appPath(`/arnie/${arniaId}`))}
+          <MeliIntelligencePanel
+            suggestions={suggestions}
+            loading={intelligenceLoading}
+            onOpenArnia={(arniaId) => navigate(appPath(`/arnie/${arniaId}`))}
           />
 
           <QuickActions

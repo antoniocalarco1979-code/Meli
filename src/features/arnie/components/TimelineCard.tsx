@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { ClipboardList } from 'lucide-react'
 import { EmptyState } from '../../../components/ui/EmptyState/EmptyState'
 import type { VisitaTimelineEntry } from '../types'
+import { VisitaTimelineItem } from './VisitaTimelineItem'
 import './TimelineCard.css'
 
 type TimelineCardProps = {
@@ -32,32 +33,13 @@ export function TimelineCard({ visits, pulse = false }: TimelineCardProps) {
       ) : (
         <ol className="timeline-card__list">
           {visits.map((visit, index) => (
-            <motion.li
+            <VisitaTimelineItem
               key={visit.id}
-              className="timeline-card__item"
-              initial={{ opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 * index }}
-            >
-              <div className="timeline-card__row">
-                <div className="timeline-card__main">
-                  <time
-                    className="timeline-card__date"
-                    dateTime={new Date(visit.data).toISOString()}
-                  >
-                    {visit.dataShort}
-                  </time>
-                  <p className="timeline-card__summary">{visit.summary}</p>
-                </div>
-                <span
-                  className="timeline-card__status"
-                  role="img"
-                  aria-label={`Stato visita ${visit.statusLevel}`}
-                >
-                  {visit.statusIcon}
-                </span>
-              </div>
-            </motion.li>
+              visit={visit}
+              index={index}
+              isFirst={index === 0}
+              isLast={index === visits.length - 1}
+            />
           ))}
         </ol>
       )}

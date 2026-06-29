@@ -139,3 +139,16 @@ export function parseMelarioFromNote(note?: string): string {
   if (val === 'No') return 'Assente'
   return val
 }
+
+export function parseOpercolaturaFromNote(note?: string): string | undefined {
+  const match = note?.match(/- Opercolatura:\s*(.+)/i)
+  if (!match) return undefined
+  return match[1].trim()
+}
+
+/** Stato melario da note visita (inclusa opercolatura dal wizard campo). */
+export function resolveMelarioStatusFromNote(note?: string): string {
+  const opercolatura = parseOpercolaturaFromNote(note)
+  if (opercolatura === 'Opercolato' || opercolatura === 'Da smielare') return opercolatura
+  return parseMelarioFromNote(note)
+}

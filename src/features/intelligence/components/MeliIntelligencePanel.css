@@ -1,0 +1,83 @@
+.meli-intelligence {
+  padding: 1.35rem 1.5rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.meli-intelligence__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+}
+
+.meli-intelligence__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.meli-intelligence__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--meli-radius-md);
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.22) 0%, rgba(232, 150, 12, 0.12) 100%);
+  color: var(--meli-honey-dark);
+  flex-shrink: 0;
+}
+
+.meli-intelligence__eyebrow {
+  margin: 0 0 0.1rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--meli-gold-dark);
+}
+
+.meli-intelligence__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--meli-brown);
+}
+
+.meli-intelligence__badge {
+  margin-left: auto;
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.15);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.meli-intelligence__loading {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}
+
+.meli-intelligence__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+@media (max-width: 767px) {
+  .meli-intelligence {
+    padding: 1.15rem 1.25rem;
+  }
+}

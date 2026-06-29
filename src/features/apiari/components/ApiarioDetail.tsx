@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Calendar, Hexagon, MapPin, Pencil } from 'lucide-react'
 import { Button } from '../../../components/ui/Button'
 import type { ApiarioView } from '../types'
+import { formatApiarioLocation } from '../utils/formatApiarioLocation'
 import './ApiarioDetail.css'
 
 type ApiarioDetailProps = {
@@ -35,7 +36,7 @@ export function ApiarioDetail({ apiario, onEdit, actions }: ApiarioDetailProps) 
             <h1 className="apiario-detail__title">{apiario.nome}</h1>
             <p className="apiario-detail__location">
               <MapPin size={18} aria-hidden="true" />
-              {apiario.localita || '—'}
+              {formatApiarioLocation(apiario)}
             </p>
           </div>
           {onEdit && (
@@ -62,11 +63,23 @@ export function ApiarioDetail({ apiario, onEdit, actions }: ApiarioDetailProps) 
           {hasGps && (
             <div>
               <dt>
-                <MapPin size={16} aria-hidden="true" /> GPS
+                <MapPin size={16} aria-hidden="true" /> Coordinate
               </dt>
               <dd>
                 {apiario.latitudine}, {apiario.longitudine}
               </dd>
+            </div>
+          )}
+          {apiario.indirizzo && (
+            <div className="apiario-detail__stat-wide">
+              <dt>Indirizzo</dt>
+              <dd>{apiario.indirizzo}</dd>
+            </div>
+          )}
+          {apiario.quota != null && (
+            <div>
+              <dt>Quota</dt>
+              <dd>{apiario.quota} m</dd>
             </div>
           )}
         </dl>

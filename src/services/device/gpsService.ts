@@ -19,6 +19,10 @@ export const gpsService = {
             latitudine: Number(pos.coords.latitude.toFixed(6)),
             longitudine: Number(pos.coords.longitude.toFixed(6)),
             accuratezza: pos.coords.accuracy,
+            quota:
+              pos.coords.altitude != null && !Number.isNaN(pos.coords.altitude)
+                ? Math.round(pos.coords.altitude)
+                : undefined,
           })
         },
         () => resolve(null),

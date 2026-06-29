@@ -99,6 +99,16 @@
   border: 1px solid var(--meli-border-glass);
 }
 
+.sidebar__emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
 .sidebar__link--muted {
   color: var(--meli-text-muted);
 }

@@ -1,0 +1,105 @@
+.apiari-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  touch-action: none;
+  background: #dce7d6;
+}
+
+.apiari-map--dragging {
+  cursor: grabbing;
+}
+
+.apiari-map__surface {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.apiari-map__tiles {
+  position: absolute;
+  inset: 0;
+}
+
+.apiari-map__tile {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+}
+
+.apiari-map__marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.apiari-map__marker-dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--meli-honey);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.apiari-map__marker--active .apiari-map__marker-dot {
+  background: #c0392b;
+  transform: scale(1.15);
+}
+
+.apiari-map__marker-label {
+  max-width: 120px;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--meli-shadow-sm);
+}
+
+.apiari-map__controls {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 4;
+}
+
+.apiari-map__control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: var(--meli-radius-md);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--meli-brown);
+  box-shadow: var(--meli-shadow-sm);
+  cursor: pointer;
+}
+
+.apiari-map__control:active {
+  transform: scale(0.96);
+}
+
+@media (min-width: 768px) {
+  .apiari-map {
+    min-height: 520px;
+  }
+}

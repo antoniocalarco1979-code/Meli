@@ -5,6 +5,7 @@ import {
   Droplets,
   Hexagon,
   LayoutDashboard,
+  Map,
   MapPin,
   Package,
   navEmoji,
@@ -14,6 +15,7 @@ import type { AppRoute, BottomNavItem } from '../../types'
 
 export const appRoutes: AppRoute[] = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { path: '/mappa-apiari', label: 'Mappa Apiari', icon: Map, emoji: '🗺️' },
   { path: '/apiari', label: 'Apiari', icon: MapPin },
   { path: '/arnie', label: 'Arnie', icon: Hexagon },
   { path: '/visite', label: 'Visite', icon: CalendarDays },
@@ -37,6 +39,7 @@ export const bottomNavItems: BottomNavItem[] = [
     end: true,
     activePrefixes: [
       '/altro',
+      '/mappa-apiari',
       '/arnie',
       '/visite',
       '/regine',
@@ -52,6 +55,7 @@ export const routeMeta: Record<string, { title: string; subtitle?: string }> = {
   '/oggi': { title: 'Oggi', subtitle: 'Agenda e giro apiario' },
   '/altro': { title: 'Altro', subtitle: 'Moduli e impostazioni' },
   '/apiari': { title: 'Apiari', subtitle: 'Gestione siti apistici' },
+  '/mappa-apiari': { title: 'Mappa Apiari', subtitle: 'Geolocalizzazione siti apistici' },
   '/arnie': { title: 'Arnie', subtitle: 'Colonie e alveari' },
   '/visite': { title: 'Visite', subtitle: 'Ispezioni e controlli' },
   '/regine': { title: 'Regine', subtitle: 'Gestione regine' },

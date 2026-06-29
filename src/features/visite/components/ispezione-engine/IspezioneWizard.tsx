@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { parseDexieError } from '../../../../database/errors'
+import { getArniaById } from '../../../../database/services/arnieService'
 import { useToast } from '../../../../hooks/useToast'
 import { useIspezioneWizard } from '../../hooks/useIspezioneWizard'
 import {
@@ -48,6 +49,7 @@ export function IspezioneWizard({
     canProceed,
     readyToSave,
     reset,
+    initFromArnia,
     patchVassoio,
     updateTelaino,
     addTelaino,
@@ -65,6 +67,14 @@ export function IspezioneWizard({
       document.body.style.overflow = ''
     }
   }, [])
+
+  useEffect(() => {
+    void getArniaById(arniaId).then((arnia) => {
+      if (arnia?.numeroTelai && arnia.numeroTelai > 0) {
+        initFromArnia(arnia.numeroTelai)
+      }
+    })
+  }, [arniaId, initFromArnia])
 
   const handleClose = () => {
     reset()

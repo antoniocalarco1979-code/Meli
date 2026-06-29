@@ -11,6 +11,7 @@ export {
   Inbox,
   LayoutDashboard,
   Leaf,
+  Map,
   MapPin,
   Package,
   Pencil,

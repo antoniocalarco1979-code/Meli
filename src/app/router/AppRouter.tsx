@@ -38,6 +38,11 @@ const OggiPage = lazy(() =>
 const AltroPage = lazy(() =>
   import('../../features/dashboard/pages/AltroPage').then((m) => ({ default: m.AltroPage })),
 )
+const MappaApiariPage = lazy(() =>
+  import('../../features/mappa-apiari/pages/MappaApiariPage').then((m) => ({
+    default: m.MappaApiariPage,
+  })),
+)
 
 function PageLoader() {
   return <LoadingScreen label="Caricamento pagina…" />
@@ -55,6 +60,7 @@ export function AppRouter() {
         <Route element={<MainLayout />}>
           <Route index element={<DemoHubPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="mappa-apiari" element={<LazyRoute><MappaApiariPage /></LazyRoute>} />
           <Route path="apiari/*" element={<LazyRoute><ApiariRoutes /></LazyRoute>} />
           <Route path="arnie/*" element={<LazyRoute><ArnieRoutes /></LazyRoute>} />
         </Route>
@@ -63,6 +69,7 @@ export function AppRouter() {
         <Route element={<MainLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="oggi" element={<LazyRoute><OggiPage /></LazyRoute>} />
+          <Route path="mappa-apiari" element={<LazyRoute><MappaApiariPage /></LazyRoute>} />
           <Route path="altro" element={<LazyRoute><AltroPage /></LazyRoute>} />
           <Route path="apiari/*" element={<LazyRoute><ApiariRoutes /></LazyRoute>} />
           <Route path="arnie/*" element={<LazyRoute><ArnieRoutes /></LazyRoute>} />

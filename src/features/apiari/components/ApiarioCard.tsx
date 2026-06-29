@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useAppPath } from '../../../demo/useAppPath'
 import { Button } from '../../../components/ui/Button'
 import type { ApiarioView } from '../types'
+import { formatApiarioLocation } from '../utils/formatApiarioLocation'
 import './ApiarioCard.css'
 
 type ApiarioCardProps = {
@@ -104,7 +105,7 @@ export function ApiarioCard({ apiario, index = 0, onEdit, onDelete }: ApiarioCar
         <ul className="apiario-card__meta">
           <li>
             <MapPin size={18} strokeWidth={1.75} aria-hidden="true" />
-            <span>{apiario.localita || '—'}</span>
+            <span>{formatApiarioLocation(apiario)}</span>
           </li>
           <li>
             <Hexagon size={18} strokeWidth={1.75} aria-hidden="true" />

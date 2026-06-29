@@ -5,6 +5,13 @@ import { parseDexieError } from '../../../database/errors'
 import { Input } from '../../../components/ui/Input'
 import { Textarea } from '../../../components/ui/Textarea'
 import type { ApiarioInput, ApiarioView } from '../types'
+import {
+  emptyApiarioPosizione,
+  posizioneFromApiario,
+  posizioneToApiarioInput,
+  type ApiarioPosizioneState,
+} from '../types/apiarioPosizione.types'
+import { ApiarioPosizioneSection } from './ApiarioPosizioneSection'
 import './ApiarioForm.css'
 
 type ApiarioFormProps = {
@@ -16,18 +23,12 @@ type ApiarioFormProps = {
   onboarding?: boolean
 }
 
-const emptyForm: ApiarioInput = {
+const emptyForm: Omit<ApiarioInput, 'nome'> & { nome: string } = {
   nome: '',
-  localita: '',
-  latitudine: undefined,
-  longitudine: undefined,
   note: '',
   foto: undefined,
   numeroArnie: 0,
 }
-
-const hasGeolocation =
-  typeof navigator !== 'undefined' && 'geolocation' in navigator
 
 export function ApiarioForm({
   initial,
@@ -39,22 +40,21 @@ export function ApiarioForm({
 }: ApiarioFormProps) {
   const photoInputRef = useRef<HTMLInputElement>(null)
 
-  const [form, setForm] = useState<ApiarioInput>(() =>
+  const [form, setForm] = useState(() =>
     initial
       ? {
           nome: initial.nome,
-          localita: initial.localita,
-          latitudine: initial.latitudine,
-          longitudine: initial.longitudine,
           note: initial.note ?? '',
           foto: initial.foto,
           numeroArnie: initial.numeroArnie,
         }
       : { ...emptyForm },
   )
+  const [posizione, setPosizione] = useState<ApiarioPosizioneState>(() =>
+    initial ? posizioneFromApiario(initial) : { ...emptyApiarioPosizione },
+  )
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const [gpsLoading, setGpsLoading] = useState(false)
 
   const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -70,27 +70,6 @@ export function ApiarioForm({
     e.target.value = ''
   }
 
-  const handleGps = () => {
-    if (!hasGeolocation) return
-
-    setGpsLoading(true)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setForm((prev) => ({
-          ...prev,
-          latitudine: Number(pos.coords.latitude.toFixed(6)),
-          longitudine: Number(pos.coords.longitude.toFixed(6)),
-        }))
-        setError('')
-        setGpsLoading(false)
-      },
-      () => {
-        setError('Impossibile ottenere la posizione. Riprova in apiario.')
-        setGpsLoading(false)
-      },
-    )
-  }
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
@@ -104,8 +83,8 @@ export function ApiarioForm({
     try {
       await onSubmit({
         ...form,
+        ...posizioneToApiarioInput(posizione),
         nome: form.nome.trim(),
-        localita: form.localita.trim(),
         note: form.note?.trim() ?? '',
         numeroArnie: Math.max(0, form.numeroArnie),
       })
@@ -128,11 +107,10 @@ export function ApiarioForm({
           required
         />
 
-        <Input
-          label="Località"
-          value={form.localita}
-          onChange={(e) => setForm({ ...form, localita: e.target.value })}
-          placeholder="Es. San Roberto (RC)"
+        <ApiarioPosizioneSection
+          value={posizione}
+          onChange={setPosizione}
+          onError={setError}
         />
 
         {!onboarding && (
@@ -158,53 +136,38 @@ export function ApiarioForm({
         )}
 
         {!compact && !onboarding && (
-          <>
-        {hasGeolocation && (
-          <Button
-            type="button"
-            variant="secondary"
-            size="md"
-            className="apiario-form__action-btn"
-            onClick={handleGps}
-            disabled={gpsLoading}
-          >
-            📍 Usa posizione attuale
-          </Button>
-        )}
-
-        <div className="apiario-form__block">
-          <input
-            ref={photoInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="apiario-form__upload-input"
-            onChange={handlePhotoUpload}
-          />
-          <Button
-            type="button"
-            variant="secondary"
-            size="md"
-            className="apiario-form__action-btn"
-            onClick={() => photoInputRef.current?.click()}
-          >
-            📷 Scatta foto
-          </Button>
-          {form.foto && (
-            <div className="apiario-form__photo-wrap">
-              <img src={form.foto} alt="" className="apiario-form__photo-thumb" />
-              <button
-                type="button"
-                className="apiario-form__photo-remove"
-                onClick={() => setForm((prev) => ({ ...prev, foto: undefined }))}
-                aria-label="Rimuovi foto"
-              >
-                <X size={14} />
-              </button>
-            </div>
-          )}
-        </div>
-          </>
+          <div className="apiario-form__block">
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="apiario-form__upload-input"
+              onChange={handlePhotoUpload}
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              size="md"
+              className="apiario-form__action-btn"
+              onClick={() => photoInputRef.current?.click()}
+            >
+              📷 Scatta foto
+            </Button>
+            {form.foto && (
+              <div className="apiario-form__photo-wrap">
+                <img src={form.foto} alt="" className="apiario-form__photo-thumb" />
+                <button
+                  type="button"
+                  className="apiario-form__photo-remove"
+                  onClick={() => setForm((prev) => ({ ...prev, foto: undefined }))}
+                  aria-label="Rimuovi foto"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
 

@@ -92,11 +92,15 @@ class MeliDatabase extends Dexie {
         await migrateTrattamentiV5(tx)
       })
 
-    this.version(DATABASE_VERSION)
+    this.version(6)
       .stores(STORE_SCHEMA)
       .upgrade(async (tx) => {
         await migrateArnieV6(tx)
       })
+
+    this.version(7).stores(STORE_SCHEMA)
+
+    this.version(DATABASE_VERSION).stores(STORE_SCHEMA)
   }
 }
 

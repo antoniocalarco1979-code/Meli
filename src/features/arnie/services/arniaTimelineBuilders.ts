@@ -1,8 +1,26 @@
 import type { Foto, Produzione, Trattamento, Visita } from '../../../database/types'
-import { formatVisitaDateShort } from '../../../utils/dateFormatters'
+import {
+  buildAzioneRuleContextFromVisita,
+  generateAzioniConsigliate,
+} from '../../azioni/generateAzioniConsigliate'
+import {
+  extractTimelineUserNote,
+  resolveVisitMeteo,
+  resolveVisitOperatore,
+  resolveVisitTemperatura,
+} from '../../visite/services/visitMetadata'
+import { formatFullDate, formatVisitaDateShort, formatVisitaTime } from '../../../utils/dateFormatters'
 import { computeSaluteFromVisita, getSaluteLevel } from '../../../utils/salute'
 import type { VisitaTimelineEntry } from '../types'
-import { buildVisitaRiepilogo, saluteLevelEmoji } from '../utils/arniaFormatters'
+import {
+  buildVisitaRiepilogo,
+  formatCovataDisplay,
+  formatReginaVisitaDisplay,
+  formatSaluteStatoLabel,
+  formatScorteDisplay,
+  parseMelarioFromNote,
+  saluteLevelEmoji,
+} from '../utils/arniaFormatters'
 
 function isSameDay(a: number, b: number): boolean {
   const d1 = new Date(a)
@@ -37,17 +55,28 @@ export function buildVisitaTimeline(
     const trattamentoRecente = visitTrattamenti[0]
     const salute = computeSaluteFromVisita(visita, trattamentoRecente)
     const statusLevel = getSaluteLevel(salute)
+    const azioniConsigliate = generateAzioniConsigliate(buildAzioneRuleContextFromVisita(visita))
 
     return {
       id: visita.id,
       data: visita.data,
       dataShort: formatVisitaDateShort(visita.data),
+      dataFull: formatFullDate(visita.data),
+      oraLabel: formatVisitaTime(visita.data),
       summary: buildVisitaRiepilogo(visita),
       statusIcon: saluteLevelEmoji(statusLevel),
       statusLevel,
-      meteo: visita.meteo,
-      note: visita.note,
-      reginaVista: visita.reginaVista,
+      statoGeneraleLabel: formatSaluteStatoLabel(salute),
+      saluteValue: salute,
+      reginaLabel: formatReginaVisitaDisplay(visita),
+      covataLabel: formatCovataDisplay(visita.covata),
+      scorteLabel: formatScorteDisplay(visita.scorte),
+      melarioLabel: parseMelarioFromNote(visita.note),
+      meteoLabel: resolveVisitMeteo(visita),
+      temperaturaLabel: resolveVisitTemperatura(visita),
+      operatoreLabel: resolveVisitOperatore(visita),
+      azioniConsigliate,
+      noteDisplay: extractTimelineUserNote(visita.note),
       fotoPaths: visitFoto.map((f) => f.path),
       trattamenti: visitTrattamenti.map((t) => t.prodotto ?? 'Trattamento'),
       produzione: visitProduzione.map((p) => `${p.kg} kg${p.tipo ? ` · ${p.tipo}` : ''}`),

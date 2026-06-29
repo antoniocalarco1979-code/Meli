@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { createIspezioneStateForArnia } from '../../arnie/utils/arniaTelaiFactory'
 import {
   createTelainoInspection,
   emptyIspezioneWizardState,
@@ -80,6 +81,11 @@ export function useIspezioneWizard() {
     setState(emptyIspezioneWizardState())
   }, [])
 
+  const initFromArnia = useCallback((numeroTelai: number) => {
+    setStepIndex(0)
+    setState(createIspezioneStateForArnia({ numeroTelai }))
+  }, [])
+
   return {
     step,
     stepIndex,
@@ -97,5 +103,6 @@ export function useIspezioneWizard() {
     canProceed,
     readyToSave,
     reset,
+    initFromArnia,
   }
 }

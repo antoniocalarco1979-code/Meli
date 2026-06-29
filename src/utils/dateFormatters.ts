@@ -33,3 +33,11 @@ export function formatVisitaDateShort(timestamp: number): string {
 export function formatDateTime(timestamp: number): string {
   return new Date(timestamp).toLocaleString('it-IT')
 }
+
+/** Es. "14:30" — per timeline visita */
+export function formatVisitaTime(timestamp: number): string {
+  return new Date(timestamp).toLocaleTimeString('it-IT', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}

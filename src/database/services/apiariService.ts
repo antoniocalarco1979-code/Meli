@@ -7,17 +7,32 @@ import {
   trattamentiRepository,
   visiteRepository,
 } from '../repositories'
-import type { Apiario, ApiarioInput, ApiarioUpdate, ApiarioView } from '../types'
 import { getDb } from '../activeDatabase'
+import type { Apiario, ApiarioInput, ApiarioUpdate, ApiarioView } from '../types'
+import { buildApiarioLocalitaLabel } from '../../utils/apiarioLocation'
 
 /** Normalizza alias UI legacy verso campi schema definitivo. */
 function normalizeApiarioInput(input: ApiarioInput): Omit<Apiario, 'id' | 'createdAt' | 'updatedAt'> {
+  const comune = input.comune?.trim()
+  const provincia = input.provincia?.trim()
+  const regione = input.regione?.trim()
+  const indirizzo = input.indirizzo?.trim()
+
   return {
     nome: input.nome.trim(),
-    localita: input.localita.trim(),
+    localita: buildApiarioLocalitaLabel({
+      localita: input.localita,
+      comune,
+      provincia,
+      regione,
+    }),
     descrizione: (input.descrizione ?? input.note ?? '').trim() || undefined,
     latitudine: input.latitudine,
     longitudine: input.longitudine,
+    comune,
+    provincia,
+    regione,
+    indirizzo,
     quota: input.quota,
     fotoCopertina: input.fotoCopertina ?? input.foto,
     numeroArnie: Math.max(0, input.numeroArnie),
@@ -59,11 +74,15 @@ export async function createApiario(input: ApiarioInput): Promise<ApiarioView> {
 export async function updateApiario(id: string, input: ApiarioUpdate): Promise<void> {
   const normalized = normalizeApiarioInput({
     nome: input.nome ?? '',
-    localita: input.localita ?? '',
+    localita: input.localita,
     descrizione: input.descrizione,
     note: input.note,
     latitudine: input.latitudine,
     longitudine: input.longitudine,
+    comune: input.comune,
+    provincia: input.provincia,
+    regione: input.regione,
+    indirizzo: input.indirizzo,
     quota: input.quota,
     fotoCopertina: input.fotoCopertina ?? input.foto,
     numeroArnie: input.numeroArnie ?? 0,
@@ -71,12 +90,23 @@ export async function updateApiario(id: string, input: ApiarioUpdate): Promise<v
 
   const changes: Partial<Apiario> = {}
   if (input.nome !== undefined) changes.nome = normalized.nome
-  if (input.localita !== undefined) changes.localita = normalized.localita
+  if (
+    input.localita !== undefined ||
+    input.comune !== undefined ||
+    input.provincia !== undefined ||
+    input.regione !== undefined
+  ) {
+    changes.localita = normalized.localita
+  }
   if (input.descrizione !== undefined || input.note !== undefined) {
     changes.descrizione = normalized.descrizione
   }
   if (input.latitudine !== undefined) changes.latitudine = input.latitudine
   if (input.longitudine !== undefined) changes.longitudine = input.longitudine
+  if (input.comune !== undefined) changes.comune = normalized.comune
+  if (input.provincia !== undefined) changes.provincia = normalized.provincia
+  if (input.regione !== undefined) changes.regione = normalized.regione
+  if (input.indirizzo !== undefined) changes.indirizzo = normalized.indirizzo
   if (input.quota !== undefined) changes.quota = input.quota
   if (input.fotoCopertina !== undefined || input.foto !== undefined) {
     changes.fotoCopertina = normalized.fotoCopertina

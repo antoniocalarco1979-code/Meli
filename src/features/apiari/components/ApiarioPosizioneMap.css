@@ -1,0 +1,46 @@
+.apiario-posizione-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.apiario-posizione-map__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--meli-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--meli-border);
+  box-shadow: var(--meli-shadow-sm);
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.apiario-posizione-map__frame--dragging {
+  cursor: grabbing;
+}
+
+.apiario-posizione-map__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.apiario-posizione-map__pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-100% + 4px));
+  color: #c0392b;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+.apiario-posizione-map__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}

@@ -1,4 +1,5 @@
 import type { Apiario, Arnia } from '../../database/types'
+import type { AzioneConsigliata } from '../azioni/types'
 import type { SaluteLevel } from '../../utils/salute'
 
 export type { Arnia, ArniaStato } from '../../database/types'
@@ -38,12 +39,22 @@ export type VisitaTimelineEntry = {
   id: string
   data: number
   dataShort: string
+  dataFull: string
+  oraLabel: string
   summary: string
   statusIcon: string
   statusLevel: SaluteLevel
-  meteo?: string
-  note?: string
-  reginaVista?: boolean
+  statoGeneraleLabel: string
+  saluteValue: number
+  reginaLabel: string
+  covataLabel: string
+  scorteLabel: string
+  melarioLabel: string
+  meteoLabel: string
+  temperaturaLabel: string
+  operatoreLabel: string
+  azioniConsigliate: AzioneConsigliata[]
+  noteDisplay?: string
   fotoPaths: string[]
   trattamenti: string[]
   produzione: string[]

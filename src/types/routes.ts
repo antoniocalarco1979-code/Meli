@@ -4,6 +4,7 @@ export type AppRoute = {
   path: string
   label: string
   icon: LucideIcon
+  emoji?: string
   end?: boolean
 }
 

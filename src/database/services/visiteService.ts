@@ -1,3 +1,4 @@
+import { enrichVisitaInputForSave } from '../../features/visite/services/visitMetadata'
 import { fotoRepository, visiteRepository } from '../repositories'
 import type { VisitaInput, VisitaUpdate } from '../types'
 
@@ -10,7 +11,7 @@ export async function getVisitaById(id: string) {
 }
 
 export async function createVisita(input: VisitaInput) {
-  return visiteRepository.create(input)
+  return visiteRepository.create(enrichVisitaInputForSave(input))
 }
 
 export async function updateVisita(id: string, input: VisitaUpdate) {
