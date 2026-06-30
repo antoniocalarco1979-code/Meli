@@ -6,6 +6,8 @@ export type AppRoute = {
   icon: LucideIcon
   emoji?: string
   end?: boolean
+  /** Nasconde voci incomplete dalla navigazione principale */
+  hidden?: boolean
 }
 
 export type BottomNavItem = {

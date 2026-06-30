@@ -18,12 +18,12 @@
 export const DATABASE_NAME = 'MeliDatabase'
 
 /** Versione schema — incrementare ad ogni migrazione breaking. */
-export const DATABASE_VERSION = 9
+export const DATABASE_VERSION = 11
 
 /** Definizione store Dexie: tabella → indici indicizzati. */
 export const STORE_SCHEMA = {
   apiari: 'id, nome, localita, createdAt, updatedAt',
-  arnie: 'id, apiarioId, numero, stato, modelloId, reginaAttualeId, [apiarioId+numero], createdAt, updatedAt',
+  arnie: 'id, publicUuid, apiarioId, numero, qrCode, stato, modelloId, reginaAttualeId, [apiarioId+numero], createdAt, updatedAt',
   regine: 'id, arniaId, anno, [arniaId+anno]',
   visite: 'id, arniaId, data, [arniaId+data]',
   foto: 'id, visitaId, arniaId, apiarioId, data',

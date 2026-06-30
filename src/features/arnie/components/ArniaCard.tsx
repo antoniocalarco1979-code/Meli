@@ -67,7 +67,7 @@ export function ArniaCard({ item, index = 0, compact = false }: ArniaCardProps) 
                 <dt>QR Code</dt>
                 <dd>
                   <QrCode size={16} aria-hidden="true" />
-                  {arnia.qrCode}
+                  Attivo
                 </dd>
               </div>
             )}

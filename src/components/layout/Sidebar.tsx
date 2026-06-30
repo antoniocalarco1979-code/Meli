@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion'
 import { Hexagon, Settings } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { appRoutes } from '../../app/router/config'
+import { visibleAppRoutes } from '../../app/router/config'
+import { useAppPath } from '../../demo/useAppPath'
 import '../../demo/demo.css'
 import './Sidebar.css'
 
 export function Sidebar() {
   const { pathname } = useLocation()
+  const appPath = useAppPath()
   const isDemoActive = pathname === '/demo' || pathname.startsWith('/demo/')
 
   const linkFor = (path: string, end?: boolean) => {
@@ -34,7 +36,7 @@ export function Sidebar() {
 
       <nav className="sidebar__nav" aria-label="Navigazione principale">
         <ul>
-          {appRoutes.map(({ path, label, icon: Icon, emoji, end }, index) => {
+          {visibleAppRoutes.map(({ path, label, icon: Icon, emoji, end }, index) => {
             const route = linkFor(path, end)
             return (
             <motion.li
@@ -81,10 +83,15 @@ export function Sidebar() {
       </nav>
 
       <div className="sidebar__footer">
-        <button type="button" className="sidebar__link sidebar__link--muted">
+        <NavLink
+          to={appPath('/impostazioni')}
+          className={({ isActive }) =>
+            `sidebar__link sidebar__link--muted${isActive ? ' sidebar__link--active' : ''}`
+          }
+        >
           <Settings size={24} strokeWidth={1.65} aria-hidden="true" />
           <span>Impostazioni</span>
-        </button>
+        </NavLink>
       </div>
     </motion.aside>
   )

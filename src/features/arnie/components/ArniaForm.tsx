@@ -1,9 +1,12 @@
 import type { ArniaInput } from '../../../database/types/inputs'
+import type { Arnia } from '../../../database/types'
 import { ArniaWizard } from './arnia-wizard/ArniaWizard'
 
 type ArniaFormProps = {
   apiarioId: string
-  onSubmit: (data: ArniaInput) => Promise<void>
+  apiarioNome?: string
+  onSubmit: (data: ArniaInput) => Promise<Arnia>
+  onComplete?: (arnia: Arnia) => void
   onCancel?: () => void
   submitLabel?: string
 }

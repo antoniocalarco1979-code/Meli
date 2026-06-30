@@ -1,0 +1,38 @@
+.visita-guidata-footer__nav {
+  display: flex;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.visita-guidata-footer__back {
+  flex: 0 0 auto;
+  min-width: 7.5rem;
+  min-height: 64px;
+  padding: 0 1rem;
+  border: 2px solid var(--meli-border-strong);
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  color: var(--meli-brown);
+  font-family: var(--meli-font-display);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.visita-guidata-footer__back:active {
+  transform: scale(0.98);
+}
+
+.visita-guidata-footer__next {
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .visita-guidata-footer__back,
+  .visita-guidata-footer__next {
+    min-height: 72px;
+  }
+}

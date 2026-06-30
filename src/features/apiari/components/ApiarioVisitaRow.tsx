@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
 import './ApiarioVisitaRow.css'
 
 type ApiarioVisitaRowProps = {
@@ -9,6 +10,7 @@ type ApiarioVisitaRowProps = {
 }
 
 export function ApiarioVisitaRow({ arniaId, numero, done, onSelect }: ApiarioVisitaRowProps) {
+  const appPath = useAppPath()
   const label = (
     <>
       <span aria-hidden="true">🐝</span>
@@ -31,7 +33,7 @@ export function ApiarioVisitaRow({ arniaId, numero, done, onSelect }: ApiarioVis
 
   return (
     <Link
-      to={`/arnie/${arniaId}`}
+      to={appPath(`/arnie/${arniaId}`)}
       className={`apiario-visita-row apiario-visita-row--link${done ? ' apiario-visita-row--done' : ''}`}
     >
       {done && <span className="apiario-visita-row__check" aria-hidden="true">✓</span>}

@@ -1,0 +1,158 @@
+.home-apiari__header {
+  margin-bottom: var(--meli-space-lg);
+}
+
+.home-apiari__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--meli-text);
+}
+
+.home-apiari__sub {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  color: var(--meli-text-muted);
+}
+
+.home-apiari__loading {
+  margin: 0;
+  padding: var(--meli-space-xl);
+  text-align: center;
+  color: var(--meli-text-muted);
+}
+
+.home-apiari__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--meli-space-sm);
+  padding: var(--meli-space-2xl);
+  border-radius: var(--meli-radius-xl);
+  color: var(--meli-text-muted);
+}
+
+.home-apiari__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--meli-space-md);
+}
+
+.home-apiario-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--meli-space-md);
+  padding: var(--meli-space-lg);
+  border-radius: var(--meli-radius-xl);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.home-apiario-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--dash-card-shadow-hover, var(--meli-shadow-lg));
+}
+
+.home-apiario-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--meli-space-sm);
+}
+
+.home-apiario-card__name {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--meli-text);
+}
+
+.home-apiario-card__status {
+  flex-shrink: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--meli-radius-pill);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.home-apiario-card__status--ok {
+  color: #6fcf97;
+  background: rgba(111, 207, 151, 0.14);
+  border: 1px solid rgba(111, 207, 151, 0.28);
+}
+
+.home-apiario-card__status--warning {
+  color: var(--dash-honey-light, #f0b429);
+  background: rgba(232, 164, 0, 0.12);
+  border: 1px solid rgba(232, 164, 0, 0.28);
+}
+
+.home-apiario-card__status--critical {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid rgba(255, 107, 107, 0.28);
+}
+
+.home-apiario-card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--meli-space-sm);
+  margin: 0;
+}
+
+.home-apiario-card__meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.home-apiario-card__meta dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.home-apiario-card__meta dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}
+
+.home-apiario-card__open {
+  align-self: flex-start;
+  min-height: 40px;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid rgba(232, 164, 0, 0.35);
+  border-radius: var(--meli-radius-pill);
+  background: rgba(232, 164, 0, 0.1);
+  font-family: var(--meli-font);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--dash-honey-light, #f0b429);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.home-apiario-card__open:hover {
+  background: rgba(232, 164, 0, 0.18);
+  border-color: rgba(232, 164, 0, 0.5);
+  color: var(--meli-text);
+}

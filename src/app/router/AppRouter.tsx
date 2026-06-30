@@ -38,6 +38,11 @@ const OggiPage = lazy(() =>
 const AltroPage = lazy(() =>
   import('../../features/dashboard/pages/AltroPage').then((m) => ({ default: m.AltroPage })),
 )
+const ImpostazioniRoutes = lazy(() =>
+  import('../../features/settings/pages/ImpostazioniRoutes').then((m) => ({
+    default: m.ImpostazioniRoutes,
+  })),
+)
 const MappaApiariPage = lazy(() =>
   import('../../features/mappa-apiari/pages/MappaApiariPage').then((m) => ({
     default: m.MappaApiariPage,
@@ -71,6 +76,7 @@ export function AppRouter() {
           <Route path="oggi" element={<LazyRoute><OggiPage /></LazyRoute>} />
           <Route path="mappa-apiari" element={<LazyRoute><MappaApiariPage /></LazyRoute>} />
           <Route path="altro" element={<LazyRoute><AltroPage /></LazyRoute>} />
+          <Route path="impostazioni/*" element={<LazyRoute><ImpostazioniRoutes /></LazyRoute>} />
           <Route path="apiari/*" element={<LazyRoute><ApiariRoutes /></LazyRoute>} />
           <Route path="arnie/*" element={<LazyRoute><ArnieRoutes /></LazyRoute>} />
           <Route path="visite/*" element={<LazyRoute><VisiteRoutes /></LazyRoute>} />

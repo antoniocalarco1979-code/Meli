@@ -1,26 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Leaf, Plus } from '../../../theme/icons'
+import { Plus, Search } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import { PageQueryState } from '../../../components/common/PageQueryState'
-import { Button } from '../../../components/ui/Button'
-import { ConfirmDialog } from '../../../components/ui/ConfirmDialog'
 import { EmptyState } from '../../../components/ui/EmptyState'
-import { FloatingActionButton } from '../../../components/ui/FloatingActionButton'
 import { parseDexieError } from '../../../database/errors'
 import { useToast } from '../../../hooks/useToast'
 import { ApiarioCard } from '../components/ApiarioCard'
 import { ApiarioModal } from '../components/ApiarioModal'
-import { useApiari } from '../hooks/useApiari'
+import { useApiariListCards } from '../hooks/useApiariListCards'
 import { createApiario, deleteApiario, updateApiario } from '../services/apiariService'
 import type { ApiarioInput, ApiarioView } from '../types'
+import { ConfirmDialog } from '../../../components/ui/ConfirmDialog'
 import './ApiariPage.css'
 
+function normalizeSearch(value: string): string {
+  return value.trim().toLowerCase()
+}
+
 export function ApiariPage() {
-  const { apiari, loading, error } = useApiari()
+  const { cards, loading, error } = useApiariListCards()
   const location = useLocation()
   const toast = useToast()
 
+  const [search, setSearch] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<ApiarioView | undefined>()
   const [deleteTarget, setDeleteTarget] = useState<ApiarioView | null>(null)
@@ -30,13 +33,35 @@ export function ApiariPage() {
     const editId = (location.state as { editId?: string } | null)?.editId
     if (!editId || loading) return
 
-    const target = apiari.find((a) => a.id === editId)
+    const target = cards.find((card) => card.apiario.id === editId)?.apiario
     if (target) {
       setEditing(target)
       setModalOpen(true)
       window.history.replaceState({}, '')
     }
-  }, [location.state, apiari, loading])
+  }, [location.state, cards, loading])
+
+  const filteredCards = useMemo(() => {
+    const query = normalizeSearch(search)
+    if (!query) return cards
+
+    return cards.filter((card) => {
+      const { apiario, comuneLabel } = card
+      const haystack = [
+        apiario.nome,
+        comuneLabel,
+        apiario.localita,
+        apiario.comune,
+        apiario.provincia,
+        apiario.regione,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+
+      return haystack.includes(query)
+    })
+  }, [cards, search])
 
   const openCreate = () => {
     setEditing(undefined)
@@ -75,6 +100,9 @@ export function ApiariPage() {
     }
   }
 
+  const hasApiari = cards.length > 0
+  const showEmptySearch = hasApiari && filteredCards.length === 0
+
   return (
     <PageQueryState loading={loading} error={error} skeleton="list">
       <div className="apiari-page">
@@ -84,32 +112,56 @@ export function ApiariPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="apiari-page__title">
-            <Leaf size={28} strokeWidth={1.75} aria-hidden="true" />
-            APIARI
-          </h1>
-          <Button variant="secondary" size="md" className="apiari-page__new" onClick={openCreate}>
-            <Plus size={20} strokeWidth={2} aria-hidden="true" />
+          <div className="apiari-page__intro">
+            <p className="apiari-page__eyebrow meli-label">Gestione siti apistici</p>
+            <h1 className="apiari-page__title">Apiari</h1>
+          </div>
+          <button type="button" className="apiari-page__new" onClick={openCreate}>
+            <Plus size={20} strokeWidth={2.25} aria-hidden="true" />
             Nuovo Apiario
-          </Button>
+          </button>
         </motion.header>
 
-        {apiari.length === 0 ? (
+        {hasApiari && (
+          <motion.div
+            className="apiari-page__search-wrap meli-glass"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Search size={20} strokeWidth={1.75} className="apiari-page__search-icon" aria-hidden="true" />
+            <input
+              type="search"
+              className="apiari-page__search"
+              placeholder="Cerca per nome o comune…"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label="Cerca apiari"
+            />
+          </motion.div>
+        )}
+
+        {!hasApiari ? (
           <EmptyState
             title="Nessun apiario"
             description="Crea il tuo primo apiario per iniziare a gestire le colonie."
             action={
-              <Button variant="primary" size="md" onClick={openCreate}>
+              <button type="button" className="apiari-page__new apiari-page__new--inline" onClick={openCreate}>
+                <Plus size={20} strokeWidth={2.25} aria-hidden="true" />
                 Nuovo Apiario
-              </Button>
+              </button>
             }
           />
+        ) : showEmptySearch ? (
+          <div className="apiari-page__no-results meli-glass">
+            <p>Nessun apiario corrisponde a &quot;{search}&quot;</p>
+          </div>
         ) : (
           <div className="apiari-page__grid">
-            {apiari.map((apiario, index) => (
+            {filteredCards.map((card, index) => (
               <ApiarioCard
-                key={apiario.id}
-                apiario={apiario}
+                key={card.apiario.id}
+                card={card}
                 index={index}
                 onEdit={openEdit}
                 onDelete={setDeleteTarget}
@@ -117,12 +169,6 @@ export function ApiariPage() {
             ))}
           </div>
         )}
-
-        <FloatingActionButton
-          icon={<Plus size={26} strokeWidth={2} />}
-          label="Nuovo apiario"
-          onClick={openCreate}
-        />
 
         <ApiarioModal
           open={modalOpen}

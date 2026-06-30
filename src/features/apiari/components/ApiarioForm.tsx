@@ -12,6 +12,13 @@ import {
   type ApiarioPosizioneState,
 } from '../types/apiarioPosizione.types'
 import { ApiarioPosizioneSection } from './ApiarioPosizioneSection'
+import {
+  ambienteFromApiario,
+  ambienteToApiarioInput,
+  ApiarioAmbienteSection,
+  emptyApiarioAmbiente,
+  type ApiarioAmbienteState,
+} from './ApiarioAmbienteSection'
 import './ApiarioForm.css'
 
 type ApiarioFormProps = {
@@ -53,6 +60,9 @@ export function ApiarioForm({
   const [posizione, setPosizione] = useState<ApiarioPosizioneState>(() =>
     initial ? posizioneFromApiario(initial) : { ...emptyApiarioPosizione },
   )
+  const [ambiente, setAmbiente] = useState<ApiarioAmbienteState>(() =>
+    initial ? ambienteFromApiario(initial) : emptyApiarioAmbiente(),
+  )
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -84,6 +94,7 @@ export function ApiarioForm({
       await onSubmit({
         ...form,
         ...posizioneToApiarioInput(posizione),
+        ...ambienteToApiarioInput(ambiente),
         nome: form.nome.trim(),
         note: form.note?.trim() ?? '',
         numeroArnie: Math.max(0, form.numeroArnie),
@@ -112,6 +123,10 @@ export function ApiarioForm({
           onChange={setPosizione}
           onError={setError}
         />
+
+        {!onboarding && (
+          <ApiarioAmbienteSection value={ambiente} onChange={setAmbiente} />
+        )}
 
         {!onboarding && (
           <Input

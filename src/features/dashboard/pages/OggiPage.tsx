@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
 import { ApiarioSelectorModal } from '../components/ApiarioSelectorModal'
 import { MorningBriefing } from '../components/MorningBriefing'
 import { TodayActivities } from '../components/TodayActivities'
@@ -11,6 +12,7 @@ import './OggiPage.css'
 
 export function OggiPage() {
   const navigate = useNavigate()
+  const appPath = useAppPath()
   const [selectorOpen, setSelectorOpen] = useState(false)
   const { apiari, selectedApiario, selectedApiarioId, setSelectedApiarioId, loading: selecting } =
     useSelectedApiario()
@@ -22,12 +24,14 @@ export function OggiPage() {
   const briefingLoading = selecting || flowLoading || statsLoading
 
   const goToApiario = () => {
-    if (selectedApiarioId) navigate(`/apiari/${selectedApiarioId}`)
+    if (selectedApiarioId) {
+      navigate(appPath(`/apiari/${selectedApiarioId}`), { state: { tab: 'giro' } })
+    }
   }
 
   const goToArnia = (numero: string) => {
     const arniaId = arnieByNumero[numero]
-    if (arniaId) navigate(`/arnie/${arniaId}`)
+    if (arniaId) navigate(appPath(`/arnie/${arniaId}`))
   }
 
   return (

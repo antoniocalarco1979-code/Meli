@@ -16,6 +16,12 @@
   color: var(--meli-text-muted);
 }
 
+.arnia-status-summary__hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--meli-text-muted);
+}
+
 .arnia-status-summary__grid {
   margin: 0;
   display: grid;
@@ -23,21 +29,18 @@
   gap: 0.65rem;
 }
 
-.arnia-status-summary__cell {
+.arnia-status-summary__cell-wrap {
   margin: 0;
-  padding: 0.85rem 0.9rem;
-  min-height: 4.5rem;
-  border-radius: var(--meli-radius-md);
-  background: var(--meli-surface-raised);
-  border: 1px solid var(--meli-border);
+  display: flex;
+  flex-direction: column;
 }
 
-.arnia-status-summary__cell:last-child:nth-child(odd) {
+.arnia-status-summary__cell-wrap:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
 
 .arnia-status-summary__label {
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.3rem 0.9rem;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.05em;
@@ -47,12 +50,46 @@
 
 .arnia-status-summary__value {
   margin: 0;
+  flex: 1;
+}
+
+.arnia-status-summary__cell {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: var(--meli-radius-md);
+  background: var(--meli-surface-raised);
+  border: 1px solid var(--meli-border);
   font-family: var(--meli-font-display);
   font-size: clamp(1.0625rem, 3.5vw, 1.25rem);
   font-weight: 800;
   line-height: 1.25;
   color: var(--meli-brown);
+  text-align: left;
   word-break: break-word;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.arnia-status-summary__cell:hover {
+  border-color: rgba(232, 164, 0, 0.35);
+}
+
+.arnia-status-summary__cell:active {
+  transform: scale(0.98);
+}
+
+.arnia-status-summary__cell--active {
+  border-color: rgba(232, 164, 0, 0.5);
+  background: rgba(232, 164, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(232, 164, 0, 0.12);
 }
 
 @media (min-width: 768px) {

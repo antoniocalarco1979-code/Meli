@@ -33,7 +33,6 @@ export async function seedArnieIfEmpty(options?: { force?: boolean }): Promise<v
     numero: '12',
     modelloId: 'dadant_blatt_10',
     nome: 'Arnia principale',
-    qrCode: 'MELI-ACQ-12',
     stato: 'attiva',
     forzaFamiglia: 94,
     note: 'Colonia forte, buona covata. Ultimo controllo positivo.',
@@ -111,7 +110,6 @@ export async function seedArnieIfEmpty(options?: { force?: boolean }): Promise<v
       apiarioId: acquacalda.id,
       numero: String(i),
       modelloId: i % 5 === 0 ? 'dadant_blatt_12' : 'dadant_blatt_10',
-      qrCode: `MELI-ACQ-${String(i).padStart(2, '0')}`,
       stato: i % 3 === 0 ? 'debole' : 'attiva',
       forzaFamiglia: i % 3 === 0 ? 70 : 88,
     })

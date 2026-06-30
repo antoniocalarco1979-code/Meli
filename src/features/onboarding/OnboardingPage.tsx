@@ -42,6 +42,7 @@ export function OnboardingPage() {
   )
   const [step, setStep] = useState<OnboardingStep>('welcome')
   const [apiarioId, setApiarioId] = useState<string>()
+  const [apiarioNome, setApiarioNome] = useState<string>()
   const [apiarioDialogOpen, setApiarioDialogOpen] = useState(false)
   const [arniaDialogOpen, setArnialogOpen] = useState(false)
 
@@ -57,6 +58,7 @@ export function OnboardingPage() {
       void db.apiari.toCollection().first().then((apiario) => {
         if (apiario) {
           setApiarioId(apiario.id)
+          setApiarioNome(apiario.nome)
           setStep('add-arnia')
         }
       })
@@ -78,16 +80,13 @@ export function OnboardingPage() {
   const handleApiarioSubmit = async (data: ApiarioInput) => {
     const created = await createApiario(data)
     setApiarioId(created.id)
+    setApiarioNome(created.nome)
     await storageService.set(SELECTED_APIARIO_KEY, created.id)
     setApiarioDialogOpen(false)
     setStep('add-arnia')
   }
 
-  const handleArniaSubmit = async (data: ArniaInput) => {
-    await createArnia(data)
-    setArnialogOpen(false)
-    setStep('done')
-  }
+  const handleArniaSubmit = async (data: ArniaInput) => createArnia(data)
 
   const finish = () => {
     navigate('/apiari', { replace: true })
@@ -180,9 +179,14 @@ export function OnboardingPage() {
           <ArniaForm
             key={arniaDialogOpen ? 'arnia-open' : 'arnia-closed'}
             apiarioId={apiarioId}
+            apiarioNome={apiarioNome}
             submitLabel="SALVA"
             onCancel={() => setArnialogOpen(false)}
             onSubmit={handleArniaSubmit}
+            onComplete={() => {
+              setArnialogOpen(false)
+              setStep('done')
+            }}
           />
         </Modal>
       )}

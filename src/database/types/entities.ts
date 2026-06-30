@@ -36,6 +36,14 @@ export type Apiario = {
   fotoCopertina?: string
   /** Contatore denormalizzato per dashboard e card. */
   numeroArnie: number
+  /** Esposizione del sito (N, E, S, O, mista). */
+  esposizione?: string
+  /** Livello di accessibilità al sito. */
+  accessibilita?: string
+  /** Presenza di acqua nelle vicinanze. */
+  presenzaAcqua?: boolean
+  /** Fioritura predominante nella zona. */
+  fiorituraPrevalente?: string
   createdAt: number
   updatedAt: number
 }
@@ -46,10 +54,15 @@ export type Apiario = {
  */
 export type Arnia = {
   id: string
+  /** UUID permanente — non cambia con numero, nome o colore. */
+  publicUuid: string
   apiarioId: string
   numero: string
   nome?: string
-  qrCode?: string
+  /** Payload QR (`meli:arnia:{publicUuid}`) per scansione futura. */
+  qrCode: string
+  /** Immagine QR (PNG data URL) persistita per anteprima, stampa e PDF. */
+  qrImageDataUrl?: string
   stato: ArniaStato
   /** Modello costruttivo selezionato in creazione. */
   modelloId: ArniaModelloId

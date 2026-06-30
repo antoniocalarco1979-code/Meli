@@ -25,6 +25,10 @@ export type ApiarioInput = {
   quota?: number
   fotoCopertina?: string
   numeroArnie: number
+  esposizione?: string
+  accessibilita?: string
+  presenzaAcqua?: boolean
+  fiorituraPrevalente?: string
   /** Alias UI → descrizione */
   note?: string
   /** Alias UI → fotoCopertina */
@@ -41,7 +45,6 @@ export type ArniaInput = {
   telaiPersonalizzati?: number
   colore?: string
   nome?: string
-  qrCode?: string
   stato?: ArniaStato
   forzaFamiglia?: number
   fotoCopertina?: string
@@ -50,7 +53,7 @@ export type ArniaInput = {
   codice?: string
 }
 
-export type ArniaUpdate = Partial<Omit<Arnia, 'id' | 'apiarioId' | 'createdAt'>>
+export type ArniaUpdate = Partial<Omit<Arnia, 'id' | 'publicUuid' | 'qrCode' | 'apiarioId' | 'createdAt'>>
 
 export type ReginaInput = {
   arniaId: string

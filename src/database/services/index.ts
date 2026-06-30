@@ -14,7 +14,10 @@ export {
   deleteArnia,
   getAllArnie,
   getArniaById,
+  getArniaByPublicUuid,
+  getArniaByQrCode,
   getArnieByApiarioId,
+  regenerateArniaQr,
   syncApiarioArnieCount,
   updateArnia,
 } from './arnieService'

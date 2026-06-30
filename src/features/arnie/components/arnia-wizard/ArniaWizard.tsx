@@ -4,6 +4,7 @@ import { ArrowLeft, Check } from '../../../../theme/icons'
 import { Button } from '../../../../components/ui/Button'
 import { Input } from '../../../../components/ui/Input'
 import { parseDexieError } from '../../../../database/errors'
+import type { Arnia } from '../../../../database/types'
 import type { ArniaInput } from '../../../../database/types/inputs'
 import { getArniaColoreById } from '../../constants/arniaColori'
 import { useArniaWizard } from '../../hooks/useArniaWizard'
@@ -17,12 +18,15 @@ import {
 import { mapArniaWizardToInput } from '../../types/arniaWizard.types'
 import { VisitChoiceGrid } from '../../../visite/components/visit-engine/VisitChoiceGrid'
 import { ArniaColorPalette } from './ArniaColorPalette'
+import { ArniaQrSuccessModal } from '../qr/ArniaQrSuccessModal'
 import '../../../visite/components/visit-engine/visit-engine.css'
 import './ArniaWizard.css'
 
 type ArniaWizardProps = {
   apiarioId: string
-  onSubmit: (data: ArniaInput) => Promise<void>
+  apiarioNome?: string
+  onSubmit: (data: ArniaInput) => Promise<Arnia>
+  onComplete?: (arnia: Arnia) => void
   onCancel?: () => void
   submitLabel?: string
 }
@@ -36,7 +40,9 @@ const stepMotion = {
 
 export function ArniaWizard({
   apiarioId,
+  apiarioNome,
   onSubmit,
+  onComplete,
   onCancel,
   submitLabel = 'SALVA',
 }: ArniaWizardProps) {
@@ -56,6 +62,7 @@ export function ArniaWizard({
 
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const [createdArnia, setCreatedArnia] = useState<Arnia | null>(null)
 
   const preset = getModelloPreset(state.modelloId)
   const resolvedModello = resolveArniaModello(
@@ -76,7 +83,8 @@ export function ArniaWizard({
     setSaving(true)
     setSaveError('')
     try {
-      await onSubmit(mapArniaWizardToInput(apiarioId, state))
+      const arnia = await onSubmit(mapArniaWizardToInput(apiarioId, state))
+      setCreatedArnia(arnia)
     } catch (err) {
       setSaveError(parseDexieError(err))
     } finally {
@@ -85,7 +93,8 @@ export function ArniaWizard({
   }
 
   return (
-    <div className="arnia-wizard">
+    <>
+      <div className="arnia-wizard">
       <div className="arnia-wizard__progress" aria-label={`Passo ${stepIndex + 1} di ${totalSteps}`}>
         <div className="arnia-wizard__progress-meta">
           <span>
@@ -261,6 +270,17 @@ export function ArniaWizard({
           </Button>
         )}
       </div>
-    </div>
+      </div>
+
+      <ArniaQrSuccessModal
+        open={!!createdArnia}
+        arnia={createdArnia}
+        apiarioNome={apiarioNome}
+        onClose={() => {
+          if (createdArnia) onComplete?.(createdArnia)
+          setCreatedArnia(null)
+        }}
+      />
+    </>
   )
 }

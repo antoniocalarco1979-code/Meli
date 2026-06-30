@@ -4,7 +4,7 @@ import {
   Crown,
   Droplets,
   Hexagon,
-  LayoutDashboard,
+  Home,
   Map,
   MapPin,
   Package,
@@ -14,24 +14,26 @@ import {
 import type { AppRoute, BottomNavItem } from '../../types'
 
 export const appRoutes: AppRoute[] = [
-  { path: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { path: '/', label: 'Home', icon: Home, end: true },
   { path: '/mappa-apiari', label: 'Mappa Apiari', icon: Map, emoji: '🗺️' },
   { path: '/apiari', label: 'Apiari', icon: MapPin },
   { path: '/arnie', label: 'Arnie', icon: Hexagon },
-  { path: '/visite', label: 'Visite', icon: CalendarDays },
-  { path: '/regine', label: 'Regine', icon: Crown },
-  { path: '/trattamenti', label: 'Trattamenti', icon: Shield },
-  { path: '/produzione', label: 'Produzione', icon: Droplets },
-  { path: '/magazzino', label: 'Magazzino', icon: Package },
-  { path: '/report', label: 'Report', icon: BarChart3 },
+  { path: '/visite', label: 'Visite', icon: CalendarDays, hidden: true },
+  { path: '/regine', label: 'Regine', icon: Crown, hidden: true },
+  { path: '/trattamenti', label: 'Trattamenti', icon: Shield, hidden: true },
+  { path: '/produzione', label: 'Produzione', icon: Droplets, hidden: true },
+  { path: '/magazzino', label: 'Magazzino', icon: Package, hidden: true },
+  { path: '/report', label: 'Report', icon: BarChart3, hidden: true },
 ]
+
+export const visibleAppRoutes = appRoutes.filter((route) => !route.hidden)
 
 /** Tab bar mobile / iPad — 5 voci principali */
 export const bottomNavItems: BottomNavItem[] = [
   { path: '/', label: 'Home', emoji: navEmoji.home, end: true },
   { path: '/apiari', label: 'Apiari', emoji: navEmoji.apiari },
+  { path: '/arnie', label: 'Arnie', emoji: navEmoji.apiari, end: true },
   { path: '/oggi', label: 'Oggi', emoji: navEmoji.oggi, end: true },
-  { path: '/report', label: 'Report', emoji: navEmoji.report, end: true },
   {
     path: '/altro',
     label: 'Altro',
@@ -39,22 +41,26 @@ export const bottomNavItems: BottomNavItem[] = [
     end: true,
     activePrefixes: [
       '/altro',
+      '/impostazioni',
       '/mappa-apiari',
-      '/arnie',
       '/visite',
       '/regine',
       '/trattamenti',
       '/produzione',
       '/magazzino',
+      '/report',
     ],
   },
 ]
 
 export const routeMeta: Record<string, { title: string; subtitle?: string }> = {
-  '/': { title: 'Home', subtitle: 'Panoramica apiario' },
+  '/': { title: 'Home', subtitle: 'La tua giornata in apiario' },
   '/oggi': { title: 'Oggi', subtitle: 'Agenda e giro apiario' },
   '/altro': { title: 'Altro', subtitle: 'Moduli e impostazioni' },
+  '/impostazioni': { title: 'Impostazioni', subtitle: 'Configurazione MELI' },
+  '/impostazioni/gestione-qr': { title: 'Gestione QR', subtitle: 'Etichette e codici arnie' },
   '/apiari': { title: 'Apiari', subtitle: 'Gestione siti apistici' },
+  '/apiari/:id': { title: 'Scheda Apiario', subtitle: 'Informazioni e statistiche' },
   '/mappa-apiari': { title: 'Mappa Apiari', subtitle: 'Geolocalizzazione siti apistici' },
   '/arnie': { title: 'Arnie', subtitle: 'Colonie e alveari' },
   '/visite': { title: 'Visite', subtitle: 'Ispezioni e controlli' },

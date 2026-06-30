@@ -1,0 +1,58 @@
+.home-assistente {
+  padding: var(--meli-space-xl) var(--meli-space-2xl);
+  border-radius: var(--meli-radius-xl);
+}
+
+.home-assistente__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--meli-space-md);
+  margin-bottom: var(--meli-space-md);
+}
+
+.home-assistente__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--meli-radius-md);
+  color: var(--dash-honey-light, #f0b429);
+  background: rgba(232, 164, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.home-assistente__eyebrow {
+  margin-bottom: var(--meli-space-2xs);
+}
+
+.home-assistente__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--meli-text);
+}
+
+.home-assistente__loading,
+.home-assistente__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--meli-text-secondary);
+}
+
+.home-assistente__text {
+  padding-left: calc(44px + var(--meli-space-md));
+}
+
+@media (max-width: 767px) {
+  .home-assistente {
+    padding: var(--meli-space-lg);
+  }
+
+  .home-assistente__text {
+    padding-left: 0;
+  }
+}

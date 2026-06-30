@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/ui/Button'
+import { useAppPath } from '../../../demo/useAppPath'
 import { getSaluteLevel } from '../../../utils/salute'
 import './ApiarioVisitaCard.css'
 
@@ -26,6 +27,7 @@ export function ApiarioVisitaCard({
   active,
   onVisita,
 }: ApiarioVisitaCardProps) {
+  const appPath = useAppPath()
   const level = getSaluteLevel(salute)
 
   return (
@@ -49,7 +51,7 @@ export function ApiarioVisitaCard({
 
       <div className="apiario-visita-card__actions">
         <Link
-          to={`/arnie/${arniaId}`}
+          to={appPath(`/arnie/${arniaId}`)}
           className="ui-button ui-button--secondary ui-button--lg ui-button--full apiario-visita-card__btn"
         >
           Apri arnia

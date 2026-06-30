@@ -8,6 +8,7 @@ export {
   Crown,
   Droplets,
   Hexagon,
+  Home,
   Inbox,
   LayoutDashboard,
   Leaf,

@@ -1,0 +1,46 @@
+.apiario-detail-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.apiario-detail-tabs__btn {
+  flex: 1 1 140px;
+  min-height: 48px;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: var(--meli-radius-pill);
+  background: transparent;
+  font-family: var(--meli-font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--meli-text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.apiario-detail-tabs__btn:hover {
+  color: var(--meli-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.apiario-detail-tabs__btn--active {
+  color: var(--meli-text-inverse);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey));
+  box-shadow: 0 4px 16px rgba(232, 150, 12, 0.25);
+}
+
+@media (max-width: 767px) {
+  .apiario-detail-tabs {
+    border-radius: var(--meli-radius-lg);
+  }
+
+  .apiario-detail-tabs__btn {
+    flex: 1 1 100%;
+  }
+}

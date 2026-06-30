@@ -1,0 +1,84 @@
+.home-giro-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--meli-space-md);
+  width: 100%;
+  min-height: 72px;
+  padding: var(--meli-space-lg) var(--meli-space-2xl);
+  border: none;
+  border-radius: var(--meli-radius-xl);
+  cursor: pointer;
+  overflow: hidden;
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--meli-charcoal, #1c1c1e);
+  background: linear-gradient(
+    135deg,
+    var(--dash-honey-light, #f0b429) 0%,
+    var(--dash-honey, #e8a400) 45%,
+    var(--dash-honey-dark, #c48a00) 100%
+  );
+  box-shadow:
+    0 8px 28px rgba(232, 164, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.25) inset;
+  transition:
+    box-shadow 0.25s,
+    opacity 0.2s;
+}
+
+.home-giro-btn:hover:not(:disabled) {
+  box-shadow:
+    0 12px 36px rgba(232, 164, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+.home-giro-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.home-giro-btn__shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  animation: home-giro-shine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.home-giro-btn__play {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.home-giro-btn__label {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes home-giro-shine {
+  0%,
+  70%,
+  100% {
+    transform: translateX(-120%);
+  }
+  85% {
+    transform: translateX(120%);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-giro-btn {
+    min-height: 64px;
+    font-size: 1rem;
+  }
+}

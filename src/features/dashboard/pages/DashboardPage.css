@@ -95,6 +95,10 @@
   display: none;
 }
 
+.home-page .dashboard__inner {
+  gap: var(--meli-space-xl);
+}
+
 .dashboard__suggestions .meli-intelligence__header {
   margin-bottom: var(--meli-space-md);
 }

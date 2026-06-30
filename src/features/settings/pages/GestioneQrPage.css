@@ -1,0 +1,134 @@
+.gestione-qr-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gestione-qr-page__inner {
+  max-width: var(--meli-content-max);
+  margin: 0 auto;
+  padding: 1rem 1.65rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.gestione-qr-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-honey-light);
+  text-decoration: none;
+}
+
+.gestione-qr-page__hero {
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.gestione-qr-page__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--meli-text);
+}
+
+.gestione-qr-page__subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--meli-text-muted);
+}
+
+.gestione-qr-page__empty {
+  padding: 1.25rem;
+  border-radius: var(--meli-radius-lg);
+  color: var(--meli-text-secondary);
+}
+
+.gestione-qr-page__layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.gestione-qr-page__list-wrap {
+  padding: 1rem;
+  border-radius: var(--meli-radius-xl);
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.gestione-qr-page__list-title {
+  margin: 0 0 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.gestione-qr-page__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.gestione-qr-page__list-item {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--meli-radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.gestione-qr-page__list-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.gestione-qr-page__list-item--active {
+  border-color: rgba(232, 150, 12, 0.35);
+  background: rgba(232, 150, 12, 0.1);
+}
+
+.gestione-qr-page__list-num {
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--meli-text);
+}
+
+.gestione-qr-page__list-name,
+.gestione-qr-page__list-apiario {
+  font-size: 0.8125rem;
+  color: var(--meli-text-muted);
+}
+
+@media (max-width: 900px) {
+  .gestione-qr-page__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gestione-qr-page__list-wrap {
+    max-height: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .gestione-qr-page__inner {
+    padding: 1rem 1rem 1.5rem;
+  }
+}

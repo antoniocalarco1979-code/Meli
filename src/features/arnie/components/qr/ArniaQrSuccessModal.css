@@ -1,0 +1,12 @@
+.arnia-qr-success__lead {
+  margin: 0 0 var(--meli-space-md);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--meli-text-secondary);
+}
+
+.arnia-qr-success__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--meli-space-lg);
+}

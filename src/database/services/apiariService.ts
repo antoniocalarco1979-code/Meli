@@ -37,6 +37,10 @@ function normalizeApiarioInput(input: ApiarioInput): Omit<Apiario, 'id' | 'creat
     quota: input.quota,
     fotoCopertina: input.fotoCopertina ?? input.foto,
     numeroArnie: Math.max(0, input.numeroArnie),
+    esposizione: input.esposizione?.trim() || undefined,
+    accessibilita: input.accessibilita?.trim() || undefined,
+    presenzaAcqua: input.presenzaAcqua,
+    fiorituraPrevalente: input.fiorituraPrevalente?.trim() || undefined,
   }
 }
 
@@ -87,6 +91,10 @@ export async function updateApiario(id: string, input: ApiarioUpdate): Promise<v
     quota: input.quota,
     fotoCopertina: input.fotoCopertina ?? input.foto,
     numeroArnie: input.numeroArnie ?? 0,
+    esposizione: input.esposizione,
+    accessibilita: input.accessibilita,
+    presenzaAcqua: input.presenzaAcqua,
+    fiorituraPrevalente: input.fiorituraPrevalente,
   })
 
   const changes: Partial<Apiario> = {}
@@ -113,6 +121,12 @@ export async function updateApiario(id: string, input: ApiarioUpdate): Promise<v
     changes.fotoCopertina = normalized.fotoCopertina
   }
   if (input.numeroArnie !== undefined) changes.numeroArnie = normalized.numeroArnie
+  if (input.esposizione !== undefined) changes.esposizione = normalized.esposizione
+  if (input.accessibilita !== undefined) changes.accessibilita = normalized.accessibilita
+  if (input.presenzaAcqua !== undefined) changes.presenzaAcqua = normalized.presenzaAcqua
+  if (input.fiorituraPrevalente !== undefined) {
+    changes.fiorituraPrevalente = normalized.fiorituraPrevalente
+  }
 
   if (Object.keys(changes).length > 0) {
     await apiariRepository.update(id, changes)

@@ -29,6 +29,7 @@ export type ArniaVisitLocationState = {
 
 export type ApiarioGiroLocationState = {
   giroResume?: GiroResumeContext
+  tab?: 'informazioni' | 'statistiche' | 'giro'
 }
 
 export type VisitWizardLocationState = {

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppPath } from '../../../demo/useAppPath'
+import { generateId } from '../../../database/repositories/utils'
 import type { ArniaListItem } from '../../arnie/types'
 import type { ApiarioGiroLocationState, GiroReturnContext } from '../../visite/types/visitFlow.types'
 import {
+  createGiroSessionStats,
   emptyGiroSessionStats,
   type GiroSessionStats,
 } from '../../visite/types/giro.types'
@@ -78,13 +80,14 @@ export function useApiarioGiroFlow({
 
   const startGiro = () => {
     if (arnie.length === 0) return
+    const stats = createGiroSessionStats(arnie.length, generateId(), Date.now())
     setGiroActive(true)
     setGiroComplete(false)
-    setGiroStats(emptyGiroSessionStats())
+    setGiroStats(stats)
     setCompletedThrough(-1)
     navigateToArniaVisit(0, {
       giroActive: true,
-      giroStats: emptyGiroSessionStats(),
+      giroStats: stats,
       completedThrough: -1,
     })
   }

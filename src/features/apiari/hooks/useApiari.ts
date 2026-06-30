@@ -5,6 +5,7 @@ import {
   getApiarioById,
   sumNumeroArnie,
 } from '../services/apiariService'
+import { buildApiarioDetailView } from '../services/apiarioDetailService'
 import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
 
 export function useApiari() {
@@ -25,6 +26,16 @@ export function useApiario(id: string | undefined) {
   )
 
   return { apiario: data, loading: id ? loading : false, error: id ? error : null }
+}
+
+export function useApiarioDetail(id: string | undefined) {
+  const { data, loading, error } = useLiveQuery(
+    () => (id ? buildApiarioDetailView(id) : Promise.resolve(undefined)),
+    [id],
+    { seed: ensureWorkspaceSeeded },
+  )
+
+  return { detail: data, loading: id ? loading : false, error: id ? error : null }
 }
 
 export function useApiariStats() {

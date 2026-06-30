@@ -1,0 +1,62 @@
+.apiario-ambiente {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--meli-space-md);
+}
+
+.apiario-ambiente__legend {
+  margin-bottom: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-honey-light);
+}
+
+.apiario-ambiente__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.apiario-ambiente__field > span {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-text-secondary);
+}
+
+.apiario-ambiente__field select {
+  min-height: var(--meli-touch-min);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--meli-radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--meli-text);
+  font-size: 1rem;
+}
+
+.apiario-ambiente__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.apiario-ambiente__choice {
+  min-height: 44px;
+  padding: 0.55rem 0.95rem;
+  border-radius: var(--meli-radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--meli-text-secondary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.apiario-ambiente__choice--active {
+  color: var(--meli-text-inverse);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-honey));
+  border-color: transparent;
+}

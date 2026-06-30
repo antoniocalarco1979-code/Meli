@@ -103,6 +103,14 @@ class MeliDatabase extends Dexie {
 
     this.version(8).stores(STORE_SCHEMA)
 
+    this.version(9).stores(STORE_SCHEMA)
+
+    this.version(10)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateArnieV10(tx)
+      })
+
     this.version(DATABASE_VERSION).stores(STORE_SCHEMA)
   }
 }
@@ -222,6 +230,20 @@ async function migrateArnieV6(tx: Transaction): Promise<void> {
     row.hasMelario = resolved.hasMelario
     row.hasVassoioAntivarroa = resolved.hasVassoioAntivarroa
   })
+}
+
+async function migrateArnieV10(tx: Transaction): Promise<void> {
+  const { buildArniaQrAssets, buildArniaQrPayload } = await import(
+    '../features/arnie/services/arniaQrService'
+  )
+
+  const rows = await tx.table('arnie').toArray()
+  for (const row of rows as Array<Arnia & { qrCode?: string }>) {
+    const publicUuid = row.publicUuid || row.id
+    const qrCode = buildArniaQrPayload(publicUuid)
+    const { qrImageDataUrl } = await buildArniaQrAssets(publicUuid)
+    await tx.table('arnie').update(row.id, { publicUuid, qrCode, qrImageDataUrl })
+  }
 }
 
 export const db = new MeliDatabase(DATABASE_NAME)
