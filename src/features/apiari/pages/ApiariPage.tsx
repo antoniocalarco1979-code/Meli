@@ -19,7 +19,7 @@ function normalizeSearch(value: string): string {
 }
 
 export function ApiariPage() {
-  const { cards, loading, error } = useApiariListCards()
+  const { cards, loading } = useApiariListCards()
   const location = useLocation()
   const toast = useToast()
 
@@ -104,7 +104,7 @@ export function ApiariPage() {
   const showEmptySearch = hasApiari && filteredCards.length === 0
 
   return (
-    <PageQueryState loading={loading} error={error} skeleton="list">
+    <PageQueryState loading={loading} skeleton="list">
       <div className="apiari-page">
         <motion.header
           className="apiari-page__header"
@@ -144,7 +144,7 @@ export function ApiariPage() {
         {!hasApiari ? (
           <EmptyState
             title="Nessun apiario"
-            description="Crea il tuo primo apiario per iniziare a gestire le colonie."
+            description="Non hai ancora creato nessun apiario."
             action={
               <button type="button" className="apiari-page__new apiari-page__new--inline" onClick={openCreate}>
                 <Plus size={20} strokeWidth={2.25} aria-hidden="true" />

@@ -6,22 +6,24 @@ import { seedDemoDatabaseIfEmpty } from './seedDemoDatabase'
 
 let seedPromise: Promise<void> | null = null
 
-/** Popola il workspace attivo (produzione o demo) se vuoto. */
+async function runSeed(): Promise<void> {
+  await initializeDatabase()
+
+  if (getDatabaseMode() === 'demo') {
+    await seedDemoDatabaseIfEmpty()
+    return
+  }
+
+  await seedApiariIfEmpty()
+  await seedArnieIfEmpty()
+}
+
+/** Popola il workspace attivo (produzione o demo) se vuoto. Non propaga errori. */
 export async function ensureWorkspaceSeeded(): Promise<void> {
-  if (seedPromise) return seedPromise
-
-  seedPromise = (async () => {
-    await initializeDatabase()
-    if (getDatabaseMode() === 'demo') {
-      await seedDemoDatabaseIfEmpty()
-      return
-    }
-
-    await seedApiariIfEmpty()
-    await seedArnieIfEmpty()
-  })().finally(() => {
-    seedPromise = null
-  })
-
-  return seedPromise
+  if (!seedPromise) {
+    seedPromise = runSeed().catch((err) => {
+      console.warn('[MELI] ensureWorkspaceSeeded:', err)
+    })
+  }
+  await seedPromise
 }

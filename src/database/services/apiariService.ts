@@ -9,6 +9,7 @@ import {
   giriRepository,
 } from '../repositories'
 import { getDb } from '../activeDatabase'
+import { withReadTransaction } from '../readTransaction'
 import type { Apiario, ApiarioInput, ApiarioUpdate, ApiarioView } from '../types'
 import { buildApiarioLocalitaLabel } from '../../utils/apiarioLocation'
 
@@ -54,8 +55,15 @@ function toApiarioView(apiario: Apiario): ApiarioView {
 }
 
 export async function getAllApiari(): Promise<ApiarioView[]> {
-  const apiari = await apiariRepository.getAll()
-  return apiari.map(toApiarioView)
+  try {
+    return await withReadTransaction(async (db) => {
+      const apiari = await db.apiari.orderBy('nome').toArray()
+      return apiari.map(toApiarioView)
+    })
+  } catch (err) {
+    console.warn('[MELI] getAllApiari:', err)
+    return []
+  }
 }
 
 export async function getApiarioById(id: string): Promise<ApiarioView | undefined> {

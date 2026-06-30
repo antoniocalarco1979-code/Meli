@@ -8,14 +8,16 @@ import {
 import { buildApiarioDetailView } from '../services/apiarioDetailService'
 import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
 
+const EMPTY_APIARI: Awaited<ReturnType<typeof getAllApiari>> = []
+
 export function useApiari() {
-  const { data, loading, error } = useLiveQuery(
+  const { data, loading } = useLiveQuery(
     () => getAllApiari(),
     [],
-    { seed: ensureWorkspaceSeeded },
+    { seed: ensureWorkspaceSeeded, fallback: EMPTY_APIARI },
   )
 
-  return { apiari: data ?? [], loading, error }
+  return { apiari: data ?? EMPTY_APIARI, loading, error: null }
 }
 
 export function useApiario(id: string | undefined) {
@@ -39,6 +41,7 @@ export function useApiarioDetail(id: string | undefined) {
 }
 
 export function useApiariStats() {
+  const emptyStats = { count: 0, totalArnie: 0, names: [] as string[] }
   const { data, loading, error } = useLiveQuery(
     async () => {
       const all = await getDb().apiari.orderBy('nome').toArray()
@@ -49,7 +52,7 @@ export function useApiariStats() {
       }
     },
     [],
-    { seed: ensureWorkspaceSeeded },
+    { seed: ensureWorkspaceSeeded, fallback: emptyStats },
   )
 
   return {

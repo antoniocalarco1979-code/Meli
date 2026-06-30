@@ -1,4 +1,3 @@
-import { getDb } from '../../../database/activeDatabase'
 import type { Apiario, Arnia, Foto, Produzione, Regina, Trattamento, Visita } from '../../../database/types'
 import { apiariRepository } from '../../../database/repositories'
 import { fotoRepository } from '../../../database/repositories/fotoRepository'
@@ -6,7 +5,7 @@ import { produzioneRepository } from '../../../database/repositories/produzioneR
 import { regineRepository } from '../../../database/repositories/regineRepository'
 import { trattamentiRepository } from '../../../database/repositories/trattamentiRepository'
 import { visiteRepository } from '../../../database/repositories/visiteRepository'
-import type { ArniaDetailData, ArniaListItem } from '../types'
+import type { ArniaDetailData } from '../types'
 import {
   computeReginaEta,
   computeSalute,
@@ -34,34 +33,6 @@ export type ArniaDetailView = {
   trattamentoRecente?: Trattamento
   produzione: Produzione[]
   detail: ArniaDetailData
-}
-
-async function enrichArniaListItem(
-  arnia: Arnia,
-  apiario?: Apiario,
-): Promise<ArniaListItem> {
-  const [regina, visite, produzione, trattamenti] = await Promise.all([
-    regineRepository.getAttualeByArniaId(arnia.id),
-    visiteRepository.getByArniaId(arnia.id),
-    produzioneRepository.getByArniaId(arnia.id),
-    trattamentiRepository.getByArniaId(arnia.id),
-  ])
-  const ultimaVisita = visite[0]
-  const trattamentoRecente = trattamenti[0]
-  const year = new Date().getFullYear()
-  const produzioneAnno = produzione
-    .filter((p) => new Date(p.data).getFullYear() === year)
-    .reduce((s, p) => s + p.kg, 0)
-
-  return {
-    arnia,
-    apiario,
-    coverFoto: arnia.fotoCopertina,
-    salute: computeSalute(arnia.stato, ultimaVisita, arnia.forzaFamiglia, trattamentoRecente),
-    reginaLabel: formatReginaLabel(regina?.anno, regina?.colore),
-    ultimaVisitaLabel: ultimaVisita ? formatRelativeDate(ultimaVisita.data) : '—',
-    produzioneAnnoLabel: formatProduzioneKg(produzioneAnno),
-  }
 }
 
 export async function buildArniaDetailView(arnia: Arnia): Promise<ArniaDetailView> {
@@ -151,27 +122,4 @@ export async function buildArniaDetailView(arnia: Arnia): Promise<ArniaDetailVie
   }
 }
 
-export async function getAllArnieEnriched(): Promise<ArniaListItem[]> {
-  const arnie = await getDb().arnie.orderBy('numero').toArray()
-  const apiari = await apiariRepository.getAll()
-  const apiariMap = new Map(apiari.map((a) => [a.id, a]))
-
-  return Promise.all(
-    arnie.map((arnia) => enrichArniaListItem(arnia, apiariMap.get(arnia.apiarioId))),
-  )
-}
-
-function compareArniaNumero(a: string, b: string): number {
-  const na = Number.parseInt(a, 10)
-  const nb = Number.parseInt(b, 10)
-  if (!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb
-  return a.localeCompare(b, 'it', { numeric: true })
-}
-
-export async function getArnieEnrichedByApiarioId(apiarioId: string): Promise<ArniaListItem[]> {
-  const apiario = await apiariRepository.getById(apiarioId)
-  const arnie = await getDb().arnie.where('apiarioId').equals(apiarioId).toArray()
-  arnie.sort((a, b) => compareArniaNumero(a.numero, b.numero))
-
-  return Promise.all(arnie.map((arnia) => enrichArniaListItem(arnia, apiario)))
-}
+export { getAllArnieEnriched, getArnieEnrichedByApiarioId } from './arniaListService'

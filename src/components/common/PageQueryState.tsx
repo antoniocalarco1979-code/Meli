@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { parseDexieError } from '../../database/errors'
-import { ErrorPage } from './ErrorPage'
 import { PageSkeleton } from '../ui/Skeleton'
 
 type PageQueryStateProps = {
@@ -21,13 +20,7 @@ export function PageQueryState({
   }
 
   if (error) {
-    return (
-      <ErrorPage
-        title="Errore di caricamento"
-        message={parseDexieError(error)}
-        onRetry={() => window.location.reload()}
-      />
-    )
+    console.warn('[MELI] Query error (mostrato stato vuoto):', parseDexieError(error))
   }
 
   return children

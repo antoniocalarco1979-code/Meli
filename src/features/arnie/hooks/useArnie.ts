@@ -1,20 +1,19 @@
 import { useLiveQuery } from '../../../hooks/useLiveQuery'
 import { getArniaById } from '../../../database/services/arnieService'
-import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
-import {
-  buildArniaDetailView,
-  getAllArnieEnriched,
-  getArnieEnrichedByApiarioId,
-} from '../services/arniaDetailService'
+import { buildArniaDetailView } from '../services/arniaDetailService'
+import { getAllArnieEnriched, getArnieEnrichedByApiarioId } from '../services/arniaListService'
+import type { ArniaListItem } from '../types'
+
+const EMPTY_ARNIE: ArniaListItem[] = []
 
 export function useArnieList() {
-  const { data, loading, error } = useLiveQuery(
+  const { data, loading } = useLiveQuery(
     () => getAllArnieEnriched(),
     [],
-    { seed: ensureWorkspaceSeeded },
+    { fallback: EMPTY_ARNIE },
   )
 
-  return { arnie: data ?? [], loading, error }
+  return { arnie: data ?? EMPTY_ARNIE, loading, error: null }
 }
 
 export function useArniaDetail(id: string | undefined) {
@@ -26,18 +25,17 @@ export function useArniaDetail(id: string | undefined) {
       return buildArniaDetailView(arnia)
     },
     [id],
-    { seed: ensureWorkspaceSeeded },
   )
 
   return { detail: data, loading: id ? loading : false, error: id ? error : null }
 }
 
 export function useArnieByApiarioId(apiarioId: string) {
-  const { data, loading, error } = useLiveQuery(
+  const { data, loading } = useLiveQuery(
     () => getArnieEnrichedByApiarioId(apiarioId),
     [apiarioId],
-    { seed: ensureWorkspaceSeeded },
+    { fallback: EMPTY_ARNIE },
   )
 
-  return { arnie: data ?? [], loading, error }
+  return { arnie: data ?? EMPTY_ARNIE, loading, error: null }
 }

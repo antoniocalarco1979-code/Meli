@@ -1,47 +1,20 @@
 import { useLiveQuery } from '../../../hooks/useLiveQuery'
-import { ensureWorkspaceSeeded } from '../../../demo/ensureWorkspaceSeeded'
-import { getDashboardOperationalMetrics } from '../../dashboard/services/dashboardMetricsService'
-import { buildApiarioDetailView } from '../services/apiarioDetailService'
-import { getAllApiari } from '../services/apiariService'
-import type { ApiarioView } from '../types'
-import { formatApiarioComune, resolveApiarioStatus, type ApiarioStatus } from '../utils/apiarioStatus'
+import { loadApiariListCards, type ApiarioListCardData } from '../services/apiariListCardsService'
 
-export type ApiarioListCardData = {
-  apiario: ApiarioView
-  arnieCount: number
-  ultimaVisitaLabel: string
-  status: ApiarioStatus
-  comuneLabel: string
-}
+export type { ApiarioListCardData }
+
+const EMPTY_CARDS: ApiarioListCardData[] = []
 
 export function useApiariListCards() {
-  const { data, loading, error } = useLiveQuery(
-    async () => {
-      const apiari = await getAllApiari()
-      return Promise.all(
-        apiari.map(async (apiario) => {
-          const [operational, detail] = await Promise.all([
-            getDashboardOperationalMetrics(apiario.id),
-            buildApiarioDetailView(apiario.id),
-          ])
-
-          return {
-            apiario,
-            arnieCount: detail?.arnieCount ?? apiario.numeroArnie,
-            ultimaVisitaLabel: detail?.statistiche.ultimaVisitaLabel ?? '—',
-            status: resolveApiarioStatus(operational),
-            comuneLabel: formatApiarioComune(apiario),
-          } satisfies ApiarioListCardData
-        }),
-      )
-    },
+  const { data, loading } = useLiveQuery(
+    () => loadApiariListCards(),
     [],
-    { seed: ensureWorkspaceSeeded },
+    { fallback: EMPTY_CARDS },
   )
 
   return {
-    cards: data ?? [],
+    cards: data ?? EMPTY_CARDS,
     loading,
-    error,
+    error: null,
   }
 }
