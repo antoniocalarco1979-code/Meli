@@ -1,4 +1,5 @@
 export { db, demoDb, getDb, getDatabaseMode, setDatabaseMode } from './activeDatabase'
+export { initializeDatabase, isOnboardingComplete, readOnboardingCounts } from './initializeDatabase'
 export { parseDexieError, normalizeError } from './errors'
 export { DATABASE_NAME, DATABASE_VERSION, STORE_SCHEMA, TABLES } from './schema'
 export type { StoreName } from './schema'

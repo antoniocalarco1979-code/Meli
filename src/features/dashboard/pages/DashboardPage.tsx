@@ -29,7 +29,6 @@ export function DashboardPage() {
   const { launchGiro, starting: giroStarting } = useStartGiroNavigation()
 
   const { userName, weather } = dashboardData
-  const loading = selecting || priorita.loading
 
   const handleStartGiro = () => {
     if (selectedApiarioId) {
@@ -64,11 +63,14 @@ export function DashboardPage() {
 
       <div className="dashboard__scroll">
         <div className="dashboard__inner">
-          <HomeHeader userName={userName} weather={weather} loading={loading} />
+          <HomeHeader userName={userName} weather={weather} />
 
           <HomePrioritaCard {...priorita} />
 
-          <HomeIniziaGiroButton onClick={handleStartGiro} disabled={loading || giroStarting} />
+          <HomeIniziaGiroButton
+            onClick={handleStartGiro}
+            disabled={giroStarting || (selecting && apiari.length === 0)}
+          />
 
           <HomeApiariSection
             cards={cards}

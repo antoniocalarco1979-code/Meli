@@ -4,6 +4,7 @@ import { storageService } from '../../../services/device/storageService'
 import { pickDefaultApiarioId } from '../services/pickDefaultApiario'
 
 const STORAGE_KEY = 'selected-apiario-id'
+const READY_TIMEOUT_MS = 8_000
 
 export function useSelectedApiario() {
   const { apiari, loading: apiariLoading } = useApiari()
@@ -11,12 +12,19 @@ export function useSelectedApiario() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    if (apiariLoading) return
+    const timeout = window.setTimeout(() => {
+      setReady(true)
+    }, READY_TIMEOUT_MS)
+
+    if (apiariLoading) {
+      return () => window.clearTimeout(timeout)
+    }
 
     if (apiari.length === 0) {
       setSelectedApiarioIdState(undefined)
       setReady(true)
-      return
+      window.clearTimeout(timeout)
+      return () => window.clearTimeout(timeout)
     }
 
     let cancelled = false
@@ -29,6 +37,7 @@ export function useSelectedApiario() {
 
       setSelectedApiarioIdState(nextId)
       setReady(true)
+      window.clearTimeout(timeout)
 
       if (nextId && nextId !== stored) {
         void storageService.set(STORAGE_KEY, nextId)
@@ -37,6 +46,7 @@ export function useSelectedApiario() {
 
     return () => {
       cancelled = true
+      window.clearTimeout(timeout)
     }
   }, [apiari, apiariLoading])
 
@@ -52,6 +62,6 @@ export function useSelectedApiario() {
     selectedApiario,
     selectedApiarioId,
     setSelectedApiarioId,
-    loading: apiariLoading || !ready,
+    loading: apiariLoading && !ready,
   }
 }

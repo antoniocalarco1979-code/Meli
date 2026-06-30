@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { Modal } from '../../components/ui/Modal'
-import { LoadingScreen } from '../../components/ui/LoadingScreen'
 import { createArnia } from '../../database/services/arnieService'
 import type { ArniaInput } from '../../database/types/inputs'
 import { db } from '../../database'
-import { useLiveQuery } from '../../hooks/useLiveQuery'
+import {
+  initializeDatabase,
+  isOnboardingComplete,
+  readOnboardingCounts,
+} from '../../database/initializeDatabase'
 import { storageService } from '../../services/device/storageService'
 import { ApiarioForm } from '../apiari/components/ApiarioForm'
 import { ArniaForm } from '../arnie/components/ArniaForm'
@@ -33,13 +36,6 @@ function stepIndex(step: OnboardingStep, apiarioDialogOpen: boolean): number {
 
 export function OnboardingPage() {
   const navigate = useNavigate()
-  const { data: counts, loading } = useLiveQuery(
-    async () => ({
-      apiari: await db.apiari.count(),
-      arnie: await db.arnie.count(),
-    }),
-    [],
-  )
   const [step, setStep] = useState<OnboardingStep>('welcome')
   const [apiarioId, setApiarioId] = useState<string>()
   const [apiarioNome, setApiarioNome] = useState<string>()
@@ -47,33 +43,41 @@ export function OnboardingPage() {
   const [arniaDialogOpen, setArnialogOpen] = useState(false)
 
   useEffect(() => {
-    if (loading || !counts) return
+    let cancelled = false
 
-    if (counts.apiari > 0 && counts.arnie > 0) {
-      navigate('/apiari', { replace: true })
-      return
-    }
+    void (async () => {
+      try {
+        await initializeDatabase()
+        const counts = await readOnboardingCounts()
+        if (cancelled) return
 
-    if (counts.apiari > 0 && counts.arnie === 0 && step === 'welcome') {
-      void db.apiari.toCollection().first().then((apiario) => {
-        if (apiario) {
+        if (isOnboardingComplete(counts)) {
+          navigate('/', { replace: true })
+          return
+        }
+
+        if (counts.apiari > 0 && counts.arnie === 0) {
+          const apiario = await db.apiari.toCollection().first()
+          if (cancelled || !apiario) return
           setApiarioId(apiario.id)
           setApiarioNome(apiario.nome)
           setStep('add-arnia')
         }
-      })
+      } catch (err) {
+        console.error('[MELI] OnboardingPage:', err)
+      }
+    })()
+
+    return () => {
+      cancelled = true
     }
-  }, [counts, loading, navigate, step])
+  }, [navigate])
 
   useEffect(() => {
     if (step === 'add-arnia' && apiarioId) {
       setArnialogOpen(true)
     }
   }, [step, apiarioId])
-
-  if (loading) {
-    return <LoadingScreen label="Caricamento…" />
-  }
 
   const activeIndex = stepIndex(step, apiarioDialogOpen)
 
@@ -89,7 +93,7 @@ export function OnboardingPage() {
   const handleArniaSubmit = async (data: ArniaInput) => createArnia(data)
 
   const finish = () => {
-    navigate('/apiari', { replace: true })
+    navigate('/', { replace: true })
   }
 
   return (

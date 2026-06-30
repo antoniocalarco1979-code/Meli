@@ -233,17 +233,14 @@ async function migrateArnieV6(tx: Transaction): Promise<void> {
 }
 
 async function migrateArnieV10(tx: Transaction): Promise<void> {
-  const { buildArniaQrAssets, buildArniaQrPayload } = await import(
-    '../features/arnie/services/arniaQrService'
-  )
+  const { buildArniaQrPayload } = await import('../features/arnie/services/arniaQrService')
 
-  const rows = await tx.table('arnie').toArray()
-  for (const row of rows as Array<Arnia & { qrCode?: string }>) {
-    const publicUuid = row.publicUuid || row.id
-    const qrCode = buildArniaQrPayload(publicUuid)
-    const { qrImageDataUrl } = await buildArniaQrAssets(publicUuid)
-    await tx.table('arnie').update(row.id, { publicUuid, qrCode, qrImageDataUrl })
-  }
+  await tx.table('arnie').toCollection().modify((row: Arnia & { qrCode?: string }) => {
+    if (row.publicUuid && row.qrCode) return
+
+    row.publicUuid = row.publicUuid || row.id
+    row.qrCode = row.qrCode || buildArniaQrPayload(row.publicUuid)
+  })
 }
 
 export const db = new MeliDatabase(DATABASE_NAME)
