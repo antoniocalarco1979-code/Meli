@@ -30,6 +30,18 @@
   flex: 1;
 }
 
+.visita-guidata-giro-badge {
+  margin: 0.35rem 0 0;
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--meli-radius-pill);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-gold));
+  color: var(--meli-text-inverse);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
 @media (min-width: 768px) {
   .visita-guidata-footer__back,
   .visita-guidata-footer__next {

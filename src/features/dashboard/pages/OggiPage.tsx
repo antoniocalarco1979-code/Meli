@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAppPath } from '../../../demo/useAppPath'
+import { useStartGiroNavigation } from '../../visite/hooks/useStartGiroNavigation'
 import { ApiarioSelectorModal } from '../components/ApiarioSelectorModal'
 import { MorningBriefing } from '../components/MorningBriefing'
 import { TodayActivities } from '../components/TodayActivities'
@@ -19,14 +20,30 @@ export function OggiPage() {
   const { arnieByNumero, arnieCount, loading: flowLoading } = useDashboardFlow(selectedApiarioId)
   const { trattamentiInScadenza, regineDaSostituire, loading: statsLoading } =
     useDashboardLiveStats(selectedApiarioId)
+  const { launchGiro, starting: giroStarting } = useStartGiroNavigation()
 
   const { userName, todayActivities, weather } = dashboardData
   const briefingLoading = selecting || flowLoading || statsLoading
 
-  const goToApiario = () => {
-    if (selectedApiarioId) {
-      navigate(appPath(`/apiari/${selectedApiarioId}`), { state: { tab: 'giro' } })
+  const handleStartGiro = () => {
+    if (selectedApiarioId && selectedApiario) {
+      void launchGiro(selectedApiarioId, selectedApiario.nome)
+      return
     }
+    if (apiari.length === 1) {
+      void setSelectedApiarioId(apiari[0].id).then(() => {
+        void launchGiro(apiari[0].id, apiari[0].nome)
+      })
+      return
+    }
+    setSelectorOpen(true)
+  }
+
+  const handleSelectApiario = (apiarioId: string) => {
+    const apiario = apiari.find((item) => item.id === apiarioId)
+    void setSelectedApiarioId(apiarioId).then(() => {
+      if (apiario) void launchGiro(apiarioId, apiario.nome)
+    })
   }
 
   const goToArnia = (numero: string) => {
@@ -48,10 +65,10 @@ export function OggiPage() {
           trattamentiInScadenza={trattamentiInScadenza}
           regineDaSostituire={regineDaSostituire}
           weatherHint={getWeatherVisitHint(weather.condition)}
-          loading={briefingLoading}
+          loading={briefingLoading || giroStarting}
           selectedApiarioName={selectedApiario?.nome}
           onSelectApiario={() => setSelectorOpen(true)}
-          onStartGiro={goToApiario}
+          onStartGiro={handleStartGiro}
         />
 
         <TodayActivities
@@ -68,7 +85,7 @@ export function OggiPage() {
         apiari={apiari}
         selectedId={selectedApiarioId}
         onClose={() => setSelectorOpen(false)}
-        onSelect={(apiario) => void setSelectedApiarioId(apiario.id)}
+        onSelect={(apiario) => handleSelectApiario(apiario.id)}
       />
     </motion.div>
   )

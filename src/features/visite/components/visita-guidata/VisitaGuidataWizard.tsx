@@ -21,8 +21,13 @@ export type VisitaGuidataWizardProps = {
   arniaNumero: string
   apiarioNome?: string
   hasMelario: boolean
+  giroProgress?: {
+    current: number
+    total: number
+    apiarioNome: string
+  }
   onClose: () => void
-  onSaved?: (summary: VisitaSaveSummary) => void
+  onSaved?: (summary: VisitaSaveSummary) => void | Promise<void>
 }
 
 const stepMotion = {
@@ -37,6 +42,7 @@ export function VisitaGuidataWizard({
   arniaNumero,
   apiarioNome,
   hasMelario,
+  giroProgress,
   onClose,
   onSaved,
 }: VisitaGuidataWizardProps) {
@@ -81,9 +87,8 @@ export function VisitaGuidataWizard({
       const summary = await saveVisitaGuidata(arniaId, state, hasMelario)
       clearVisitaGuidataDraft(arniaId)
       toast.success('Visita salvata ✔ — dati aggiornati', 1100)
-      window.setTimeout(() => {
-        onSaved?.(summary)
-        onClose()
+      window.setTimeout(async () => {
+        await onSaved?.(summary)
       }, 1100)
     } catch (err) {
       setSaveError(parseDexieError(err))
@@ -120,7 +125,12 @@ export function VisitaGuidataWizard({
       aria-modal="true"
       aria-label={`Visita guidata arnia ${arniaNumero}`}
     >
-      <VisitaGuidataHeader arniaNumero={arniaNumero} apiarioNome={apiarioNome} onClose={onClose} />
+      <VisitaGuidataHeader
+        arniaNumero={arniaNumero}
+        apiarioNome={apiarioNome}
+        giroProgress={giroProgress}
+        onClose={onClose}
+      />
 
       <div className="ispezione-engine__divider" aria-hidden="true" />
 

@@ -1,13 +1,24 @@
 import { X } from 'lucide-react'
 import '../ispezione-engine/ispezione-engine.css'
+import './visita-guidata.css'
 
 type VisitaGuidataHeaderProps = {
   arniaNumero: string
   apiarioNome?: string
+  giroProgress?: {
+    current: number
+    total: number
+    apiarioNome: string
+  }
   onClose: () => void
 }
 
-export function VisitaGuidataHeader({ arniaNumero, apiarioNome, onClose }: VisitaGuidataHeaderProps) {
+export function VisitaGuidataHeader({
+  arniaNumero,
+  apiarioNome,
+  giroProgress,
+  onClose,
+}: VisitaGuidataHeaderProps) {
   return (
     <header className="ispezione-header">
       <button
@@ -23,12 +34,21 @@ export function VisitaGuidataHeader({ arniaNumero, apiarioNome, onClose }: Visit
         <p className="ispezione-header__arnia">
           <span aria-hidden="true">🐝</span> ARNIA {arniaNumero}
         </p>
-        {apiarioNome && (
-          <p className="ispezione-header__mode" style={{ letterSpacing: '0.06em', textTransform: 'none' }}>
-            {apiarioNome}
+        {(giroProgress?.apiarioNome ?? apiarioNome) && (
+          <p
+            className="ispezione-header__mode"
+            style={{ letterSpacing: '0.06em', textTransform: 'none' }}
+          >
+            {giroProgress?.apiarioNome ?? apiarioNome}
           </p>
         )}
-        <p className="ispezione-header__mode">VISITA GUIDATA</p>
+        {giroProgress ? (
+          <p className="visita-guidata-giro-badge" aria-live="polite">
+            GIRO APIARIO · Arnia {giroProgress.current} di {giroProgress.total}
+          </p>
+        ) : (
+          <p className="ispezione-header__mode">VISITA GUIDATA</p>
+        )}
       </div>
     </header>
   )

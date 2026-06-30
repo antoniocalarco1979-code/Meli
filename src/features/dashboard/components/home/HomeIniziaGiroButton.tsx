@@ -24,7 +24,7 @@ export function HomeIniziaGiroButton({ onClick, disabled = false }: HomeIniziaGi
       <span className="home-giro-btn__play" aria-hidden="true">
         ▶
       </span>
-      <span className="home-giro-btn__label">INIZIA GIRO</span>
+      <span className="home-giro-btn__label">INIZIA GIRO APIARIO</span>
     </motion.button>
   )
 }

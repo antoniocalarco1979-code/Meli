@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAppPath } from '../../../demo/useAppPath'
+import { useStartGiroNavigation } from '../../visite/hooks/useStartGiroNavigation'
 import { dashboardData } from '../data/mockDashboard'
 import { ApiarioSelectorModal } from '../components/ApiarioSelectorModal'
 import { HomeApiariSection } from '../components/home/HomeApiariSection'
@@ -25,18 +26,20 @@ export function DashboardPage() {
   const priorita = useHomePriorita(selectedApiarioId)
   const { cards, loading: apiariLoading } = useHomeApiariCards()
   const { suggestions, loading: intelligenceLoading } = useMeliIntelligence(selectedApiarioId)
+  const { launchGiro, starting: giroStarting } = useStartGiroNavigation()
 
   const { userName, weather } = dashboardData
   const loading = selecting || priorita.loading
 
   const handleStartGiro = () => {
     if (selectedApiarioId) {
-      navigate(appPath(`/apiari/${selectedApiarioId}`), { state: { tab: 'giro' } })
+      const apiario = apiari.find((item) => item.id === selectedApiarioId)
+      void launchGiro(selectedApiarioId, apiario?.nome ?? 'Apiario')
       return
     }
     if (apiari.length === 1) {
       void setSelectedApiarioId(apiari[0].id).then(() => {
-        navigate(appPath(`/apiari/${apiari[0].id}`), { state: { tab: 'giro' } })
+        void launchGiro(apiari[0].id, apiari[0].nome)
       })
       return
     }
@@ -44,8 +47,9 @@ export function DashboardPage() {
   }
 
   const handleSelectApiario = (apiarioId: string) => {
+    const apiario = apiari.find((item) => item.id === apiarioId)
     void setSelectedApiarioId(apiarioId).then(() => {
-      navigate(appPath(`/apiari/${apiarioId}`), { state: { tab: 'giro' } })
+      void launchGiro(apiarioId, apiario?.nome ?? 'Apiario')
     })
   }
 
@@ -64,7 +68,7 @@ export function DashboardPage() {
 
           <HomePrioritaCard {...priorita} />
 
-          <HomeIniziaGiroButton onClick={handleStartGiro} disabled={loading} />
+          <HomeIniziaGiroButton onClick={handleStartGiro} disabled={loading || giroStarting} />
 
           <HomeApiariSection
             cards={cards}

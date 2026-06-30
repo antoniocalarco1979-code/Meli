@@ -8,6 +8,8 @@ export type GiroReturnContext = {
   arniaIndex: number
   giroActive: boolean
   giroStats: GiroSessionStats
+  /** Ordine arnie del giro (per avanzamento continuo). */
+  arniaIds?: string[]
   visitedArniaIds?: string[]
   completedThrough: number
 }
@@ -18,6 +20,7 @@ export type GiroResumeContext = {
   nextIndex: number
   giroActive: boolean
   giroStats: GiroSessionStats
+  arniaIds?: string[]
   visitedArniaIds?: string[]
   completedThrough: number
 }
@@ -30,6 +33,7 @@ export type ArniaVisitLocationState = {
 export type ApiarioGiroLocationState = {
   giroResume?: GiroResumeContext
   tab?: 'informazioni' | 'statistiche' | 'giro'
+  autoStartGiro?: boolean
 }
 
 export type VisitWizardLocationState = {

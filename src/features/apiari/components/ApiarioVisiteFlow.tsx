@@ -25,6 +25,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
     completedThrough,
     giroComplete,
     giroStats,
+    starting,
     stepRefs,
     openVisita,
     startGiro,
@@ -48,7 +49,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
         <ApiarioGiroHero
           nome={apiarioNome}
           arnieCount={0}
-          onIniziaGiro={startGiro}
+          onIniziaGiro={() => void startGiro()}
           disabled
         />
         <section className="apiario-visite-flow meli-glass meli-glass--deep">
@@ -64,8 +65,8 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
         <ApiarioGiroHero
           nome={apiarioNome}
           arnieCount={arnie.length}
-          onIniziaGiro={startGiro}
-          disabled={arnie.length === 0}
+          onIniziaGiro={() => void startGiro()}
+          disabled={arnie.length === 0 || starting}
         />
       )}
 
