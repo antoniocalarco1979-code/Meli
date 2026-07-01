@@ -1,5 +1,5 @@
 import type { Apiario, Arnia, Trattamento, Visita } from '../../../database/types'
-import { withReadTransaction } from '../../../database/readTransaction'
+import { getDb } from '../../../database/activeDatabase'
 import type { ApiarioView } from '../types'
 import { formatApiarioComune, resolveApiarioStatus, type ApiarioStatus } from '../utils/apiarioStatus'
 import { formatRelativeDate } from '../../../utils/dateFormatters'
@@ -96,49 +96,51 @@ function computeUltimaVisitaLabel(arnie: Arnia[], visiteByArniaId: Map<string, V
   return latest ? formatRelativeDate(latest.data) : '—'
 }
 
-/** Carica tutte le card apiario in un'unica transazione read (safe per liveQuery). */
+/**
+ * Carica le card apiario con query dirette Dexie.
+ * Compatibile con liveQuery: niente db.transaction() annidato.
+ */
 export async function loadApiariListCards(): Promise<ApiarioListCardData[]> {
   try {
-    return await withReadTransaction(async (db) => {
-      const apiariRows = await db.apiari.orderBy('nome').toArray()
-      if (apiariRows.length === 0) return []
+    const db = getDb()
+    const apiariRows = await db.apiari.orderBy('nome').toArray()
+    if (apiariRows.length === 0) return []
 
-      const apiarioViews = apiariRows.map(toApiarioView)
-      const apiarioIds = apiarioViews.map((a) => a.id)
+    const apiarioViews = apiariRows.map(toApiarioView)
+    const apiarioIds = apiarioViews.map((a) => a.id)
 
-      const arnie = await db.arnie.where('apiarioId').anyOf(apiarioIds).toArray()
-      const arnieByApiarioId = groupByApiarioId(arnie)
-      const arniaIds = arnie.map((a) => a.id)
+    const arnie = await db.arnie.where('apiarioId').anyOf(apiarioIds).toArray()
+    const arnieByApiarioId = groupByApiarioId(arnie)
+    const arniaIds = arnie.map((a) => a.id)
 
-      const [visite, trattamenti] = await Promise.all([
-        arniaIds.length > 0
-          ? db.visite.where('arniaId').anyOf(arniaIds).toArray()
-          : Promise.resolve([] as Visita[]),
-        arniaIds.length > 0
-          ? db.trattamenti.where('arniaId').anyOf(arniaIds).toArray()
-          : Promise.resolve([] as Trattamento[]),
-      ])
+    const [visite, trattamenti] = await Promise.all([
+      arniaIds.length > 0
+        ? db.visite.where('arniaId').anyOf(arniaIds).toArray()
+        : Promise.resolve([] as Visita[]),
+      arniaIds.length > 0
+        ? db.trattamenti.where('arniaId').anyOf(arniaIds).toArray()
+        : Promise.resolve([] as Trattamento[]),
+    ])
 
-      const visiteByArniaId = groupVisiteByArniaId(visite)
+    const visiteByArniaId = groupVisiteByArniaId(visite)
 
-      return apiarioViews.map((apiario) => {
-        const apiarioArnie = arnieByApiarioId.get(apiario.id) ?? []
-        const apiarioArniaIds = new Set(apiarioArnie.map((a) => a.id))
-        const apiarioTrattamenti = trattamenti.filter((t) => apiarioArniaIds.has(t.arniaId))
-        const operational = computeOperationalMetrics(
-          apiarioArnie,
-          visiteByArniaId,
-          apiarioTrattamenti,
-        )
+    return apiarioViews.map((apiario) => {
+      const apiarioArnie = arnieByApiarioId.get(apiario.id) ?? []
+      const apiarioArniaIds = new Set(apiarioArnie.map((a) => a.id))
+      const apiarioTrattamenti = trattamenti.filter((t) => apiarioArniaIds.has(t.arniaId))
+      const operational = computeOperationalMetrics(
+        apiarioArnie,
+        visiteByArniaId,
+        apiarioTrattamenti,
+      )
 
-        return {
-          apiario,
-          arnieCount: apiarioArnie.length,
-          ultimaVisitaLabel: computeUltimaVisitaLabel(apiarioArnie, visiteByArniaId),
-          status: resolveApiarioStatus(operational),
-          comuneLabel: formatApiarioComune(apiario),
-        } satisfies ApiarioListCardData
-      })
+      return {
+        apiario,
+        arnieCount: apiarioArnie.length,
+        ultimaVisitaLabel: computeUltimaVisitaLabel(apiarioArnie, visiteByArniaId),
+        status: resolveApiarioStatus(operational),
+        comuneLabel: formatApiarioComune(apiario),
+      } satisfies ApiarioListCardData
     })
   } catch (err) {
     console.warn('[MELI] loadApiariListCards:', err)
@@ -154,7 +156,6 @@ export type HomeApiarioCard = {
   status: ApiarioStatus
 }
 
-/** Variante compatta per la home — stessa transazione batch. */
 export async function loadHomeApiariCards(): Promise<HomeApiarioCard[]> {
   const cards = await loadApiariListCards()
   return cards.map((card) => ({

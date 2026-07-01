@@ -1,6 +1,5 @@
 import type { Apiario, Arnia, Produzione, Regina, Trattamento, Visita } from '../../../database/types'
 import { getDb } from '../../../database/activeDatabase'
-import { withReadTransaction } from '../../../database/readTransaction'
 import type { ArniaListItem } from '../types'
 import {
   computeSalute,
@@ -77,12 +76,12 @@ function enrichArniaListItemFromCache(
 }
 
 async function enrichArnieBatch(
+  db: ReturnType<typeof getDb>,
   arnie: Arnia[],
   apiariMap: Map<string, Apiario>,
 ): Promise<ArniaListItem[]> {
   if (arnie.length === 0) return []
 
-  const db = getDb()
   const arniaIds = arnie.map((a) => a.id)
   const [regine, visite, produzione, trattamenti] = await Promise.all([
     db.regine.where('arniaId').anyOf(arniaIds).toArray(),
@@ -110,17 +109,16 @@ async function enrichArnieBatch(
 
 export async function getAllArnieEnriched(): Promise<ArniaListItem[]> {
   try {
-    return await withReadTransaction(async (db) => {
-      const arnie = await db.arnie.toArray()
-      if (arnie.length === 0) return []
+    const db = getDb()
+    const arnie = await db.arnie.toArray()
+    if (arnie.length === 0) return []
 
-      arnie.sort((a, b) => compareArniaNumero(a.numero, b.numero))
-      const apiarioIds = [...new Set(arnie.map((a) => a.apiarioId))]
-      const apiari = await db.apiari.where('id').anyOf(apiarioIds).toArray()
-      const apiariMap = new Map(apiari.map((a) => [a.id, a]))
+    arnie.sort((a, b) => compareArniaNumero(a.numero, b.numero))
+    const apiarioIds = [...new Set(arnie.map((a) => a.apiarioId))]
+    const apiari = await db.apiari.where('id').anyOf(apiarioIds).toArray()
+    const apiariMap = new Map(apiari.map((a) => [a.id, a]))
 
-      return enrichArnieBatch(arnie, apiariMap)
-    })
+    return enrichArnieBatch(db, arnie, apiariMap)
   } catch (err) {
     console.warn('[MELI] getAllArnieEnriched:', err)
     return []
@@ -129,19 +127,18 @@ export async function getAllArnieEnriched(): Promise<ArniaListItem[]> {
 
 export async function getArnieEnrichedByApiarioId(apiarioId: string): Promise<ArniaListItem[]> {
   try {
-    return await withReadTransaction(async (db) => {
-      const [apiario, arnie] = await Promise.all([
-        db.apiari.get(apiarioId),
-        db.arnie.where('apiarioId').equals(apiarioId).toArray(),
-      ])
+    const db = getDb()
+    const [apiario, arnie] = await Promise.all([
+      db.apiari.get(apiarioId),
+      db.arnie.where('apiarioId').equals(apiarioId).toArray(),
+    ])
 
-      if (arnie.length === 0) return []
+    if (arnie.length === 0) return []
 
-      arnie.sort((a, b) => compareArniaNumero(a.numero, b.numero))
-      const apiariMap = apiario ? new Map([[apiario.id, apiario]]) : new Map<string, Apiario>()
+    arnie.sort((a, b) => compareArniaNumero(a.numero, b.numero))
+    const apiariMap = apiario ? new Map([[apiario.id, apiario]]) : new Map<string, Apiario>()
 
-      return enrichArnieBatch(arnie, apiariMap)
-    })
+    return enrichArnieBatch(db, arnie, apiariMap)
   } catch (err) {
     console.warn('[MELI] getArnieEnrichedByApiarioId:', err)
     return []
