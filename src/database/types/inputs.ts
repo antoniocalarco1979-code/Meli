@@ -6,6 +6,8 @@ import type {
   Foto,
   Produzione,
   Regina,
+  ReginaOrigineTipo,
+  ReginaStatoOperativo,
   Trattamento,
   Visita,
   GiroApiario,
@@ -57,11 +59,26 @@ export type ArniaUpdate = Partial<Omit<Arnia, 'id' | 'publicUuid' | 'qrCode' | '
 
 export type ReginaInput = {
   arniaId: string
+  numero: string
+  nome?: string
   anno?: number
   colore?: string
   razza?: string
+  provenienza?: string
+  allevatore?: string
+  origineTipo?: ReginaOrigineTipo
+  /** Alias legacy → provenienza */
   origine?: string
+  stato?: ReginaStatoOperativo
   marcata?: boolean
+  dataNascita?: number
+  dataInserimento?: number
+  dataSostituzione?: number
+  valDocilita?: number
+  valProduttivita?: number
+  valSciamatura?: number
+  valPulizia?: number
+  valResistenzaVarroa?: number
   note?: string
   /** Se true, imposta come reginaAttualeId sull'arnia. Default: true. */
   impostaComeAttuale?: boolean
@@ -97,6 +114,7 @@ export type FotoInput = {
   visitaId?: string
   arniaId?: string
   apiarioId?: string
+  reginaId?: string
   thumbnail?: string
   data?: number
   /** Alias legacy → path */
@@ -116,18 +134,33 @@ export type ProduzioneInput = {
   dataRaccolta?: number
 }
 
-export type ProduzioneUpdate = Partial<Omit<Produzione, 'id' | 'arniaId'>>
+export type ProduzioneUpdate = Partial<Omit<Produzione, 'id' | 'arniaId' | 'apiarioId'>>
+
+/** Registrazione rapida smielatura apiario (Sprint 4). */
+export type SmielaturaInput = {
+  apiarioId: string
+  data: number
+  kg: number
+  numeroMelari: number
+  arnieCoinvolteIds?: string[]
+  umidita?: number
+  note?: string
+}
 
 export type TrattamentoInput = {
   arniaId: string
   data: number
-  prodotto?: string
+  visitaId?: string
+  tipo?: string
+  principioAttivo?: string
   dose?: string
+  metodo?: string
+  note?: string
   scadenza?: number
+  /** Alias legacy → principioAttivo */
+  prodotto?: string
   /** Alias legacy → scadenza */
   dataProgrammata?: number
-  /** Alias legacy → prodotto filtro varroa */
-  tipo?: string
 }
 
 export type TrattamentoUpdate = Partial<Omit<Trattamento, 'id' | 'arniaId'>>

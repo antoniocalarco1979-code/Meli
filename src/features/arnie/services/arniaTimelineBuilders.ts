@@ -4,6 +4,10 @@ import {
   generateAzioniConsigliate,
 } from '../../azioni/generateAzioniConsigliate'
 import {
+  buildVisitaCronologiaSnapshot,
+  formatVisitaCronologiaDurata,
+} from '../../visite/services/visitaCronologiaService'
+import {
   extractTimelineUserNote,
   resolveVisitMeteo,
   resolveVisitOperatore,
@@ -11,6 +15,7 @@ import {
 } from '../../visite/services/visitMetadata'
 import { formatFullDate, formatVisitaDateShort, formatVisitaTime } from '../../../utils/dateFormatters'
 import { computeSaluteFromVisita, getSaluteLevel } from '../../../utils/salute'
+import { formatTrattamentoTipoLabel } from '../../trattamenti/utils/trattamentoFormatters'
 import type { VisitaTimelineEntry } from '../types'
 import {
   buildVisitaRiepilogo,
@@ -32,12 +37,20 @@ function isSameDay(a: number, b: number): boolean {
   )
 }
 
-export function extractTrattamentoNome(prodotto?: string): string {
-  if (!prodotto) return '—'
-  const lower = prodotto.toLowerCase()
+export function extractTrattamentoNome(
+  source?: string | Pick<Trattamento, 'tipo' | 'principioAttivo' | 'prodotto'>,
+): string {
+  if (!source) return '—'
+  if (typeof source !== 'string') {
+    if (source.tipo) return formatTrattamentoTipoLabel(source.tipo)
+    const name = source.principioAttivo ?? source.prodotto
+    if (!name) return '—'
+    return extractTrattamentoNome(name)
+  }
+  const lower = source.toLowerCase()
   if (lower.includes('oxalico')) return 'Oxalico'
   if (lower.includes('apivar') || lower.includes('varroa')) return 'Varroa'
-  return prodotto.split('(')[0]?.trim() ?? prodotto
+  return source.split('(')[0]?.trim() ?? source
 }
 
 export function buildVisitaTimeline(
@@ -57,12 +70,23 @@ export function buildVisitaTimeline(
     const statusLevel = getSaluteLevel(salute)
     const azioniConsigliate = generateAzioniConsigliate(buildAzioneRuleContextFromVisita(visita))
 
+    const fotoPaths = visitFoto.map((f) => f.path)
+    const snapshot = buildVisitaCronologiaSnapshot({
+      visita,
+      fotoPaths,
+      saluteValue: salute,
+      interventiExtra: visitTrattamenti.length,
+    })
+
     return {
       id: visita.id,
       data: visita.data,
       dataShort: formatVisitaDateShort(visita.data),
       dataFull: formatFullDate(visita.data),
       oraLabel: formatVisitaTime(visita.data),
+      durataLabel: formatVisitaCronologiaDurata(snapshot.detail),
+      fotoCount: fotoPaths.length,
+      interventiCount: snapshot.interventiCount,
       summary: buildVisitaRiepilogo(visita),
       statusIcon: saluteLevelEmoji(statusLevel),
       statusLevel,
@@ -77,9 +101,11 @@ export function buildVisitaTimeline(
       operatoreLabel: resolveVisitOperatore(visita),
       azioniConsigliate,
       noteDisplay: extractTimelineUserNote(visita.note),
-      fotoPaths: visitFoto.map((f) => f.path),
-      trattamenti: visitTrattamenti.map((t) => t.prodotto ?? 'Trattamento'),
+      fotoPaths,
+      trattamenti: visitTrattamenti.map((t) => extractTrattamentoNome(t)),
       produzione: visitProduzione.map((p) => `${p.kg} kg${p.tipo ? ` · ${p.tipo}` : ''}`),
+      detail: snapshot.detail,
+      snapshot,
     }
   })
 }

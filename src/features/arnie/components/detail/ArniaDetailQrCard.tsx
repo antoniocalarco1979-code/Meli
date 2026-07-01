@@ -4,7 +4,11 @@ import type { Arnia } from '../../../../database/types'
 import { ensureArniaQrIdentity } from '../../../../database/services/arnieService'
 import { Button } from '../../../../components/ui/Button'
 import { Modal } from '../../../../components/ui/Modal'
-import { downloadArniaQrPng, printArniaQrLabel } from '../../services/arniaQrService'
+import {
+  downloadArniaQrPng,
+  printArniaQrLabel,
+  resolveArniaQrPayload,
+} from '../../services/arniaQrService'
 import { MeliQrCode } from '../qr/MeliQrCode'
 import './ArniaDetailQrCard.css'
 
@@ -49,6 +53,7 @@ export function ArniaDetailQrCard({ arnia: initialArnia, apiarioNome }: ArniaDet
   }, [initialArnia.id])
 
   const context = { arnia, apiarioNome }
+  const qrPayload = resolveArniaQrPayload(arnia)
 
   const runAction = async (action: 'png' | 'print') => {
     setBusy(action)
@@ -73,8 +78,21 @@ export function ArniaDetailQrCard({ arnia: initialArnia, apiarioNome }: ArniaDet
         transition={{ duration: 0.35, delay: 0.04 }}
       >
         <h2 id={`arnia-detail-qr-card-${arnia.id}`} className="arnia-detail-qr-card__title">
-          📱 QR CODE
+          Identificazione
         </h2>
+
+        <div className="arnia-detail-qr-card__meta">
+          <div className="arnia-detail-qr-card__field">
+            <span className="arnia-detail-qr-card__field-label">Numero arnia</span>
+            <strong className="arnia-detail-qr-card__field-value">{arnia.numero}</strong>
+          </div>
+          <div className="arnia-detail-qr-card__field">
+            <span className="arnia-detail-qr-card__field-label">UUID</span>
+            <code className="arnia-detail-qr-card__uuid">
+              {preparing ? '—' : arnia.publicUuid}
+            </code>
+          </div>
+        </div>
 
         <div className="arnia-detail-qr-card__body">
           <div className="arnia-detail-qr-card__qr-wrap" aria-busy={preparing}>
@@ -82,18 +100,11 @@ export function ArniaDetailQrCard({ arnia: initialArnia, apiarioNome }: ArniaDet
               <p className="arnia-detail-qr-card__loading">Generazione QR…</p>
             ) : (
               <MeliQrCode
-                value={arnia.publicUuid}
+                value={qrPayload}
                 size={200}
                 title={`QR Code arnia ${arnia.numero}`}
               />
             )}
-          </div>
-
-          <div className="arnia-detail-qr-card__uuid-block">
-            <span className="arnia-detail-qr-card__uuid-label">UUID</span>
-            <code className="arnia-detail-qr-card__uuid">
-              {preparing ? '—' : arnia.publicUuid}
-            </code>
           </div>
         </div>
 
@@ -133,10 +144,10 @@ export function ArniaDetailQrCard({ arnia: initialArnia, apiarioNome }: ArniaDet
       <Modal
         open={viewOpen}
         onClose={() => setViewOpen(false)}
-        title={`QR Code · Arnia ${arnia.numero}`}
+        title={`Identificazione · Arnia ${arnia.numero}`}
       >
         <div className="arnia-detail-qr-card__modal">
-          <MeliQrCode value={arnia.publicUuid} size={320} title={`QR Code arnia ${arnia.numero}`} />
+          <MeliQrCode value={qrPayload} size={320} title={`QR Code arnia ${arnia.numero}`} />
           <code className="arnia-detail-qr-card__modal-uuid">{arnia.publicUuid}</code>
         </div>
       </Modal>

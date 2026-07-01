@@ -38,4 +38,6 @@ export type ApiarioGiroLocationState = {
 
 export type VisitWizardLocationState = {
   giroReturn?: GiroReturnContext
+  /** true = nuova sessione (cancella bozza); false/omit = riprendi bozza se presente */
+  startNewSession?: boolean
 }

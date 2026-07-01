@@ -49,3 +49,34 @@
     font-size: 1.2rem;
   }
 }
+
+.arnia-detail-visit-cta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.arnia-detail-visit-cta--resume {
+  color: var(--meli-text-inverse);
+  background: linear-gradient(135deg, #5a8f3e 0%, #4a7532 100%);
+  box-shadow:
+    0 10px 28px rgba(74, 117, 50, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.arnia-detail-visit-cta__secondary {
+  min-height: 48px;
+  border: none;
+  background: transparent;
+  color: var(--meli-text-muted);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.arnia-detail-visit-cta__secondary:active {
+  color: var(--meli-brown);
+}

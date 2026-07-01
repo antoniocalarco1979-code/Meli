@@ -16,3 +16,29 @@ export type {
   GiroResumeContext,
   GiroReturnContext,
 } from './types/visitFlow.types'
+export { TelainoPanel, TelainoPanelHost, TelainoGridView } from './components/telaino-panel'
+export type { TelainoPanelProps, TelainoPanelHostProps } from './components/telaino-panel'
+export type { TelainoVisitaRecord } from './types/telainoPanel.types'
+export {
+  createTelainoVisitaRecord,
+  createTelainiVisitaRecords,
+  frameIdFromTelainoId,
+  telainoIdFromFrameId,
+  isTelainoVisitaComplete,
+  isTelainoVisitaTouched,
+  countTelainiVisitaCompletati,
+  areAllTelainiVisitaCompletati,
+  getTelainoVisitaSuccessivo,
+} from './types/telainoPanel.types'
+export type {
+  VisitaCronologiaComparePair,
+  VisitaCronologiaDetail,
+  VisitaCronologiaSnapshot,
+  VisitaCronologiaTelaino,
+} from './types/visitaCronologia.types'
+export { parseVisitaGuidataNote } from './services/visitaGuidataNoteParser'
+export {
+  buildVisitaCronologiaDetail,
+  buildVisitaCronologiaSnapshot,
+  formatVisitaCronologiaDurata,
+} from './services/visitaCronologiaService'

@@ -8,6 +8,7 @@ import {
   downloadArniaQrPdf,
   downloadArniaQrPng,
   printArniaQrLabel,
+  resolveArniaQrPayload,
 } from '../../services/arniaQrService'
 import { MeliQrCode } from './MeliQrCode'
 import './ArniaQrSection.css'
@@ -37,6 +38,7 @@ export function ArniaQrSection({
   }, [initialArnia])
 
   const context = { arnia, apiarioNome }
+  const qrPayload = resolveArniaQrPayload(arnia)
 
   const runAction = async (action: 'png' | 'pdf' | 'print' | 'regen') => {
     setBusy(action)
@@ -71,14 +73,14 @@ export function ArniaQrSection({
             QR Code
           </h2>
           <p className="arnia-qr-section__subtitle">
-            UUID permanente dell&apos;arnia — il codice QR contiene solo l&apos;UUID, valido anche offline.
+            Payload QR: <code>meli://arnia/&#123;UUID&#125;</code> — valido offline su tutti i dispositivi.
           </p>
         </header>
 
         <div className="arnia-qr-section__body">
           <div className="arnia-qr-section__preview">
             <MeliQrCode
-              value={arnia.publicUuid}
+              value={qrPayload}
               size={compact ? 180 : 220}
               title={`QR Code arnia ${arnia.numero}`}
             />
@@ -150,11 +152,8 @@ export function ArniaQrSection({
         title={`QR Code · Arnia ${arnia.numero}`}
       >
         <div className="arnia-qr-section__modal">
-          <MeliQrCode value={arnia.publicUuid} size={280} title={`QR Code arnia ${arnia.numero}`} />
+          <MeliQrCode value={qrPayload} size={280} title={`QR Code arnia ${arnia.numero}`} />
           <p className="arnia-qr-section__modal-code">{arnia.publicUuid}</p>
-          <p className="arnia-qr-section__modal-hint">
-            Scansiona dalla Home con «Scansiona QR» per aprire questa arnia, anche senza connessione.
-          </p>
         </div>
       </Modal>
     </>

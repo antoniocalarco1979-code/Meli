@@ -17,14 +17,18 @@ const ArnieRoutes = lazy(() =>
 const VisiteRoutes = lazy(() =>
   import('../../features/visite/pages/VisiteRoutes').then((m) => ({ default: m.VisiteRoutes })),
 )
-const ReginePage = lazy(() =>
-  import('../../features/regine/pages/ReginePage').then((m) => ({ default: m.ReginePage })),
+const RegineRoutes = lazy(() =>
+  import('../../features/regine/pages/RegineRoutes').then((m) => ({ default: m.RegineRoutes })),
 )
-const TrattamentiPage = lazy(() =>
-  import('../../features/trattamenti/pages/TrattamentiPage').then((m) => ({ default: m.TrattamentiPage })),
+const TrattamentiRoutes = lazy(() =>
+  import('../../features/trattamenti/pages/TrattamentiRoutes').then((m) => ({
+    default: m.TrattamentiRoutes,
+  })),
 )
-const ProduzionePage = lazy(() =>
-  import('../../features/produzione/pages/ProduzionePage').then((m) => ({ default: m.ProduzionePage })),
+const ProduzioneRoutes = lazy(() =>
+  import('../../features/produzione/pages/ProduzioneRoutes').then((m) => ({
+    default: m.ProduzioneRoutes,
+  })),
 )
 const MagazzinoPage = lazy(() =>
   import('../../features/magazzino/pages/MagazzinoPage').then((m) => ({ default: m.MagazzinoPage })),
@@ -80,9 +84,9 @@ export function AppRouter() {
           <Route path="apiari/*" element={<LazyRoute><ApiariRoutes /></LazyRoute>} />
           <Route path="arnie/*" element={<LazyRoute><ArnieRoutes /></LazyRoute>} />
           <Route path="visite/*" element={<LazyRoute><VisiteRoutes /></LazyRoute>} />
-          <Route path="regine" element={<LazyRoute><ReginePage /></LazyRoute>} />
-          <Route path="trattamenti" element={<LazyRoute><TrattamentiPage /></LazyRoute>} />
-          <Route path="produzione" element={<LazyRoute><ProduzionePage /></LazyRoute>} />
+          <Route path="regine/*" element={<LazyRoute><RegineRoutes /></LazyRoute>} />
+          <Route path="trattamenti/*" element={<LazyRoute><TrattamentiRoutes /></LazyRoute>} />
+          <Route path="produzione/*" element={<LazyRoute><ProduzioneRoutes /></LazyRoute>} />
           <Route path="magazzino" element={<LazyRoute><MagazzinoPage /></LazyRoute>} />
           <Route path="report" element={<LazyRoute><ReportPage /></LazyRoute>} />
           <Route path="*" element={<NotFoundPage />} />

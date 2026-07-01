@@ -6,6 +6,7 @@ import { PageQueryState } from '../../../components/common/PageQueryState'
 import { useAppPath } from '../../../demo/useAppPath'
 import { ArniaDetail } from '../components/ArniaDetail'
 import type { ArniaVisitLocationState } from '../../visite/types/visitFlow.types'
+import { hasVisitaGuidataDraft } from '../../visite/services/visitaGuidataStorage'
 import { useArniaDetail } from '../hooks/useArnie'
 import './ArniaDetailPage.css'
 
@@ -16,19 +17,29 @@ export function ArniaDetailPage() {
   const appPath = useAppPath()
   const { detail, loading, error } = useArniaDetail(id)
 
+  const hasDraft = id ? hasVisitaGuidataDraft(id) : false
+
   useEffect(() => {
     const state = location.state as ArniaVisitLocationState | null
     if (state?.openVisita && id) {
       navigate(appPath(`/arnie/${id}/visita`), {
         replace: true,
-        state: state.giroReturn ? { giroReturn: state.giroReturn } : undefined,
+        state: {
+          ...(state.giroReturn ? { giroReturn: state.giroReturn } : {}),
+          startNewSession: !hasVisitaGuidataDraft(id),
+        },
       })
     }
   }, [appPath, id, location.state, navigate])
 
-  const openVisitWizard = () => {
+  const openNewVisit = () => {
     if (!id) return
-    navigate(appPath(`/arnie/${id}/visita`))
+    navigate(appPath(`/arnie/${id}/visita`), { state: { startNewSession: true } })
+  }
+
+  const resumeVisit = () => {
+    if (!id) return
+    navigate(appPath(`/arnie/${id}/visita`), { state: { startNewSession: false } })
   }
 
   if (!loading && !error && !detail) {
@@ -53,7 +64,12 @@ export function ArniaDetailPage() {
             {detail.apiario?.nome ?? 'Arnie'}
           </Link>
 
-          <ArniaDetail data={detail} onIniziaIspezione={openVisitWizard} />
+          <ArniaDetail
+            data={detail}
+            hasVisitDraft={hasDraft}
+            onIniziaIspezione={openNewVisit}
+            onRiprendiVisita={hasDraft ? resumeVisit : undefined}
+          />
         </div>
       )}
     </PageQueryState>

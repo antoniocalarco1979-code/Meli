@@ -1,0 +1,56 @@
+.trattamento-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.trattamento-form-fields__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+.trattamento-form-fields__label {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.trattamento-form-fields__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.trattamento-form-fields__chips--compact .trattamento-form-fields__chip {
+  font-size: 0.8125rem;
+  min-height: 40px;
+  padding: 0.45rem 0.75rem;
+}
+
+.trattamento-form-fields__chip {
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-pill);
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.trattamento-form-fields__chip--active {
+  border-color: var(--meli-honey-dark);
+  background: var(--meli-honey-soft);
+  color: var(--meli-honey-dark);
+}
+
+@media (max-width: 640px) {
+  .trattamento-form-fields__grid {
+    grid-template-columns: 1fr;
+  }
+}

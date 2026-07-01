@@ -3,15 +3,19 @@ import type { Regina } from '../types'
 import { generateId } from './utils'
 
 /**
- * Repository Regine — anagrafica regine per arnia.
+ * Repository Regine — passaporto regine per arnia.
  */
 export const regineRepository = {
   getById(id: string): Promise<Regina | undefined> {
     return getDb().regine.get(id)
   },
 
+  getAll(): Promise<Regina[]> {
+    return getDb().regine.orderBy('updatedAt').reverse().toArray()
+  },
+
   getByArniaId(arniaId: string): Promise<Regina[]> {
-    return getDb().regine.where('arniaId').equals(arniaId).reverse().sortBy('anno')
+    return getDb().regine.where('arniaId').equals(arniaId).reverse().sortBy('updatedAt')
   },
 
   /** Regina attualmente referenziata da Arnia.reginaAttualeId. */

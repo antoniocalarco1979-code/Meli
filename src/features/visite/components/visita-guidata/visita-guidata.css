@@ -42,9 +42,510 @@
   letter-spacing: 0.1em;
 }
 
+/* Header timer */
+.visita-guidata-header {
+  position: relative;
+}
+
+.visita-guidata-header__timer {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 4.5rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.16);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  text-align: center;
+}
+
+.visita-guidata-header__timer--idle {
+  visibility: hidden;
+}
+
+.visita-guidata-header__timer-value {
+  font-family: var(--meli-font-display);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--meli-honey-dark);
+}
+
+/* Large glove-friendly actions */
+.visita-guidata-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  min-height: 72px;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--meli-border-strong);
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  color: var(--meli-brown);
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.visita-guidata-action:active {
+  transform: scale(0.98);
+}
+
+.visita-guidata-action--primary {
+  border-color: rgba(201, 162, 39, 0.55);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-gold));
+  color: var(--meli-text-inverse);
+  box-shadow: var(--meli-shadow-md);
+}
+
+/* Timer step */
+.visita-guidata-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  border: 1px solid var(--meli-border);
+}
+
+.visita-guidata-timer__value {
+  font-family: var(--meli-font-display);
+  font-size: clamp(3rem, 14vw, 4.75rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--meli-honey-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.visita-guidata-timer__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+/* Apertura checklist */
+.visita-guidata-checklist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.visita-guidata-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  border: 1px solid var(--meli-border);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.visita-guidata-checklist li::before {
+  content: '✓';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.18);
+  color: var(--meli-honey-dark);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Interventi */
+.visita-guidata-interventi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.visita-guidata-intervento-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 88px;
+  padding: 0.75rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.visita-guidata-intervento-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.visita-guidata-intervento-btn--active,
+.visita-guidata-intervento-btn:disabled {
+  border-color: rgba(201, 162, 39, 0.55);
+  background: rgba(201, 162, 39, 0.12);
+  opacity: 0.85;
+  cursor: default;
+}
+
+.visita-guidata-intervento-btn__icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.visita-guidata-intervento-btn__label {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--meli-brown);
+}
+
+.visita-guidata-interventi-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.visita-guidata-intervento-card {
+  padding: 0.85rem;
+  border-radius: var(--meli-radius-lg);
+  border: 1px solid var(--meli-border);
+  background: var(--meli-surface-raised);
+}
+
+.visita-guidata-intervento-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.visita-guidata-intervento-card__title {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.visita-guidata-intervento-card__remove {
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--meli-text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.visita-guidata-intervento-btn--check {
+  position: relative;
+  min-height: 92px;
+}
+
+.visita-guidata-intervento-btn__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 1.35rem;
+  height: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-status-green, #5a9e4b);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.visita-guidata-interventi-grid--checklist {
+  grid-template-columns: 1fr;
+}
+
+.visita-guidata-interventi-altro {
+  margin-top: 0.85rem;
+}
+
+.visita-guidata-trattamento {
+  margin-top: 1rem;
+  padding: 1.1rem 1rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.visita-guidata-trattamento__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.visita-guidata-trattamento__lead {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+  line-height: 1.45;
+}
+
+.visita-guidata-cambio-regina {
+  margin-top: 1rem;
+  padding: 1.1rem 1rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.visita-guidata-cambio-regina__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.visita-guidata-cambio-regina__lead {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+  line-height: 1.45;
+}
+
+.visita-guidata-riepilogo .ispezione-riepilogo__row--multiline dd {
+  white-space: pre-wrap;
+  line-height: 1.45;
+}
+
+.visita-guidata-step--riepilogo .ispezione-salva-btn,
+.visita-guidata-step--success .ispezione-salva-btn {
+  margin-top: 1.25rem;
+}
+
+.visita-guidata-step__success-text {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--meli-brown);
+  line-height: 1.5;
+}
+
+.visita-guidata-step--success {
+  padding-bottom: 1rem;
+}
+
+.visita-guidata-empty-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}
+
+.visita-guidata-step--intro {
+  padding-top: 0.25rem;
+}
+
+.visita-guidata-intro-grid {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.visita-guidata-intro-grid__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  border: 1px solid var(--meli-border);
+}
+
+.visita-guidata-intro-grid__row--highlight {
+  border-color: rgba(201, 162, 39, 0.45);
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.visita-guidata-intro-grid__row dt {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.visita-guidata-intro-grid__row dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+  text-align: right;
+}
+
+.visita-guidata-intro-grid__timer {
+  font-family: var(--meli-font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--meli-honey-dark);
+}
+
+.visita-guidata-phase-badge {
+  margin: 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.16);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--meli-honey-dark);
+}
+
+.visita-guidata-step--phase .ispezione-step__question {
+  margin-top: 0.25rem;
+}
+
+.visita-guidata-progress {
+  flex-shrink: 0;
+  padding: 0.65rem 1.25rem 0.25rem;
+}
+
+.visita-guidata-progress__bar {
+  height: 8px;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.visita-guidata-progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--meli-honey-light), var(--meli-gold));
+  transition: width 0.28s ease;
+}
+
+.visita-guidata-progress__label {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--meli-text-muted);
+}
+
+.visita-guidata-step--apertura {
+  padding-top: 0.5rem;
+}
+
+.visita-guidata-step--salvataggio {
+  padding-bottom: 1rem;
+}
+
+/* ── Step Nido — telaini 2D ── */
+.visita-nido-step__progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--meli-radius-xl);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(201, 162, 39, 0.28);
+}
+
+.visita-nido-step__progress-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.visita-nido-step__progress-value {
+  font-family: var(--meli-font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+}
+
+.visita-nido-step__complete {
+  margin: 0.85rem 0 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--meli-radius-xl);
+  border: 1px solid rgba(90, 158, 75, 0.35);
+  background: rgba(90, 158, 75, 0.08);
+  text-align: center;
+}
+
+.visita-nido-step__complete-text {
+  margin: 0 0 0.85rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+  line-height: 1.45;
+}
+
+.visita-nido-step__complete-btn {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: var(--meli-radius-xl);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-gold));
+  color: var(--meli-text-inverse);
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.visita-nido-step__complete-btn:active {
+  transform: scale(0.98);
+}
+
 @media (min-width: 768px) {
   .visita-guidata-footer__back,
-  .visita-guidata-footer__next {
-    min-height: 72px;
+  .visita-guidata-footer__next,
+  .visita-guidata-action {
+    min-height: 76px;
+  }
+
+  .visita-guidata-interventi-grid,
+  .visita-guidata-interventi-grid--checklist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

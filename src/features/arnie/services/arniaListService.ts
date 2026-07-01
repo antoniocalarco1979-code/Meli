@@ -15,9 +15,10 @@ function compareArniaNumero(a: string, b: string): number {
   return a.localeCompare(b, 'it', { numeric: true })
 }
 
-function groupByArniaId<T extends { arniaId: string }>(rows: T[]): Map<string, T[]> {
+function groupByArniaId<T extends { arniaId?: string }>(rows: T[]): Map<string, T[]> {
   const map = new Map<string, T[]>()
   for (const row of rows) {
+    if (!row.arniaId) continue
     const list = map.get(row.arniaId)
     if (list) list.push(row)
     else map.set(row.arniaId, [row])

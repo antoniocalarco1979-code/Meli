@@ -33,25 +33,35 @@ export {
 
 export {
   createProduzione,
+  createSmielatura,
   deleteProduzione,
+  getAllSmielature,
+  getProduzioneAnnoCorrenteKg,
   getProduzioneByArniaId,
   getProduzioneById,
+  getSmielatureByApiarioId,
+  syncApiarioProduzioneTotals,
   updateProduzione,
 } from './produzioneService'
 
 export {
   createRegina,
+  getAllRegine,
   getReginaAttuale,
+  getReginaById,
   getRegineByArniaId,
   impostaReginaAttuale,
+  sostituisciRegina,
   updateRegina,
 } from './regineService'
 
 export {
   createTrattamento,
   deleteTrattamento,
+  getAllTrattamenti,
   getTrattamentiByArniaId,
   getTrattamentiInScadenzaEntro,
+  getTrattamentiPromemoriaProgrammati,
   getTrattamentoById,
   updateTrattamento,
 } from './trattamentiService'

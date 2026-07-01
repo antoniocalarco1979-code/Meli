@@ -1,0 +1,73 @@
+.smielatura-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.smielatura-form-fields__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.smielatura-form-fields__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--meli-text-secondary);
+}
+
+.smielatura-form-fields__select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--meli-border);
+  border-radius: var(--meli-radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--meli-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.smielatura-form-fields__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+.smielatura-form-fields__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.smielatura-form-fields__chip {
+  min-height: 40px;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--meli-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--meli-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.smielatura-form-fields__chip--active {
+  border-color: var(--meli-honey);
+  background: rgba(232, 164, 0, 0.14);
+  color: var(--meli-brown);
+}
+
+@media (min-width: 640px) {
+  .smielatura-form-fields__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .smielatura-form-fields__grid > :last-child {
+    grid-column: 1 / -1;
+  }
+}

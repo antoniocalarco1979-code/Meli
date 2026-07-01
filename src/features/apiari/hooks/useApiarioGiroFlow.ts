@@ -67,7 +67,10 @@ export function useApiarioGiroFlow({
     if (!arniaId) return
 
     navigate(appPath(`/arnie/${arniaId}/visita`), {
-      state: { giroReturn: buildGiroReturnForIndex(giroReturn, index, giroReturn.completedThrough) },
+      state: {
+        giroReturn: buildGiroReturnForIndex(giroReturn, index, giroReturn.completedThrough),
+        startNewSession: true,
+      },
     })
   }
 

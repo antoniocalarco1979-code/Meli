@@ -1,20 +1,18 @@
 import { motion } from 'framer-motion'
-import { RefreshCw } from 'lucide-react'
-import { Button } from '../../../components/ui/Button'
+import { ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
+import { formatReginaColoreDisplay } from '../utils/arniaFormatters'
 import type { QueenSummary } from '../types'
 import './QueenCard.css'
 
 type QueenCardProps = {
   queen: QueenSummary
-  onReplace?: () => void
 }
 
-function capitalize(value?: string) {
-  if (!value) return '—'
-  return value.charAt(0).toUpperCase() + value.slice(1)
-}
+export function QueenCard({ queen }: QueenCardProps) {
+  const appPath = useAppPath()
 
-export function QueenCard({ queen, onReplace }: QueenCardProps) {
   return (
     <motion.section
       className="queen-card meli-glass meli-glass--deep"
@@ -27,43 +25,39 @@ export function QueenCard({ queen, onReplace }: QueenCardProps) {
         <h2 className="arnia-section-title">👑 Regina</h2>
       </header>
 
-      {!queen.present ? (
+      {!queen.present || !queen.id ? (
         <p className="queen-card__empty">Nessuna regina registrata</p>
       ) : (
-        <dl className="queen-card__grid">
-          <div>
-            <dt>Anno</dt>
-            <dd>{queen.anno ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Colore</dt>
-            <dd>{capitalize(queen.colore)}</dd>
-          </div>
-          <div>
-            <dt>Origine</dt>
-            <dd>{capitalize(queen.origine)}</dd>
-          </div>
-          <div>
-            <dt>Stato</dt>
-            <dd>{queen.stato}</dd>
-          </div>
-          <div className="queen-card__full">
-            <dt>Età</dt>
-            <dd>{queen.eta}</dd>
-          </div>
-        </dl>
-      )}
+        <>
+          <dl className="queen-card__grid">
+            <div>
+              <dt>Numero</dt>
+              <dd>{queen.numero ?? '—'}</dd>
+            </div>
+            <div>
+              <dt>Colore</dt>
+              <dd>{formatReginaColoreDisplay(queen.colore) ?? '—'}</dd>
+            </div>
+            <div>
+              <dt>Anno</dt>
+              <dd>{queen.anno ?? '—'}</dd>
+            </div>
+            <div>
+              <dt>Razza</dt>
+              <dd>{queen.razza ?? '—'}</dd>
+            </div>
+            <div className="queen-card__full">
+              <dt>Stato</dt>
+              <dd>{queen.stato}</dd>
+            </div>
+          </dl>
 
-      <Button
-        variant="secondary"
-        size="lg"
-        fullWidth
-        className="queen-card__replace"
-        onClick={onReplace}
-      >
-        <RefreshCw size={20} aria-hidden="true" />
-        Sostituzione regina
-      </Button>
+          <Link to={appPath(`/regine/${queen.id}`)} className="queen-card__link">
+            Apri scheda regina
+            <ChevronRight size={18} aria-hidden="true" />
+          </Link>
+        </>
+      )}
     </motion.section>
   )
 }

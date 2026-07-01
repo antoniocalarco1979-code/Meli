@@ -2,6 +2,9 @@ import QRCode from 'qrcode'
 import { jsPDF } from 'jspdf'
 import type { Arnia } from '../../../database/types'
 
+/** Formato definitivo del payload QR. */
+export const ARNIA_QR_URI_PREFIX = 'meli://arnia/'
+
 /** Prefisso legacy — accettato in scansione per etichette già stampate. */
 export const ARNIA_QR_PREFIX = 'meli:arnia:'
 
@@ -10,18 +13,38 @@ export type ArniaQrLabelContext = {
   apiarioNome?: string
 }
 
-/** Payload QR: esclusivamente l'UUID permanente dell'arnia. */
+function isUuid(value: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    value,
+  )
+}
+
+/** Payload QR: esclusivamente `meli://arnia/{UUID}`. */
 export function buildArniaQrPayload(publicUuid: string): string {
-  return publicUuid
+  return `${ARNIA_QR_URI_PREFIX}${publicUuid}`
+}
+
+/** Valore da codificare nel QR per un'arnia (preferisce qrCode persistito se valido). */
+export function resolveArniaQrPayload(arnia: Pick<Arnia, 'publicUuid' | 'qrCode'>): string {
+  const parsed = arnia.qrCode ? parseArniaQrPayload(arnia.qrCode) : null
+  if (parsed === arnia.publicUuid) {
+    return buildArniaQrPayload(arnia.publicUuid)
+  }
+  return buildArniaQrPayload(arnia.publicUuid)
 }
 
 /**
  * Estrae l'UUID permanente da un payload scansionato.
- * Accetta UUID raw (definitivo) e prefisso legacy `meli:arnia:`.
+ * Accetta `meli://arnia/{uuid}`, prefisso legacy `meli:arnia:` e UUID raw.
  */
 export function parseArniaQrPayload(raw: string): string | null {
   const trimmed = raw.trim()
   if (!trimmed) return null
+
+  if (trimmed.startsWith(ARNIA_QR_URI_PREFIX)) {
+    const uuid = trimmed.slice(ARNIA_QR_URI_PREFIX.length).trim()
+    return isUuid(uuid) ? uuid : null
+  }
 
   if (trimmed.startsWith(ARNIA_QR_PREFIX)) {
     const uuid = trimmed.slice(ARNIA_QR_PREFIX.length).trim()
@@ -31,12 +54,6 @@ export function parseArniaQrPayload(raw: string): string | null {
   if (isUuid(trimmed)) return trimmed
 
   return null
-}
-
-function isUuid(value: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-    value,
-  )
 }
 
 export async function generateQrImageDataUrl(payload: string): Promise<string> {
@@ -55,8 +72,11 @@ export async function buildArniaQrAssets(publicUuid: string) {
 }
 
 async function resolveQrImage(arnia: Arnia): Promise<string> {
-  if (arnia.qrImageDataUrl) return arnia.qrImageDataUrl
-  return generateQrImageDataUrl(arnia.publicUuid)
+  const payload = resolveArniaQrPayload(arnia)
+  if (arnia.qrImageDataUrl && arnia.qrCode === payload) {
+    return arnia.qrImageDataUrl
+  }
+  return generateQrImageDataUrl(payload)
 }
 
 function triggerDownload(dataUrl: string, filename: string) {

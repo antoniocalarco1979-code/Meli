@@ -10,9 +10,11 @@ import { HomeAssistenteSection } from '../components/home/HomeAssistenteSection'
 import { HomeHeader } from '../components/home/HomeHeader'
 import { HomeIniziaGiroButton } from '../components/home/HomeIniziaGiroButton'
 import { HomePrioritaCard } from '../components/home/HomePrioritaCard'
+import { HomeProduzioneCard } from '../components/home/HomeProduzioneCard'
 import { RanuWatermark } from '../components/RanuWatermark'
 import { useHomeApiariCards } from '../hooks/useHomeApiariCards'
 import { useHomePriorita } from '../hooks/useHomePriorita'
+import { useHomeProduzioneAnno } from '../hooks/useHomeProduzioneAnno'
 import { useSelectedApiario } from '../hooks/useSelectedApiario'
 import { useMeliIntelligence } from '../../intelligence'
 import './DashboardPage.css'
@@ -24,6 +26,7 @@ export function DashboardPage() {
   const { apiari, selectedApiarioId, setSelectedApiarioId, loading: selecting } =
     useSelectedApiario()
   const priorita = useHomePriorita(selectedApiarioId)
+  const { kgAnno, loading: produzioneLoading } = useHomeProduzioneAnno()
   const { cards, loading: apiariLoading } = useHomeApiariCards()
   const { suggestions, loading: intelligenceLoading } = useMeliIntelligence(selectedApiarioId)
   const { launchGiro, starting: giroStarting } = useStartGiroNavigation()
@@ -66,6 +69,8 @@ export function DashboardPage() {
           <HomeHeader userName={userName} weather={weather} />
 
           <HomePrioritaCard {...priorita} />
+
+          <HomeProduzioneCard kgAnno={kgAnno} loading={produzioneLoading} />
 
           <HomeIniziaGiroButton
             onClick={handleStartGiro}

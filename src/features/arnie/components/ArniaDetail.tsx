@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAppPath } from '../../../demo/useAppPath'
 import { ApiarioLocationMap } from '../../apiari/components/ApiarioLocationMap'
+import { GemelloDigitaleView } from '../../gemello-digitale'
 import type { ArniaDetailView } from '../services/arniaDetailService'
 import { ArniaAzioneConsigliata } from './ArniaAzioneConsigliata'
 import { ArniaDetailHeader } from './ArniaDetailHeader'
@@ -11,16 +12,25 @@ import { ArniaDetailQrCard } from './detail/ArniaDetailQrCard'
 import { ArniaDetailVisitCta } from './detail/ArniaDetailVisitCta'
 import { ArniaStatusSummary } from './ArniaStatusSummary'
 import { PhotoGallery } from './PhotoGallery'
-import { TimelineCard } from './TimelineCard'
+import { CronologiaVisiteSection } from './cronologia/CronologiaVisiteSection'
+import { QueenCard } from './QueenCard'
+import { UltimoTrattamentoCard } from '../../trattamenti/components/UltimoTrattamentoCard'
 import './arnia-shared.css'
 import './ArniaDetail.css'
 
 type ArniaDetailProps = {
   data: ArniaDetailView
+  hasVisitDraft?: boolean
   onIniziaIspezione: () => void
+  onRiprendiVisita?: () => void
 }
 
-export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
+export function ArniaDetail({
+  data,
+  hasVisitDraft = false,
+  onIniziaIspezione,
+  onRiprendiVisita,
+}: ArniaDetailProps) {
   const { arnia, foto, detail, apiario } = data
   const timelineRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
@@ -44,9 +54,15 @@ export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
           salute={detail.salute}
         />
 
+        <GemelloDigitaleView arnia={arnia} />
+
         <ArniaDetailQrCard arnia={arnia} apiarioNome={data.apiario?.nome} />
 
-        <ArniaDetailVisitCta onClick={onIniziaIspezione} />
+        <ArniaDetailVisitCta
+          hasDraft={hasVisitDraft}
+          onStartNew={onIniziaIspezione}
+          onResume={onRiprendiVisita}
+        />
       </div>
 
       <div className="arnia-premium__primary">
@@ -66,6 +82,10 @@ export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
 
         <ArniaConfigSection arnia={arnia} />
 
+        <QueenCard queen={detail.queen} />
+
+        <UltimoTrattamentoCard trattamento={detail.ultimoTrattamento} />
+
         <ArniaStatusSummary visit={detail.ultimaVisita} onCellClick={scrollToTimeline} />
 
         <ArniaAzioneConsigliata visit={detail.ultimaVisita} />
@@ -73,7 +93,7 @@ export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
 
       <div className="arnia-premium__secondary" ref={timelineRef} id="arnia-timeline">
         <PhotoGallery photos={foto} />
-        <TimelineCard visits={detail.visitTimeline} />
+        <CronologiaVisiteSection arniaNumero={arnia.numero} visits={detail.visitTimeline} />
       </div>
     </motion.div>
   )

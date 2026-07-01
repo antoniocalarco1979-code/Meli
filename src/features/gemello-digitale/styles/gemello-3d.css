@@ -1,0 +1,101 @@
+.gemello-3d-canvas {
+  width: 100%;
+  height: min(420px, 62vh);
+  min-height: 300px;
+  border-radius: var(--meli-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--meli-border);
+  box-shadow: var(--meli-shadow-md);
+}
+
+.gemello-3d-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+.gemello-3d-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.gemello-3d-view__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.gemello-3d-view__spec {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--meli-honey-dark);
+}
+
+.gemello-3d-view__selection {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.14);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.gemello-3d-view__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-text-muted);
+}
+
+.gemello-3d-view__hint {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--meli-text-muted);
+}
+
+.gemello-digitale__mode-tabs {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.gemello-digitale__mode-tab {
+  flex: 1 1 120px;
+  min-height: 42px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--meli-radius-md);
+  border: 1px solid var(--meli-border);
+  background: var(--meli-surface-raised);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--meli-text-secondary);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.gemello-digitale__mode-tab--active {
+  border-color: rgba(201, 162, 39, 0.55);
+  background: rgba(201, 162, 39, 0.16);
+  color: var(--meli-brown);
+}
+
+@media (min-width: 768px) {
+  .gemello-3d-canvas {
+    height: min(480px, 58vh);
+  }
+}

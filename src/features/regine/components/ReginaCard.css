@@ -1,0 +1,96 @@
+.regina-card {
+  border-radius: var(--meli-radius-xl);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.regina-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--meli-shadow-lg);
+}
+
+.regina-card__link {
+  display: block;
+  padding: 1.15rem 1.2rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.regina-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.regina-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-honey-soft);
+  color: var(--meli-honey-dark);
+  flex-shrink: 0;
+}
+
+.regina-card__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.regina-card__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.regina-card__subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}
+
+.regina-card__badge {
+  flex-shrink: 0;
+}
+
+.regina-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.regina-card__meta div {
+  min-width: 0;
+}
+
+.regina-card__meta dt {
+  margin: 0 0 0.15rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.regina-card__meta dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .regina-card__meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}

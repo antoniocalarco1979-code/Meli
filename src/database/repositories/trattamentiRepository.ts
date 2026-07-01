@@ -1,6 +1,5 @@
 import { getDb } from '../activeDatabase'
 import type { Trattamento } from '../types'
-import { generateId } from './utils'
 
 /**
  * Repository Trattamenti — sanitari per arnia.
@@ -10,12 +9,15 @@ export const trattamentiRepository = {
     return getDb().trattamenti.get(id)
   },
 
+  getAll(): Promise<Trattamento[]> {
+    return getDb().trattamenti.orderBy('data').reverse().toArray()
+  },
+
   getByArniaId(arniaId: string): Promise<Trattamento[]> {
     return getDb().trattamenti.where('arniaId').equals(arniaId).reverse().sortBy('data')
   },
 
-  async create(data: Omit<Trattamento, 'id'>): Promise<Trattamento> {
-    const trattamento: Trattamento = { id: generateId(), ...data }
+  async create(trattamento: Trattamento): Promise<Trattamento> {
     await getDb().trattamenti.add(trattamento)
     return trattamento
   },
@@ -36,6 +38,13 @@ export const trattamentiRepository = {
   getInScadenzaEntro(timestamp: number): Promise<Trattamento[]> {
     return getDb().trattamenti
       .filter((row) => (row.scadenza ?? Number.MAX_SAFE_INTEGER) <= timestamp)
+      .toArray()
+  },
+
+  /** Promemoria calendario programmati — base per calendario / notifiche future. */
+  getPromemoriaProgrammati(): Promise<Trattamento[]> {
+    return getDb().trattamenti
+      .filter((row) => row.promemoriaCalendario?.stato === 'programmato')
       .toArray()
   },
 }

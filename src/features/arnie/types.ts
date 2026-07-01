@@ -20,11 +20,12 @@ export type HealthSummary = {
 
 export type QueenSummary = {
   present: boolean
+  id?: string
+  numero?: string
   anno?: number
   colore?: string
-  origine?: string
+  razza?: string
   stato: string
-  eta: string
 }
 
 export type ProductionSummary = {
@@ -35,12 +36,18 @@ export type ProductionSummary = {
   chartData: { mese: string; kg: number }[]
 }
 
+import type { VisitaCronologiaDetail, VisitaCronologiaSnapshot } from '../visite/types/visitaCronologia.types'
+import type { UltimoTrattamentoSummary } from '../trattamenti/types/trattamento.types'
+
 export type VisitaTimelineEntry = {
   id: string
   data: number
   dataShort: string
   dataFull: string
   oraLabel: string
+  durataLabel: string
+  fotoCount: number
+  interventiCount: number
   summary: string
   statusIcon: string
   statusLevel: SaluteLevel
@@ -58,6 +65,8 @@ export type VisitaTimelineEntry = {
   fotoPaths: string[]
   trattamenti: string[]
   produzione: string[]
+  detail: VisitaCronologiaDetail
+  snapshot: VisitaCronologiaSnapshot
 }
 
 export type UltimaVisitaSummary = {
@@ -78,6 +87,7 @@ export type TrattamentoEntry = {
   id: string
   data: number
   dataLabel: string
+  tipoLabel: string
   prodotto: string
   dose?: string
   scadenzaLabel?: string
@@ -87,6 +97,7 @@ export type ArniaDetailData = {
   salute: number
   health: HealthSummary
   queen: QueenSummary
+  ultimoTrattamento: UltimoTrattamentoSummary
   production: ProductionSummary
   ultimaVisita: UltimaVisitaSummary
   trattamenti: TrattamentoEntry[]

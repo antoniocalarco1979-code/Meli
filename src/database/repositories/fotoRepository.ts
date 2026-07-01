@@ -22,6 +22,10 @@ export const fotoRepository = {
     return getDb().foto.where('arniaId').equals(arniaId).reverse().sortBy('data')
   },
 
+  getByReginaId(reginaId: string): Promise<Foto[]> {
+    return getDb().foto.where('reginaId').equals(reginaId).reverse().sortBy('data')
+  },
+
   getLatestByApiarioId(apiarioId: string): Promise<Foto | undefined> {
     return getDb().foto.where('apiarioId').equals(apiarioId).reverse().sortBy('data').then((rows) => rows[0])
   },

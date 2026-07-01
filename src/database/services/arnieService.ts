@@ -6,7 +6,7 @@ import {
   isModelloPersonalizzato,
   resolveArniaModello,
 } from '../../features/arnie/models/arniaModelli'
-import { buildArniaQrAssets } from '../../features/arnie/services/arniaQrService'
+import { buildArniaQrAssets, buildArniaQrPayload } from '../../features/arnie/services/arniaQrService'
 import { generateId, now } from '../repositories/utils'
 import type { Arnia, ArniaInput, ArniaUpdate } from '../types'
 
@@ -107,7 +107,8 @@ export async function ensureArniaQrIdentity(arniaId: string): Promise<Arnia> {
   }
 
   const hasUuid = isValidPublicUuid(arnia.publicUuid)
-  const qrMatchesUuid = hasUuid && arnia.qrCode === arnia.publicUuid
+  const expectedQrCode = hasUuid ? buildArniaQrPayload(arnia.publicUuid) : ''
+  const qrMatchesUuid = hasUuid && arnia.qrCode === expectedQrCode
   const hasImage = Boolean(arnia.qrImageDataUrl)
 
   if (hasUuid && qrMatchesUuid && hasImage) {

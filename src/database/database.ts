@@ -12,8 +12,6 @@ type LegacyRegina = Regina & {
   dataInsediamento?: number
   attiva?: boolean
   dataFine?: number
-  createdAt?: number
-  updatedAt?: number
 }
 type LegacyVisita = Visita & { tipo?: string; esito?: string; createdAt?: number; updatedAt?: number }
 type LegacyFoto = Foto & { dataUrl?: string; didascalia?: string; createdAt?: number }
@@ -113,10 +111,34 @@ class MeliDatabase extends Dexie {
 
     this.version(11).stores(STORE_SCHEMA)
 
-    this.version(DATABASE_VERSION)
+    this.version(12)
       .stores(STORE_SCHEMA)
       .upgrade(async (tx) => {
         await migrateArnieV12(tx)
+      })
+
+    this.version(13)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateArnieV13(tx)
+      })
+
+    this.version(14)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateRegineV14(tx)
+      })
+
+    this.version(15)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateTrattamentiV15(tx)
+      })
+
+    this.version(DATABASE_VERSION)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateProduzioneV16(tx)
       })
   }
 }
@@ -159,8 +181,6 @@ async function migrateRegineV5(tx: Transaction): Promise<void> {
     delete row.dataInsediamento
     delete row.attiva
     delete row.dataFine
-    delete row.createdAt
-    delete row.updatedAt
   })
 }
 
@@ -221,8 +241,6 @@ async function migrateTrattamentiV5(tx: Transaction): Promise<void> {
     delete row.dataEsecuzione
     delete row.stato
     delete row.note
-    delete row.createdAt
-    delete row.updatedAt
   })
 }
 
@@ -269,6 +287,163 @@ async function migrateArnieV12(tx: Transaction): Promise<void> {
     }
 
     const qrCode = buildArniaQrPayload(publicUuid)
+    const qrImageDataUrl = await generateQrImageDataUrl(qrCode)
+
+    await tx.table('arnie').update(row.id, {
+      publicUuid,
+      qrCode,
+      qrImageDataUrl,
+    })
+  }
+}
+
+async function migrateProduzioneV16(tx: Transaction): Promise<void> {
+  const timestamp = Date.now()
+
+  await tx.table('produzione').toCollection().modify((row: LegacyProduzione) => {
+    if (!row.createdAt) row.createdAt = row.data ?? timestamp
+    if (!row.updatedAt) row.updatedAt = row.createdAt
+
+    if (!row.tipo?.trim()) {
+      row.tipo = row.apiarioId ? 'smielatura' : 'miele'
+    }
+  })
+
+  const smielature = (await tx.table('produzione').toArray()) as Produzione[]
+  const apiarioIds = [
+    ...new Set(smielature.filter((row) => row.apiarioId).map((row) => row.apiarioId!)),
+  ]
+
+  const now = new Date()
+  const yearStart = new Date(now.getFullYear(), 0, 1).getTime()
+  const yearEnd = new Date(now.getFullYear() + 1, 0, 1).getTime()
+
+  for (const apiarioId of apiarioIds) {
+    const rows = smielature.filter(
+      (row) => row.apiarioId === apiarioId && row.tipo === 'smielatura',
+    )
+    const kgTotale = rows.reduce((sum, row) => sum + (row.kg ?? 0), 0)
+    const kgAnno = rows
+      .filter((row) => row.data >= yearStart && row.data < yearEnd)
+      .reduce((sum, row) => sum + (row.kg ?? 0), 0)
+
+    await tx.table('apiari').update(apiarioId, {
+      kgProduzioneTotale: kgTotale,
+      kgProduzioneAnno: kgAnno,
+      updatedAt: timestamp,
+    })
+  }
+}
+
+async function migrateTrattamentiV15(tx: Transaction): Promise<void> {
+  const { buildTrattamentoCalendarioPromemoria } = await import(
+    '../features/trattamenti/services/trattamentoReminderService'
+  )
+  const { generateId } = await import('./repositories/utils')
+  const timestamp = Date.now()
+
+  await tx.table('trattamenti').toCollection().modify((row: Trattamento & { prodotto?: string }) => {
+    if (!row.createdAt) row.createdAt = row.data ?? timestamp
+    if (!row.updatedAt) row.updatedAt = row.createdAt
+
+    if (row.prodotto?.trim() && !row.principioAttivo?.trim()) {
+      row.principioAttivo = row.prodotto.trim()
+    }
+
+    if (!row.tipo?.trim() && row.principioAttivo) {
+      const lower = row.principioAttivo.toLowerCase()
+      if (lower.includes('varroa') || lower.includes('apivar') || lower.includes('oxalico')) {
+        row.tipo = 'varroa'
+      } else if (lower.includes('nutriz') || lower.includes('scirop')) {
+        row.tipo = 'nutrizione'
+      } else {
+        row.tipo = 'altro'
+      }
+    }
+
+    if (row.scadenza && !row.promemoriaCalendario) {
+      row.promemoriaCalendario = buildTrattamentoCalendarioPromemoria(
+        { ...row, id: row.id, createdAt: row.createdAt, updatedAt: row.updatedAt },
+        generateId,
+      )
+    }
+  })
+}
+
+async function migrateRegineV14(tx: Transaction): Promise<void> {
+  const timestamp = Date.now()
+
+  await tx.table('regine').toCollection().modify((row: LegacyRegina & Partial<Regina>) => {
+    if (!row.createdAt) row.createdAt = timestamp
+    if (!row.updatedAt) row.updatedAt = timestamp
+
+    if (!row.numero?.trim()) {
+      if (row.identificativo?.trim()) {
+        row.numero = row.identificativo.trim()
+      } else if (row.anno) {
+        row.numero = String(row.anno)
+      } else {
+        row.numero = row.id.slice(0, 8).toUpperCase()
+      }
+    }
+
+    if (row.origine?.trim() && !row.provenienza?.trim()) {
+      row.provenienza = row.origine.trim()
+    }
+
+    if (row.dataInsediamento && !row.dataInserimento) {
+      row.dataInserimento = row.dataInsediamento
+    }
+
+    if (row.dataFine && !row.dataSostituzione) {
+      row.dataSostituzione = row.dataFine
+    }
+
+    if (!row.stato) {
+      if (row.dataSostituzione || row.dataFine) {
+        row.stato = 'persa'
+      } else if (row.attiva === false) {
+        row.stato = 'da_sostituire'
+      } else {
+        row.stato = 'fecondata'
+      }
+    }
+
+    if (row.colore?.trim()) {
+      row.colore = row.colore.trim().toLowerCase()
+    }
+
+    delete row.identificativo
+    delete row.dataInsediamento
+    delete row.attiva
+    delete row.dataFine
+  })
+}
+
+async function migrateArnieV13(tx: Transaction): Promise<void> {
+  const { buildArniaQrPayload, generateQrImageDataUrl, parseArniaQrPayload } = await import(
+    '../features/arnie/services/arniaQrService'
+  )
+  const { generateId } = await import('./repositories/utils')
+
+  const rows = await tx.table('arnie').toArray()
+  for (const row of rows) {
+    let publicUuid = row.publicUuid?.trim()
+    if (!publicUuid) {
+      publicUuid = generateId()
+    }
+
+    const parsedFromQr = row.qrCode ? parseArniaQrPayload(row.qrCode) : null
+    if (parsedFromQr && parsedFromQr !== publicUuid) {
+      publicUuid = parsedFromQr
+    }
+
+    const qrCode = buildArniaQrPayload(publicUuid)
+    const needsImage =
+      row.qrCode !== qrCode || !row.qrImageDataUrl || row.publicUuid !== publicUuid
+
+    if (!needsImage) continue
+
     const qrImageDataUrl = await generateQrImageDataUrl(qrCode)
 
     await tx.table('arnie').update(row.id, {

@@ -1,0 +1,400 @@
+/* ── Cronologia Visite (Sprint 1A.5) ── */
+.cronologia-visite {
+  padding: 1.35rem 1.25rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.cronologia-visite--pulse {
+  box-shadow:
+    0 0 0 3px rgba(232, 150, 12, 0.35),
+    var(--meli-shadow-lg);
+}
+
+.cronologia-visite__header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.1rem;
+}
+
+.cronologia-visite__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cronologia-visite__count {
+  margin-left: auto;
+  min-width: 2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-honey-soft);
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  text-align: center;
+}
+
+.cronologia-visite__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.cronologia-visita-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 72px;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  cursor: pointer;
+  text-align: left;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cronologia-visita-row:active {
+  transform: scale(0.99);
+}
+
+.cronologia-visita-row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.cronologia-visita-row__datetime {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.cronologia-visita-row__date {
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.cronologia-visita-row__time {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-visita-row__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.cronologia-visita-row__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-visita-row__status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.cronologia-visita-row__status-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.cronologia-visita-row__status-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--meli-honey-dark);
+}
+
+.cronologia-visita-row__chevron {
+  color: var(--meli-text-muted);
+  margin-top: 0.15rem;
+}
+
+/* ── Dettaglio visita (drawer) ── */
+.cronologia-detail__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 440;
+  border: none;
+  background: var(--meli-overlay);
+  cursor: pointer;
+}
+
+.cronologia-detail {
+  position: fixed;
+  z-index: 450;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 440px);
+  max-width: 100vw;
+  background: var(--meli-cream);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.28);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.cronologia-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.85rem;
+  border-bottom: 1px solid var(--meli-border);
+  flex-shrink: 0;
+}
+
+.cronologia-detail__kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-detail__title {
+  margin: 0.15rem 0 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-detail__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--meli-touch-min);
+  height: var(--meli-touch-min);
+  border: none;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-surface-raised);
+  color: var(--meli-brown);
+  cursor: pointer;
+  box-shadow: var(--meli-shadow-sm);
+}
+
+.cronologia-detail__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.85rem 1.1rem 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cronologia-detail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cronologia-detail__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__section {
+  margin-bottom: 1.15rem;
+}
+
+.cronologia-detail__section-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-detail__dl {
+  margin: 0;
+}
+
+.cronologia-detail__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--meli-border);
+}
+
+.cronologia-detail__row dt {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-detail__row dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  text-align: right;
+}
+
+.cronologia-detail__telaini {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.cronologia-detail__telaino-card {
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+}
+
+.cronologia-detail__telaino-title {
+  margin: 0 0 0.45rem;
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__telaino-dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 0.75rem;
+  margin: 0;
+}
+
+.cronologia-detail__telaino-dl dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.cronologia-detail__telaino-dl dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__telaino-note {
+  grid-column: 1 / -1;
+}
+
+.cronologia-detail__interventi {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9375rem;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__note {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 0.9375rem;
+  color: var(--meli-brown);
+}
+
+.cronologia-detail__photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.55rem;
+}
+
+.cronologia-detail__photo {
+  margin: 0;
+  border-radius: var(--meli-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--meli-border);
+}
+
+.cronologia-detail__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.cronologia-detail__readonly {
+  margin: 0.5rem 0 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--meli-radius-lg);
+  background: rgba(0, 0, 0, 0.04);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--meli-text-muted);
+}
+
+@media (max-width: 640px) {
+  .cronologia-detail {
+    width: 100%;
+    border-radius: var(--meli-radius-xl) var(--meli-radius-xl) 0 0;
+    top: auto;
+    max-height: min(92vh, 820px);
+  }
+
+  .cronologia-visita-row {
+    min-height: 80px;
+    padding: 0.95rem 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .cronologia-visite {
+    padding: 1.5rem 1.45rem;
+  }
+
+  .cronologia-visita-row {
+    min-height: 76px;
+  }
+}

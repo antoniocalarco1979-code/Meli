@@ -8,6 +8,7 @@ import { useToast } from '../../../hooks/useToast'
 import { useArniaDetail } from '../../arnie/hooks/useArnie'
 import { VisitaGuidataWizard } from '../components/visita-guidata/VisitaGuidataWizard'
 import { advanceGiroAfterSavedVisit } from '../services/giroFlowService'
+import { getVisitWeatherLabel } from '../services/visitWeatherService'
 import type { VisitaSaveSummary } from '../types/visitSave.types'
 import type { VisitWizardLocationState } from '../types/visitFlow.types'
 
@@ -19,9 +20,17 @@ export function VisitWizardPage() {
   const toast = useToast()
   const { detail, loading, error } = useArniaDetail(id)
 
-  const giroReturn = useMemo(() => {
-    return (location.state as VisitWizardLocationState | null)?.giroReturn
-  }, [location.state])
+  const locationState = location.state as VisitWizardLocationState | null
+
+  const giroReturn = useMemo(() => locationState?.giroReturn, [locationState])
+
+  const startNewSession = useMemo(() => {
+    if (locationState?.startNewSession === true) return true
+    if (locationState?.startNewSession === false) return false
+    return Boolean(giroReturn?.giroActive)
+  }, [giroReturn?.giroActive, locationState?.startNewSession])
+
+  const meteo = useMemo(() => getVisitWeatherLabel(), [])
 
   const navigateAfterClose = () => {
     if (giroReturn?.giroActive) {
@@ -58,7 +67,7 @@ export function VisitWizardPage() {
         if (result.kind === 'next') {
           navigate(appPath(`/arnie/${result.nextArniaId}/visita`), {
             replace: true,
-            state: { giroReturn: result.giroReturn },
+            state: { giroReturn: result.giroReturn, startNewSession: true },
           })
           return
         }
@@ -127,7 +136,11 @@ export function VisitWizardPage() {
       arniaId={detail.arnia.id}
       arniaNumero={detail.arnia.numero}
       apiarioNome={detail.apiario?.nome}
+      meteo={meteo}
+      startNewSession={startNewSession}
+      frameCount={detail.arnia.numeroTelai || 10}
       hasMelario={detail.arnia.hasMelario}
+      isGiroActive={Boolean(giroReturn?.giroActive)}
       giroProgress={
         giroReturn?.giroActive
           ? {

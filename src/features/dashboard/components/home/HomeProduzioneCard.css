@@ -1,0 +1,45 @@
+.home-produzione {
+  border-radius: var(--meli-radius-xl);
+  overflow: hidden;
+}
+
+.home-produzione__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.home-produzione__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--meli-radius-md);
+  background: rgba(232, 164, 0, 0.16);
+  color: var(--meli-honey);
+  flex-shrink: 0;
+}
+
+.home-produzione__eyebrow {
+  margin: 0;
+}
+
+.home-produzione__value {
+  margin: 0.15rem 0 0;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-weight: 800;
+  color: var(--meli-brown);
+  line-height: 1.1;
+}
+
+.home-produzione__label {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}

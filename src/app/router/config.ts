@@ -65,8 +65,11 @@ export const routeMeta: Record<string, { title: string; subtitle?: string }> = {
   '/arnie': { title: 'Arnie', subtitle: 'Colonie e alveari' },
   '/visite': { title: 'Visite', subtitle: 'Ispezioni e controlli' },
   '/regine': { title: 'Regine', subtitle: 'Gestione regine' },
+  '/regine/:id': { title: 'Scheda Regina', subtitle: 'Dati regina collegata all\'arnia' },
   '/trattamenti': { title: 'Trattamenti', subtitle: 'Sanitaria e trattamenti' },
-  '/produzione': { title: 'Produzione', subtitle: 'Miele e raccolta' },
+  '/trattamenti/:id': { title: 'Scheda Trattamento', subtitle: 'Dettaglio trattamento arnia' },
+  '/produzione': { title: 'Storico Produzione', subtitle: 'Smielature registrate' },
+  '/produzione/nuova': { title: 'Nuova Smielatura', subtitle: 'Registra una raccolta' },
   '/magazzino': { title: 'Magazzino', subtitle: 'Materiali e attrezzatura' },
   '/report': { title: 'Report', subtitle: 'Analisi e statistiche' },
 }

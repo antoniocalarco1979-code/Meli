@@ -1,0 +1,91 @@
+.regina-scheda {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.regina-scheda__hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem 1.25rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.regina-scheda__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--meli-honey-dark);
+}
+
+.regina-scheda__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.regina-scheda__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  margin: 0.55rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-text-secondary);
+}
+
+.regina-scheda__arnia-link {
+  color: var(--meli-honey-dark);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.regina-scheda__attuale {
+  color: var(--meli-honey-dark);
+  font-weight: 800;
+}
+
+.regina-scheda__badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-end;
+}
+
+.regina-scheda__badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-honey-soft);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  white-space: nowrap;
+}
+
+.regina-scheda__form {
+  padding: 1.25rem 1.2rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.regina-scheda__actions {
+  position: sticky;
+  bottom: 0;
+  padding: 1rem 0 0.25rem;
+  background: linear-gradient(to top, var(--meli-bg) 70%, transparent);
+}
+
+@media (max-width: 767px) {
+  .regina-scheda__hero {
+    flex-direction: column;
+  }
+
+  .regina-scheda__badges {
+    flex-direction: row;
+  }
+}

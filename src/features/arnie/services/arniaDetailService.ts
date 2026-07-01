@@ -7,7 +7,6 @@ import { trattamentiRepository } from '../../../database/repositories/trattament
 import { visiteRepository } from '../../../database/repositories/visiteRepository'
 import type { ArniaDetailData } from '../types'
 import {
-  computeReginaEta,
   computeSalute,
   formatCovataDisplay,
   formatFullDate,
@@ -19,6 +18,11 @@ import {
   formatScorteDisplay,
   parseMelarioFromNote,
 } from '../utils/arniaFormatters'
+import { formatReginaStatoOperativo } from '../../regine/utils/reginaFormatters'
+import { buildUltimoTrattamentoSummary } from '../../trattamenti/services/trattamentoDetailService'
+import {
+  formatTrattamentoTipoLabel,
+} from '../../trattamenti/utils/trattamentoFormatters'
 import { buildSaluteFlagsFromVisita, buildSaluteScoreRows } from '../../../utils/salute'
 import { buildProductionChart, buildVisitaTimeline, extractTrattamentoNome } from './arniaTimelineBuilders'
 import { formatVisitaDateShort } from '../../../utils/dateFormatters'
@@ -77,12 +81,16 @@ export async function buildArniaDetailView(arnia: Arnia): Promise<ArniaDetailVie
       },
       queen: {
         present: Boolean(regina),
+        id: regina?.id,
+        numero: regina?.numero,
         anno: regina?.anno,
         colore: regina?.colore,
-        origine: regina?.origine,
-        stato: formatReginaStato(arnia.stato, Boolean(regina)),
-        eta: computeReginaEta(regina?.anno),
+        razza: regina?.razza,
+        stato: regina?.stato
+          ? formatReginaStatoOperativo(regina.stato)
+          : formatReginaStato(arnia.stato, Boolean(regina)),
       },
+      ultimoTrattamento: buildUltimoTrattamentoSummary(trattamentoRecente),
       production: {
         annoTotale: produzioneAnno,
         annoTotaleLabel: formatProduzioneKg(produzioneAnno),
@@ -109,7 +117,8 @@ export async function buildArniaDetailView(arnia: Arnia): Promise<ArniaDetailVie
         id: t.id,
         data: t.data,
         dataLabel: formatRelativeDate(t.data),
-        prodotto: extractTrattamentoNome(t.prodotto),
+        tipoLabel: formatTrattamentoTipoLabel(t.tipo),
+        prodotto: extractTrattamentoNome(t),
         dose: t.dose,
         scadenzaLabel: t.scadenza ? formatRelativeDate(t.scadenza) : undefined,
       })),
@@ -117,7 +126,7 @@ export async function buildArniaDetailView(arnia: Arnia): Promise<ArniaDetailVie
       reginaLabel: formatReginaLabel(regina?.anno, regina?.colore),
       produzioneTotale: formatProduzioneKg(produzione.reduce((s, p) => s + p.kg, 0)),
       ultimaVisitaLabel: ultimaVisita ? formatRelativeDate(ultimaVisita.data) : '—',
-      trattamentoLabel: extractTrattamentoNome(trattamentoRecente?.prodotto),
+      trattamentoLabel: extractTrattamentoNome(trattamentoRecente),
     },
   }
 }

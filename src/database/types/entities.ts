@@ -36,6 +36,10 @@ export type Apiario = {
   fotoCopertina?: string
   /** Contatore denormalizzato per dashboard e card. */
   numeroArnie: number
+  /** Kg totali da smielature registrate (denormalizzato). */
+  kgProduzioneTotale?: number
+  /** Kg prodotti nell'anno solare corrente (denormalizzato). */
+  kgProduzioneAnno?: number
   /** Esposizione del sito (N, E, S, O, mista). */
   esposizione?: string
   /** Livello di accessibilità al sito. */
@@ -59,7 +63,7 @@ export type Arnia = {
   apiarioId: string
   numero: string
   nome?: string
-  /** Payload QR — contiene esclusivamente publicUuid (UUID permanente). */
+  /** Payload QR — `meli://arnia/{publicUuid}`. */
   qrCode: string
   /** Immagine QR (PNG data URL) persistita per anteprima, stampa e PDF. */
   qrImageDataUrl?: string
@@ -86,19 +90,53 @@ export type Arnia = {
   updatedAt: number
 }
 
+/** Colori internazionali marcatura regina. */
+export type ReginaColoreInternazionale = 'bianca' | 'gialla' | 'rossa' | 'verde' | 'blu'
+
+/** Stato operativo della regina (Passaporto Regina — Sprint 2A). */
+export type ReginaStatoOperativo =
+  | 'fecondata'
+  | 'vergine'
+  | 'in_deposizione'
+  | 'da_sostituire'
+  | 'persa'
+
+/** Provenienza commerciale o di allevamento. */
+export type ReginaOrigineTipo = 'acquistata' | 'autoprodotta'
+
 /**
- * Regina — anagrafica regina collegata a un'arnia.
+ * Regina — passaporto regina collegato a un'arnia.
  * Relazione: N Regine → 1 Arnia; una sola attiva via Arnia.reginaAttualeId.
  */
 export type Regina = {
   id: string
   arniaId: string
+  /** Numero identificativo regina (marcatura o codice interno). */
+  numero: string
+  nome?: string
+  colore?: ReginaColoreInternazionale | string
   anno?: number
-  colore?: string
   razza?: string
+  provenienza?: string
+  allevatore?: string
+  origineTipo?: ReginaOrigineTipo
+  /** @deprecated Usare provenienza — mantenuto per retrocompatibilità. */
   origine?: string
+  stato?: ReginaStatoOperativo
+  /** @deprecated Usare stato — mantenuto per retrocompatibilità. */
   marcata?: boolean
+  dataNascita?: number
+  dataInserimento?: number
+  dataSostituzione?: number
+  /** Valutazioni 1–5 (Passaporto Regina). */
+  valDocilita?: number
+  valProduttivita?: number
+  valSciamatura?: number
+  valPulizia?: number
+  valResistenzaVarroa?: number
   note?: string
+  createdAt: number
+  updatedAt: number
 }
 
 /**
@@ -128,6 +166,7 @@ export type Foto = {
   visitaId?: string
   arniaId?: string
   apiarioId?: string
+  reginaId?: string
   /** Percorso o data URL (Capacitor in futuro). */
   path: string
   thumbnail?: string
@@ -135,28 +174,66 @@ export type Foto = {
 }
 
 /**
- * Produzione — raccolta di un'arnia.
- * Relazione: N Produzioni → 1 Arnia.
+ * Produzione — raccolta per arnia (legacy) o smielatura apiario (Sprint 4).
+ * Smielatura: apiarioId + tipo `smielatura`; arniaId opzionale.
  */
 export type Produzione = {
   id: string
-  arniaId: string
+  /** Legacy per-arnia — assente nelle smielature apiario. */
+  arniaId?: string
+  /** Apiario della smielatura (Sprint 4). */
+  apiarioId?: string
   data: number
   kg: number
   tipo?: string
+  numeroMelari?: number
+  umidita?: number
+  arnieCoinvolteIds?: string[]
+  note?: string
+  createdAt?: number
+  updatedAt?: number
 }
 
 /**
  * Trattamento sanitario su un'arnia.
- * Relazione: N Trattamenti → 1 Arnia.
+ * Relazione: N Trattamenti → 1 Arnia; opzionale collegamento a Visita.
  */
 export type Trattamento = {
   id: string
   arniaId: string
+  visitaId?: string
   data: number
+  /** Tipo trattamento (Varroa, Nutrizione, …). */
+  tipo?: string
+  principioAttivo?: string
+  /** @deprecated Alias di principioAttivo — retrocompatibilità. */
   prodotto?: string
   dose?: string
+  metodo?: string
+  note?: string
+  /** Data follow-up / rimozione strip — base per promemoria calendario. */
   scadenza?: number
+  /** Promemoria calendario preparato (Sprint 3 — push non implementato). */
+  promemoriaCalendario?: TrattamentoCalendarioPromemoria
+  createdAt: number
+  updatedAt: number
+}
+
+/**
+ * Promemoria calendario derivato da un trattamento.
+ * Architettura pronta per notifiche push future (notificationChannel).
+ */
+export type TrattamentoCalendarioPromemoria = {
+  id: string
+  trattamentoId: string
+  arniaId: string
+  titolo: string
+  dataPromemoria: number
+  tipoPromemoria: 'controllo' | 'richiusura' | 'rimozione' | 'follow_up'
+  /** Solo calendario in Sprint 3; estendibile a `push`. */
+  notificationChannel: 'calendar' | 'push'
+  stato: 'programmato' | 'completato' | 'annullato'
+  createdAt: number
 }
 
 /** Stato di una sessione Giro Apiario. */

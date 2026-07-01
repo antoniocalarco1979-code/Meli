@@ -7,6 +7,7 @@ type VisitaGuidataFooterProps = {
   showBack: boolean
   onNext: () => void
   onBack: () => void
+  variant?: 'top' | 'bottom'
 }
 
 export function VisitaGuidataFooter({
@@ -18,8 +19,28 @@ export function VisitaGuidataFooter({
   showBack,
   onNext,
   onBack,
+  variant = 'bottom',
 }: VisitaGuidataFooterProps) {
   const progress = ((stepIndex + 1) / totalSteps) * 100
+
+  if (variant === 'top') {
+    return (
+      <div className="visita-guidata-progress" aria-label="Avanzamento visita">
+        <div
+          className="visita-guidata-progress__bar"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div className="visita-guidata-progress__fill" style={{ width: `${progress}%` }} />
+        </div>
+        <p className="visita-guidata-progress__label">
+          {stepLabel} · {stepIndex + 1} / {totalSteps}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <footer className="ispezione-footer">

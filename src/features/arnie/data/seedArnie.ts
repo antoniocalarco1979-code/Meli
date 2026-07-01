@@ -41,11 +41,13 @@ export async function seedArnieIfEmpty(options?: { force?: boolean }): Promise<v
 
   await createRegina({
     arniaId: arnia12.id,
+    numero: '2025-1',
     anno: 2025,
     razza: 'Ligustica',
-    colore: 'Bianca',
-    origine: 'locale',
-    marcata: true,
+    colore: 'bianca',
+    stato: 'fecondata',
+    dataInserimento: now - 120 * day,
+    note: 'Regina madre della colonia principale.',
   })
 
   await createVisita({
@@ -64,9 +66,12 @@ export async function seedArnieIfEmpty(options?: { force?: boolean }): Promise<v
   await createTrattamento({
     arniaId: arnia12.id,
     data: now - 2 * day,
-    prodotto: 'Oxalico',
+    tipo: 'varroa',
+    principioAttivo: 'Acido ossalico',
     dose: '30 ml',
+    metodo: 'vaporizzazione',
     scadenza: now + 14 * day,
+    note: 'Trattamento antivarroa di routine.',
   })
 
   const produzioneKg = [6, 7, 6, 7, 6, 6]

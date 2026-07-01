@@ -24,7 +24,7 @@ export function useStartGiroNavigation() {
         }
 
         navigate(appPath(`/arnie/${payload.firstArniaId}/visita`), {
-          state: { giroReturn: payload.giroReturn },
+          state: { giroReturn: payload.giroReturn, startNewSession: true },
         })
         return true
       } catch (err) {

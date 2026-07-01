@@ -1,27 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { parseDexieError } from '../../../../database/errors'
 import { useToast } from '../../../../hooks/useToast'
+import { DADANT_BLATT_10 } from '../../../gemello-digitale/DigitalTwin/constants/dadantBlatt10'
+import { useTelainoPanelSelection } from '../../hooks/useTelainoPanelSelection'
 import { useVisitaGuidataWizard } from '../../hooks/useVisitaGuidataWizard'
 import { clearVisitaGuidataDraft } from '../../services/visitaGuidataStorage'
 import { saveVisitaGuidata } from '../../services/visitaGuidataSaveService'
+import type { TelainoVisitaRecord } from '../../types/telainoPanel.types'
+import { getTelainoVisitaSuccessivo } from '../../types/telainoPanel.types'
 import type { VisitaSaveSummary } from '../../types/visitSave.types'
-import { GuidataStepMelario } from './GuidataStepMelario'
+import { GuidataStepEscludiRegina } from './GuidataStepEscludiRegina'
+import { GuidataStepFaseAffumicatore } from './GuidataStepFaseAffumicatore'
+import { GuidataStepFaseMelario } from './GuidataStepFaseMelario'
+import { GuidataStepInterventi } from './GuidataStepInterventi'
+import { GuidataStepIntro } from './GuidataStepIntro'
 import { GuidataStepNido } from './GuidataStepNido'
-import { GuidataStepSalva } from './GuidataStepSalva'
-import { GuidataStepVassoio } from './GuidataStepVassoio'
+import { GuidataStepRiepilogo } from './GuidataStepRiepilogo'
 import { GiroSessionHud } from '../giro/GiroSessionHud'
 import { VisitaGuidataFooter } from './VisitaGuidataFooter'
 import { VisitaGuidataHeader } from './VisitaGuidataHeader'
 import '../ispezione-engine/ispezione-engine.css'
 import '../visit-engine/visit-engine.css'
+import '../telaino-panel/telaino-panel.css'
 import './visita-guidata.css'
 
 export type VisitaGuidataWizardProps = {
   arniaId: string
   arniaNumero: string
   apiarioNome?: string
-  hasMelario: boolean
+  meteo?: string
+  startNewSession?: boolean
+  frameCount?: number
+  hasMelario?: boolean
+  isGiroActive?: boolean
   giroProgress?: {
     current: number
     total: number
@@ -43,7 +55,10 @@ export function VisitaGuidataWizard({
   arniaId,
   arniaNumero,
   apiarioNome,
-  hasMelario,
+  meteo,
+  startNewSession,
+  frameCount = DADANT_BLATT_10.frameCount,
+  isGiroActive = false,
   giroProgress,
   onClose,
   onSaved,
@@ -54,18 +69,44 @@ export function VisitaGuidataWizard({
     stepIndex,
     totalSteps,
     state,
-    isFirst,
     isLast,
     canProceed,
-    patchVassoio,
-    patchMelario,
+    hideFooterNext,
+    hideFooterBack,
+    patchAffumicatore,
+    patchEscludiRegina,
     patchNido,
+    saveTelaino,
+    toggleIntervento,
+    patchIntervento,
+    patchReginaPayload,
+    patchTrattamentoPayload,
+    patchMelario,
+    startControllo,
     goNext,
     goPrev,
-  } = useVisitaGuidataWizard({ arniaId, hasMelario })
+  } = useVisitaGuidataWizard({ arniaId, startNewSession, meteo, frameCount })
+
+  const telainoPanel = useTelainoPanelSelection({ telaini: state.nido.telaini })
 
   const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const saveSummaryRef = useRef<VisitaSaveSummary | null>(null)
+
+  const handleSaveTelaino = useCallback(
+    (record: TelainoVisitaRecord) => {
+      saveTelaino(record)
+
+      const nextTelaino = getTelainoVisitaSuccessivo(state.nido.telaini, record.numero)
+      if (nextTelaino) {
+        telainoPanel.openTelaino(nextTelaino.id)
+      } else {
+        telainoPanel.closePanel()
+      }
+    },
+    [saveTelaino, state.nido.telaini, telainoPanel],
+  )
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -80,39 +121,95 @@ export function VisitaGuidataWizard({
   }
 
   const handleSave = async () => {
-    if (saving) return
+    if (saving || saved) return
 
     setSaving(true)
     setSaveError('')
 
     try {
-      const summary = await saveVisitaGuidata(arniaId, state, hasMelario)
+      const summary = await saveVisitaGuidata(arniaId, state)
       clearVisitaGuidataDraft(arniaId)
-      toast.success('Visita salvata ✔ — dati aggiornati', 1100)
-      window.setTimeout(async () => {
-        await onSaved?.(summary)
-      }, 1100)
+      saveSummaryRef.current = summary
+      setSaved(true)
+      toast.success('Visita salvata con successo', 2200)
     } catch (err) {
       setSaveError(parseDexieError(err))
+    } finally {
       setSaving(false)
     }
   }
 
+  const handleContinueAfterSave = async () => {
+    const summary = saveSummaryRef.current
+    if (summary) {
+      await onSaved?.(summary)
+    } else {
+      onClose()
+    }
+  }
+
+  const showFooters = !saved
+
   const renderStep = () => {
+    if (!state.startedAt) return null
+
     switch (step.id) {
-      case 'vassoio':
-        return <GuidataStepVassoio vassoio={state.vassoio} onPatch={patchVassoio} />
-      case 'melario':
-        return <GuidataStepMelario melario={state.melario} onPatch={patchMelario} />
-      case 'nido':
-        return <GuidataStepNido nido={state.nido} onPatch={patchNido} />
-      case 'salva':
+      case 'intro':
         return (
-          <GuidataStepSalva
+          <GuidataStepIntro
+            arniaNumero={arniaNumero}
+            startedAt={state.startedAt}
+            meteo={state.meteo}
+            onStartControllo={startControllo}
+          />
+        )
+      case 'fase-affumicatore':
+        return (
+          <GuidataStepFaseAffumicatore
+            affumicatore={state.affumicatore}
+            onPatch={patchAffumicatore}
+          />
+        )
+      case 'fase-melario':
+        return <GuidataStepFaseMelario melario={state.melario} onPatch={patchMelario} />
+      case 'escludi-regina':
+        return (
+          <GuidataStepEscludiRegina escludiRegina={state.escludiRegina} onPatch={patchEscludiRegina} />
+        )
+      case 'nido':
+        return (
+          <GuidataStepNido
+            nido={state.nido}
+            frameCount={frameCount}
+            onPatch={patchNido}
+            onSaveTelaino={handleSaveTelaino}
+            onGoToInterventi={goNext}
+            selectedTelainoId={telainoPanel.selectedTelainoId}
+            panelOpen={telainoPanel.panelOpen}
+            onSelectTelaino={telainoPanel.openTelaino}
+            onClosePanel={telainoPanel.closePanel}
+          />
+        )
+      case 'interventi':
+        return (
+          <GuidataStepInterventi
+            interventi={state.interventi}
+            onToggle={toggleIntervento}
+            onPatchNote={(id, note) => patchIntervento(id, { note })}
+            onPatchReginaPayload={patchReginaPayload}
+            onPatchTrattamentoPayload={patchTrattamentoPayload}
+          />
+        )
+      case 'riepilogo':
+        return (
+          <GuidataStepRiepilogo
+            arniaNumero={arniaNumero}
             state={state}
-            hasMelario={hasMelario}
             saving={saving}
+            saved={saved}
+            isGiroActive={isGiroActive}
             onSave={handleSave}
+            onContinue={handleContinueAfterSave}
           />
         )
       default:
@@ -130,7 +227,8 @@ export function VisitaGuidataWizard({
       <VisitaGuidataHeader
         arniaNumero={arniaNumero}
         apiarioNome={giroProgress ? undefined : apiarioNome}
-        onClose={onClose}
+        startedAt={state.startedAt}
+        onClose={saved ? handleContinueAfterSave : onClose}
       />
 
       {giroProgress ? (
@@ -144,27 +242,43 @@ export function VisitaGuidataWizard({
         </div>
       ) : null}
 
+      {showFooters ? (
+        <VisitaGuidataFooter
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          stepLabel={step.label}
+          canProceed={canProceed}
+          showBack={!hideFooterBack}
+          showNext={!hideFooterNext && !isLast}
+          onBack={goPrev}
+          onNext={handleNext}
+          variant="top"
+        />
+      ) : null}
+
       <div className="ispezione-engine__divider" aria-hidden="true" />
 
       <div className="ispezione-engine__body">
         {saveError && <p className="ispezione-engine__error">{saveError}</p>}
         <AnimatePresence mode="wait">
-          <motion.div key={step.id} className="ispezione-engine__stage" {...stepMotion}>
+          <motion.div key={saved ? 'saved' : step.id} className="ispezione-engine__stage" {...stepMotion}>
             {renderStep()}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <VisitaGuidataFooter
-        stepIndex={stepIndex}
-        totalSteps={totalSteps}
-        stepLabel={step.label}
-        canProceed={canProceed}
-        showBack={!isFirst}
-        showNext={!isLast}
-        onBack={goPrev}
-        onNext={handleNext}
-      />
+      {showFooters ? (
+        <VisitaGuidataFooter
+          stepIndex={stepIndex}
+          totalSteps={totalSteps}
+          stepLabel={step.label}
+          canProceed={canProceed}
+          showBack={!hideFooterBack}
+          showNext={!hideFooterNext && !isLast}
+          onBack={goPrev}
+          onNext={handleNext}
+        />
+      ) : null}
     </div>
   )
 }

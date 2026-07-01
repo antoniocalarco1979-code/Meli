@@ -1,0 +1,457 @@
+/* ── Pannello telaino (drawer laterale) ── */
+.telaino-panel__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  border: none;
+  background: var(--meli-overlay);
+  cursor: pointer;
+}
+
+.telaino-panel {
+  position: fixed;
+  z-index: 430;
+  display: flex;
+  flex-direction: column;
+  background: var(--meli-cream);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.28);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.telaino-panel--drawer {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(100%, 420px);
+  max-width: 100vw;
+}
+
+.telaino-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.85rem;
+  border-bottom: 1px solid var(--meli-border);
+  flex-shrink: 0;
+}
+
+.telaino-panel__kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.telaino-panel__title {
+  margin: 0.15rem 0 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.telaino-panel__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--meli-touch-min);
+  height: var(--meli-touch-min);
+  border: none;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-surface-raised);
+  color: var(--meli-brown);
+  cursor: pointer;
+  box-shadow: var(--meli-shadow-sm);
+}
+
+.telaino-panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.85rem 1.1rem 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.telaino-panel__field {
+  margin-bottom: 1rem;
+}
+
+.telaino-panel__field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.telaino-panel__label {
+  margin: 0 0 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-text-muted);
+}
+
+.telaino-panel__field-head .telaino-panel__label {
+  margin: 0;
+}
+
+.telaino-panel__value-badge {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--meli-honey-dark);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--meli-radius-pill);
+  background: rgba(201, 162, 39, 0.14);
+}
+
+.telaino-panel__slider {
+  width: 100%;
+  height: 12px;
+  margin: 0.35rem 0 0.65rem;
+  accent-color: var(--meli-gold);
+  cursor: pointer;
+}
+
+.telaino-panel__quick-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.telaino-panel__quick-row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.telaino-panel__quick-row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.telaino-panel__number-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.telaino-panel__stepper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--meli-touch-min);
+  height: var(--meli-touch-min);
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  color: var(--meli-brown);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.telaino-panel__number-input {
+  flex: 1;
+  min-height: var(--meli-touch-min);
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  font-family: var(--meli-font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--meli-brown);
+}
+
+.telaino-panel__number-input:focus {
+  outline: none;
+  border-color: rgba(232, 150, 12, 0.45);
+}
+
+.telaino-panel__save {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: var(--meli-radius-xl);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-gold));
+  color: var(--meli-text-inverse);
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.telaino-panel__save:active {
+  transform: scale(0.98);
+}
+
+.telaino-panel__quick-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  min-height: 58px;
+  padding: 0.45rem 0.35rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.telaino-panel__quick-btn--wide {
+  min-height: 64px;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.telaino-panel__quick-btn--active {
+  border-color: rgba(201, 162, 39, 0.55);
+  background: rgba(201, 162, 39, 0.16);
+}
+
+.telaino-panel__quick-btn-index {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--meli-text-muted);
+}
+
+.telaino-panel__quick-btn-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  text-align: center;
+  line-height: 1.15;
+}
+
+.telaino-panel .visit-choices__radio,
+.telaino-panel .visit-choices__status {
+  min-height: 56px;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9375rem;
+}
+
+.telaino-panel__photo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  min-height: 64px;
+  border: 2px dashed var(--meli-border-strong);
+  border-radius: var(--meli-radius-xl);
+  background: var(--meli-surface-raised);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+  cursor: pointer;
+}
+
+.telaino-panel__photo-preview {
+  display: block;
+  width: 100%;
+  max-height: 160px;
+  margin-top: 0.65rem;
+  object-fit: cover;
+  border-radius: var(--meli-radius-lg);
+  border: 1px solid var(--meli-border);
+}
+
+.telaino-panel__note {
+  width: 100%;
+  min-height: 88px;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: var(--meli-surface-raised);
+  font-family: var(--meli-font);
+  font-size: 1rem;
+  color: var(--meli-brown);
+  resize: vertical;
+}
+
+.telaino-panel__note:focus {
+  outline: none;
+  border-color: rgba(232, 150, 12, 0.45);
+}
+
+.telaino-panel__footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.85rem 1.1rem 1rem;
+  border-top: 1px solid var(--meli-border);
+  background: linear-gradient(to top, var(--meli-cream) 90%, transparent);
+}
+
+.telaino-panel__status {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--meli-text-muted);
+}
+
+.telaino-panel__status--ok {
+  color: var(--meli-status-green, #5a9e4b);
+}
+
+.telaino-panel__done {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: var(--meli-radius-xl);
+  background: linear-gradient(135deg, var(--meli-honey-light), var(--meli-gold));
+  color: var(--meli-text-inverse);
+  font-family: var(--meli-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.telaino-panel__done:active {
+  transform: scale(0.98);
+}
+
+/* ── Griglia telaini ── */
+.telaino-panel-host {
+  position: relative;
+}
+
+.telaino-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.65rem;
+  padding: 0.25rem 0;
+}
+
+.telaino-grid--nido-2d {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.55rem;
+  overflow-x: auto;
+  padding: 0.65rem 0.25rem 0.85rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.telaino-grid--nido-2d .telaino-grid__item {
+  flex: 0 0 clamp(68px, 16vw, 88px);
+  scroll-snap-align: center;
+  min-height: 128px;
+}
+
+.telaino-grid__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  min-height: 118px;
+  padding: 0.55rem 0.35rem 0.45rem;
+  border: 2px solid var(--meli-border);
+  border-radius: var(--meli-radius-lg);
+  background: linear-gradient(180deg, #f5e6c8 0%, #e8d4b0 100%);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.telaino-grid__item--touched {
+  border-color: rgba(201, 162, 39, 0.45);
+}
+
+.telaino-grid__item--complete {
+  border-color: rgba(90, 158, 75, 0.55);
+  box-shadow: 0 0 0 1px rgba(90, 158, 75, 0.2);
+}
+
+.telaino-grid__item--selected {
+  border-color: var(--meli-gold);
+  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.28);
+}
+
+.telaino-grid__frame {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 70%;
+}
+
+.telaino-grid__cells {
+  height: 8px;
+  border-radius: 2px;
+  background: rgba(139, 105, 20, 0.18);
+}
+
+.telaino-grid__cells--offset {
+  margin-left: 6px;
+  width: calc(100% - 6px);
+}
+
+.telaino-grid__number {
+  font-family: var(--meli-font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.telaino-grid__badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--meli-radius-pill);
+  background: var(--meli-status-green, #5a9e4b);
+  color: white;
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+
+.visita-nido-step__panel-stage {
+  margin-top: 0.75rem;
+}
+
+.visita-nido-step__panel-stage--open {
+  padding-right: min(420px, 92vw);
+}
+
+@media (max-width: 640px) {
+  .telaino-panel--drawer {
+    width: 100%;
+    border-radius: var(--meli-radius-xl) var(--meli-radius-xl) 0 0;
+    top: auto;
+    left: 0;
+    max-height: min(92vh, 760px);
+  }
+
+  .visita-nido-step__panel-stage--open {
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .telaino-panel__save,
+  .telaino-panel__photo-btn,
+  .telaino-panel__quick-btn--wide,
+  .telaino-panel__stepper-btn {
+    min-height: 68px;
+  }
+}
