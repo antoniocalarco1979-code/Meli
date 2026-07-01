@@ -1,0 +1,91 @@
+.nominatim-autocomplete {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.nominatim-autocomplete__label {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--meli-brown);
+}
+
+.nominatim-autocomplete__field-wrap {
+  position: relative;
+}
+
+.nominatim-autocomplete__field {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 2rem 0.65rem 0.85rem;
+  border-radius: var(--meli-radius-md);
+  border: 1px solid var(--meli-border);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--meli-brown);
+}
+
+.nominatim-autocomplete__field:focus {
+  outline: none;
+  border-color: rgba(201, 162, 39, 0.55);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.nominatim-autocomplete__spinner {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: var(--meli-honey-dark);
+  animation: nominatim-autocomplete-spin 0.9s linear infinite;
+}
+
+@keyframes nominatim-autocomplete-spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+.nominatim-autocomplete__hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--meli-text-muted);
+}
+
+.nominatim-autocomplete__list {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border-radius: var(--meli-radius-md);
+  border: 1px solid var(--meli-border);
+  background: var(--meli-surface-raised);
+  box-shadow: var(--meli-shadow-md);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.nominatim-autocomplete__option {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: none;
+  border-radius: var(--meli-radius-sm);
+  background: transparent;
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--meli-brown);
+  cursor: pointer;
+}
+
+.nominatim-autocomplete__option:hover,
+.nominatim-autocomplete__option--active {
+  background: rgba(201, 162, 39, 0.14);
+}

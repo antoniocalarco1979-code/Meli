@@ -1,2 +1,6 @@
+export { parseNominatimAddress } from './nominatimAddress'
+export type { NominatimAddress, ParsedNominatimAddress } from './nominatimAddress'
+export { geocodeAddressQuery, searchNominatimPlaces } from './nominatimSearchService'
+export type { NominatimPlaceSuggestion, NominatimSearchScope } from './nominatimSearchService'
 export { reverseGeocode } from './reverseGeocodeService'
 export type { ReverseGeocodeResult } from './reverseGeocodeService'

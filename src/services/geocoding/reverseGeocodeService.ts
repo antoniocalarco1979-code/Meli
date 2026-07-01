@@ -1,3 +1,5 @@
+import { parseNominatimAddress, type NominatimAddress } from './nominatimAddress'
+
 export type ReverseGeocodeResult = {
   comune?: string
   provincia?: string
@@ -6,55 +8,12 @@ export type ReverseGeocodeResult = {
   quota?: number
 }
 
-type NominatimAddress = {
-  city?: string
-  town?: string
-  village?: string
-  municipality?: string
-  hamlet?: string
-  county?: string
-  state_district?: string
-  state?: string
-  road?: string
-  house_number?: string
-  postcode?: string
-}
-
 type NominatimResponse = {
   address?: NominatimAddress
   display_name?: string
 }
 
 const NOMINATIM_REVERSE_URL = 'https://nominatim.openstreetmap.org/reverse'
-
-function pickComune(address: NominatimAddress): string | undefined {
-  return (
-    address.city?.trim() ||
-    address.town?.trim() ||
-    address.village?.trim() ||
-    address.municipality?.trim() ||
-    address.hamlet?.trim() ||
-    undefined
-  )
-}
-
-function pickProvincia(address: NominatimAddress): string | undefined {
-  return address.county?.trim() || address.state_district?.trim() || undefined
-}
-
-function pickRegione(address: NominatimAddress): string | undefined {
-  return address.state?.trim() || undefined
-}
-
-function pickIndirizzo(address: NominatimAddress): string | undefined {
-  const road = address.road?.trim()
-  if (!road) return undefined
-
-  const parts = [road]
-  if (address.house_number?.trim()) parts.push(address.house_number.trim())
-  if (address.postcode?.trim()) parts.push(address.postcode.trim())
-  return parts.join(', ')
-}
 
 /**
  * Reverse geocoding tramite OpenStreetMap Nominatim.
@@ -85,16 +44,10 @@ export async function reverseGeocode(
     }
 
     const data = (await response.json()) as NominatimResponse
-    const address = data.address
-    if (!address) {
-      return { quota: quotaFromDevice }
-    }
+    const parsed = parseNominatimAddress(data.address)
 
     return {
-      comune: pickComune(address),
-      provincia: pickProvincia(address),
-      regione: pickRegione(address),
-      indirizzo: pickIndirizzo(address),
+      ...parsed,
       quota: quotaFromDevice,
     }
   } catch {

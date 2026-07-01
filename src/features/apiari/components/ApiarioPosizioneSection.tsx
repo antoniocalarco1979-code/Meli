@@ -1,12 +1,17 @@
 import { Loader2, MapPin, Navigation } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
-import { MapPositionEmptyState } from '../../../components/map'
+import { NominatimAutocomplete } from '../../../components/geocoding/NominatimAutocomplete'
+import { GeoPointMap, MapPositionEmptyState } from '../../../components/map'
 import { Button } from '../../../components/ui/Button'
 import { Input } from '../../../components/ui/Input'
-import { reverseGeocode } from '../../../services/geocoding'
+import {
+  reverseGeocode,
+  type NominatimPlaceSuggestion,
+} from '../../../services/geocoding'
 import { DEFAULT_GEO_OPTIONS, gpsService } from '../../../services/device'
 import type { ApiarioPosizioneMode, ApiarioPosizioneState } from '../types/apiarioPosizione.types'
-import { ApiarioPosizioneMap } from './ApiarioPosizioneMap'
+import { ApiarioPosizioneMapPicker } from './ApiarioPosizioneMapPicker'
+import { ApiarioPosizioneSummary } from './ApiarioPosizioneSummary'
 import './ApiarioPosizioneSection.css'
 
 type ApiarioPosizioneSectionProps = {
@@ -23,6 +28,9 @@ export function ApiarioPosizioneSection({
   const [gpsLoading, setGpsLoading] = useState(false)
   const [geocodeLoading, setGeocodeLoading] = useState(false)
   const [gpsNotice, setGpsNotice] = useState<string | null>(null)
+  const [mapDraft, setMapDraft] = useState<{ latitudine: number; longitudine: number } | null>(
+    null,
+  )
   const valueRef = useRef(value)
   valueRef.current = value
 
@@ -35,14 +43,19 @@ export function ApiarioPosizioneSection({
   }
 
   const applyReverseGeocode = useCallback(
-    async (latitudine: number, longitudine: number, quotaFromDevice?: number) => {
+    async (
+      latitudine: number,
+      longitudine: number,
+      mode: ApiarioPosizioneMode,
+      quotaFromDevice?: number,
+    ) => {
       setGeocodeLoading(true)
       try {
         const geo = await reverseGeocode(latitudine, longitudine, quotaFromDevice)
         const current = valueRef.current
         onChange({
           ...current,
-          mode: 'gps',
+          mode,
           latitudine,
           longitudine,
           comune: geo.comune ?? current.comune,
@@ -95,17 +108,54 @@ export function ApiarioPosizioneSection({
     await applyReverseGeocode(
       result.coords.latitudine,
       result.coords.longitudine,
+      'gps',
       result.coords.quota,
     )
   }
 
-  const handleMapMove = (coords: { latitudine: number; longitudine: number }) => {
-    patch(coords)
+  const handleMapConfirm = async () => {
+    const draft =
+      mapDraft ??
+      (value.latitudine != null && value.longitudine != null
+        ? { latitudine: value.latitudine, longitudine: value.longitudine }
+        : null)
+
+    if (!draft) return
+
+    onChange({
+      ...valueRef.current,
+      mode: 'map',
+      latitudine: draft.latitudine,
+      longitudine: draft.longitudine,
+    })
+
+    await applyReverseGeocode(draft.latitudine, draft.longitudine, 'map')
   }
 
-  const handleMapCommit = (coords: { latitudine: number; longitudine: number }) => {
-    patch(coords)
-    void applyReverseGeocode(coords.latitudine, coords.longitudine, valueRef.current.quota)
+  const applyManualSuggestion = (
+    suggestion: NominatimPlaceSuggestion,
+    field: 'street' | 'city' | 'county',
+  ) => {
+    const current = valueRef.current
+    onChange({
+      ...current,
+      mode: 'manual',
+      latitudine: suggestion.latitudine,
+      longitudine: suggestion.longitudine,
+      comune:
+        field === 'city'
+          ? suggestion.comune ?? current.comune
+          : suggestion.comune ?? current.comune,
+      provincia:
+        field === 'county'
+          ? suggestion.provincia ?? current.provincia
+          : suggestion.provincia ?? current.provincia,
+      regione: suggestion.regione ?? current.regione,
+      indirizzo:
+        field === 'street'
+          ? suggestion.indirizzo ?? suggestion.label.split(',')[0]?.trim()
+          : current.indirizzo,
+    })
   }
 
   const hasMapCoords = value.latitudine != null && value.longitudine != null
@@ -126,10 +176,25 @@ export function ApiarioPosizioneSection({
           role="tab"
           aria-selected={value.mode === 'gps'}
           className={`apiario-posizione__mode${value.mode === 'gps' ? ' apiario-posizione__mode--active' : ''}`}
-          onClick={() => setMode('gps')}
+          onClick={() => {
+            setGpsNotice(null)
+            setMode('gps')
+          }}
         >
           <Navigation size={16} aria-hidden="true" />
-          Usa posizione GPS
+          📍 Usa la mia posizione
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={value.mode === 'map'}
+          className={`apiario-posizione__mode${value.mode === 'map' ? ' apiario-posizione__mode--active' : ''}`}
+          onClick={() => {
+            setGpsNotice(null)
+            setMode('map')
+          }}
+        >
+          🗺️ Scegli sulla mappa
         </button>
         <button
           type="button"
@@ -141,11 +206,11 @@ export function ApiarioPosizioneSection({
             setMode('manual')
           }}
         >
-          Inserisci manualmente
+          ✍️ Inserimento manuale
         </button>
       </div>
 
-      {value.mode === 'gps' ? (
+      {value.mode === 'gps' && (
         <div className="apiario-posizione__gps">
           <Button
             type="button"
@@ -164,9 +229,7 @@ export function ApiarioPosizioneSection({
               ? 'Rilevamento posizione…'
               : geocodeLoading
                 ? 'Recupero comune e provincia…'
-                : hasMapCoords
-                  ? 'Usa la mia posizione'
-                  : 'Usa la mia posizione'}
+                : '📍 Usa la mia posizione'}
           </Button>
 
           {gpsNotice && (
@@ -178,116 +241,101 @@ export function ApiarioPosizioneSection({
           {!hasMapCoords && (
             <MapPositionEmptyState
               onSetPosition={() => void handleAcquireGps()}
-              actionLabel="Usa la mia posizione"
+              actionLabel="📍 Usa la mia posizione"
             />
           )}
 
           {hasMapCoords && (
             <>
-              <ApiarioPosizioneMap
+              <GeoPointMap
                 latitudine={value.latitudine!}
                 longitudine={value.longitudine!}
-                onCoordinatesChange={handleMapMove}
-                onCoordinatesCommit={handleMapCommit}
+                zoom={15}
+                minHeight={260}
+                showGoogleMapsButton
+                interaction="view"
               />
-              <dl className="apiario-posizione__summary">
-                <div>
-                  <dt>Coordinate</dt>
-                  <dd>
-                    {value.latitudine}, {value.longitudine}
-                  </dd>
-                </div>
-                {value.comune && (
-                  <div>
-                    <dt>Comune</dt>
-                    <dd>{value.comune}</dd>
-                  </div>
-                )}
-                {value.provincia && (
-                  <div>
-                    <dt>Provincia</dt>
-                    <dd>{value.provincia}</dd>
-                  </div>
-                )}
-                {value.regione && (
-                  <div>
-                    <dt>Regione</dt>
-                    <dd>{value.regione}</dd>
-                  </div>
-                )}
-                {value.quota != null && (
-                  <div>
-                    <dt>Quota</dt>
-                    <dd>{value.quota} m</dd>
-                  </div>
-                )}
-                {value.indirizzo && (
-                  <div className="apiario-posizione__summary-wide">
-                    <dt>Indirizzo</dt>
-                    <dd>{value.indirizzo}</dd>
-                  </div>
-                )}
-              </dl>
+              <ApiarioPosizioneSummary value={value} />
             </>
           )}
         </div>
-      ) : (
+      )}
+
+      {value.mode === 'map' && (
+        <div className="apiario-posizione__map">
+          <ApiarioPosizioneMapPicker
+            latitudine={value.latitudine}
+            longitudine={value.longitudine}
+            onDraftChange={setMapDraft}
+          />
+
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            className="apiario-posizione__confirm-btn"
+            onClick={() => void handleMapConfirm()}
+            disabled={geocodeLoading}
+          >
+            {geocodeLoading ? (
+              <>
+                <Loader2 size={18} className="apiario-posizione__spin" aria-hidden="true" />
+                Recupero comune e provincia…
+              </>
+            ) : (
+              'Conferma posizione'
+            )}
+          </Button>
+
+          {hasMapCoords && <ApiarioPosizioneSummary value={value} />}
+        </div>
+      )}
+
+      {value.mode === 'manual' && (
         <div className="apiario-posizione__manual">
           {gpsNotice && (
             <p className="apiario-posizione__notice" role="alert">
               {gpsNotice}
             </p>
           )}
-          <Input
-            label="Comune"
-            value={value.comune ?? ''}
-            onChange={(e) => patch({ comune: e.target.value })}
-            placeholder="Es. San Roberto"
+
+          <NominatimAutocomplete
+            label="Via"
+            value={value.indirizzo ?? ''}
+            onValueChange={(indirizzo) => patch({ indirizzo })}
+            onSelect={(suggestion) => applyManualSuggestion(suggestion, 'street')}
+            scope="street"
+            context={{ comune: value.comune, provincia: value.provincia }}
+            placeholder="Cerca via o contrada…"
+            hint="Autocomplete OpenStreetMap Nominatim"
           />
+
           <div className="apiario-posizione__row">
-            <Input
+            <NominatimAutocomplete
+              label="Comune"
+              value={value.comune ?? ''}
+              onValueChange={(comune) => patch({ comune })}
+              onSelect={(suggestion) => applyManualSuggestion(suggestion, 'city')}
+              scope="city"
+              placeholder="Cerca comune…"
+            />
+            <NominatimAutocomplete
               label="Provincia"
               value={value.provincia ?? ''}
-              onChange={(e) => patch({ provincia: e.target.value })}
-              placeholder="Es. RC"
-            />
-            <Input
-              label="Regione"
-              value={value.regione ?? ''}
-              onChange={(e) => patch({ regione: e.target.value })}
-              placeholder="Es. Calabria"
+              onValueChange={(provincia) => patch({ provincia })}
+              onSelect={(suggestion) => applyManualSuggestion(suggestion, 'county')}
+              scope="county"
+              placeholder="Cerca provincia…"
             />
           </div>
+
           <Input
-            label="Indirizzo"
-            value={value.indirizzo ?? ''}
-            onChange={(e) => patch({ indirizzo: e.target.value })}
-            placeholder="Via, contrada o punto di accesso"
+            label="Regione"
+            value={value.regione ?? ''}
+            onChange={(e) => patch({ regione: e.target.value })}
+            placeholder="Compilata automaticamente dalla selezione"
           />
-          <div className="apiario-posizione__row">
-            <Input
-              label="Latitudine"
-              value={value.latitudine ?? ''}
-              onChange={(e) =>
-                patch({
-                  latitudine: e.target.value ? Number.parseFloat(e.target.value) : undefined,
-                })
-              }
-              placeholder="Es. 38.123456"
-              inputMode="decimal"
-            />
-            <Input
-              label="Longitudine"
-              value={value.longitudine ?? ''}
-              onChange={(e) =>
-                patch({
-                  longitudine: e.target.value ? Number.parseFloat(e.target.value) : undefined,
-                })
-              }
-              placeholder="Es. 16.123456"
-              inputMode="decimal"
-            />
-          </div>
+
           <Input
             label="Quota (m)"
             type="number"
@@ -299,6 +347,20 @@ export function ApiarioPosizioneSection({
             }
             placeholder="Es. 650"
           />
+
+          {hasMapCoords && (
+            <>
+              <GeoPointMap
+                latitudine={value.latitudine!}
+                longitudine={value.longitudine!}
+                zoom={15}
+                minHeight={240}
+                showGoogleMapsButton
+                interaction="view"
+              />
+              <ApiarioPosizioneSummary value={value} />
+            </>
+          )}
         </div>
       )}
     </section>

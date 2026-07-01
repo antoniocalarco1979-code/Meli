@@ -16,11 +16,18 @@
 
 .geo-point-map__frame--interactive {
   touch-action: none;
-  cursor: crosshair;
+}
+
+.geo-point-map__frame--picker {
+  cursor: grab;
 }
 
 .geo-point-map__frame--dragging {
   cursor: grabbing;
+}
+
+.geo-point-map__frame--interactive:not(.geo-point-map__frame--picker) {
+  cursor: crosshair;
 }
 
 .geo-point-map__surface {
@@ -69,6 +76,34 @@
 
 .geo-point-map__attribution a {
   color: inherit;
+}
+
+.geo-point-map__zoom {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 4;
+}
+
+.geo-point-map__zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: var(--meli-radius-md);
+  border: 1px solid var(--meli-border);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--meli-brown);
+  box-shadow: var(--meli-shadow-sm);
+  cursor: pointer;
+}
+
+.geo-point-map__zoom-btn:hover {
+  border-color: rgba(201, 162, 39, 0.45);
 }
 
 .geo-point-map__external {

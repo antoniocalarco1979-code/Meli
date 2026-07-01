@@ -1,4 +1,4 @@
-export type ApiarioPosizioneMode = 'gps' | 'manual'
+export type ApiarioPosizioneMode = 'gps' | 'map' | 'manual'
 
 export type ApiarioPosizioneState = {
   mode: ApiarioPosizioneMode

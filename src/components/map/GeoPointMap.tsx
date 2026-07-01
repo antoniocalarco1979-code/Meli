@@ -1,4 +1,4 @@
-import { ExternalLink, MapPin } from 'lucide-react'
+import { ExternalLink, MapPin, Minus, Plus } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import {
   buildGoogleMapsUrl,
@@ -6,6 +6,7 @@ import {
   latLngToPixel,
   latToTileY,
   lonToTileX,
+  panMapView,
   pixelToLatLng,
   tileToLat,
   tileToLng,
@@ -14,6 +15,11 @@ import {
 import './GeoPointMap.css'
 
 const TILE_SIZE = 256
+const MIN_ZOOM = 5
+const MAX_ZOOM = 18
+const PAN_THRESHOLD_PX = 8
+
+export type GeoPointMapInteraction = 'view' | 'marker' | 'picker'
 
 type GeoPointMapProps = {
   latitudine: number
@@ -22,9 +28,14 @@ type GeoPointMapProps = {
   label?: string
   minHeight?: number
   showGoogleMapsButton?: boolean
+  /** @deprecated Usa `interaction="marker"`. */
   interactive?: boolean
+  interaction?: GeoPointMapInteraction
+  followMarker?: boolean
+  showZoomControls?: boolean
   onCoordinatesChange?: (coords: { latitudine: number; longitudine: number }) => void
   onCoordinatesCommit?: (coords: { latitudine: number; longitudine: number }) => void
+  onViewChange?: (view: MapViewState) => void
   className?: string
 }
 
@@ -36,11 +47,21 @@ export function GeoPointMap({
   minHeight = 280,
   showGoogleMapsButton = true,
   interactive = false,
+  interaction,
+  followMarker,
+  showZoomControls = false,
   onCoordinatesChange,
   onCoordinatesCommit,
+  onViewChange,
   className = '',
 }: GeoPointMapProps) {
+  const resolvedInteraction: GeoPointMapInteraction =
+    interaction ?? (interactive ? 'marker' : 'view')
+  const shouldFollowMarker = followMarker ?? resolvedInteraction !== 'picker'
+
   const containerRef = useRef<HTMLDivElement>(null)
+  const panOriginRef = useRef<{ x: number; y: number; view: MapViewState } | null>(null)
+  const isPanningRef = useRef(false)
   const [size, setSize] = useState({ width: 320, height: minHeight })
   const [view, setView] = useState<MapViewState>({
     centerLat: latitudine,
@@ -48,15 +69,21 @@ export function GeoPointMap({
     zoom,
   })
   const [dragging, setDragging] = useState(false)
+  const [panning, setPanning] = useState(false)
 
   useEffect(() => {
+    if (!shouldFollowMarker) {
+      setView((current) => ({ ...current, zoom }))
+      return
+    }
+
     setView((current) => ({
       ...current,
       centerLat: latitudine,
       centerLng: longitudine,
       zoom,
     }))
-  }, [latitudine, longitudine, zoom])
+  }, [latitudine, longitudine, zoom, shouldFollowMarker])
 
   useEffect(() => {
     const node = containerRef.current
@@ -74,6 +101,18 @@ export function GeoPointMap({
     observer.observe(node)
     return () => observer.disconnect()
   }, [minHeight])
+
+  const updateView = (next: MapViewState) => {
+    setView(next)
+    onViewChange?.(next)
+  }
+
+  const changeZoom = (delta: number) => {
+    updateView({
+      ...view,
+      zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, view.zoom + delta)),
+    })
+  }
 
   const tileLayout = useMemo(() => {
     const centerTileX = lonToTileX(view.centerLng, view.zoom)
@@ -132,27 +171,83 @@ export function GeoPointMap({
   }
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (!interactive) return
+    if (resolvedInteraction === 'view') return
+
     event.preventDefault()
     containerRef.current?.setPointerCapture(event.pointerId)
-    setDragging(true)
-    const next = updateFromPointer(event.clientX, event.clientY)
-    if (next) onCoordinatesChange?.(next)
+
+    if (resolvedInteraction === 'marker') {
+      setDragging(true)
+      const next = updateFromPointer(event.clientX, event.clientY)
+      if (next) onCoordinatesChange?.(next)
+      return
+    }
+
+    panOriginRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      view: { ...view },
+    }
+    isPanningRef.current = false
   }
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!interactive || !dragging) return
-    const next = updateFromPointer(event.clientX, event.clientY)
-    if (next) onCoordinatesChange?.(next)
+    if (resolvedInteraction === 'marker') {
+      if (!dragging) return
+      const next = updateFromPointer(event.clientX, event.clientY)
+      if (next) onCoordinatesChange?.(next)
+      return
+    }
+
+    if (resolvedInteraction !== 'picker' || !panOriginRef.current) return
+
+    const dx = event.clientX - panOriginRef.current.x
+    const dy = event.clientY - panOriginRef.current.y
+
+    if (!isPanningRef.current && Math.hypot(dx, dy) > PAN_THRESHOLD_PX) {
+      isPanningRef.current = true
+      setPanning(true)
+    }
+
+    if (isPanningRef.current) {
+      updateView(
+        panMapView(panOriginRef.current.view, dx, dy, size.width, size.height),
+      )
+    }
   }
 
-  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
-    if (!interactive || !dragging) return
-    setDragging(false)
+  const finishPointer = (event: PointerEvent<HTMLDivElement>) => {
+    if (resolvedInteraction === 'view') return
+
     containerRef.current?.releasePointerCapture(event.pointerId)
-    const next = updateFromPointer(event.clientX, event.clientY)
-    if (next) (onCoordinatesCommit ?? onCoordinatesChange)?.(next)
+
+    if (resolvedInteraction === 'marker') {
+      if (!dragging) return
+      setDragging(false)
+      const next = updateFromPointer(event.clientX, event.clientY)
+      if (next) (onCoordinatesCommit ?? onCoordinatesChange)?.(next)
+      return
+    }
+
+    if (!isPanningRef.current) {
+      const next = updateFromPointer(event.clientX, event.clientY)
+      if (next) onCoordinatesChange?.(next)
+    }
+
+    panOriginRef.current = null
+    isPanningRef.current = false
+    setPanning(false)
   }
+
+  const isInteractive = resolvedInteraction !== 'view'
+  const frameClass = [
+    'geo-point-map__frame',
+    isInteractive ? 'geo-point-map__frame--interactive' : '',
+    resolvedInteraction === 'picker' ? 'geo-point-map__frame--picker' : '',
+    dragging || panning ? 'geo-point-map__frame--dragging' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   const googleMapsUrl = buildGoogleMapsUrl(latitudine, longitudine, label)
 
@@ -160,13 +255,13 @@ export function GeoPointMap({
     <div className={`geo-point-map${className ? ` ${className}` : ''}`}>
       <div
         ref={containerRef}
-        className={`geo-point-map__frame${dragging ? ' geo-point-map__frame--dragging' : ''}${interactive ? ' geo-point-map__frame--interactive' : ''}`}
+        className={frameClass}
         style={{ minHeight }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        role={interactive ? 'application' : 'img'}
+        onPointerUp={finishPointer}
+        onPointerCancel={finishPointer}
+        role={isInteractive ? 'application' : 'img'}
         aria-label={label ? `Mappa posizione ${label}` : 'Mappa posizione'}
       >
         <div className="geo-point-map__surface" style={{ width: size.width, height: size.height }}>
@@ -190,9 +285,30 @@ export function GeoPointMap({
             style={{ left: markerPosition.x, top: markerPosition.y }}
             aria-hidden="true"
           >
-            <MapPin size={interactive ? 34 : 32} strokeWidth={2.2} />
+            <MapPin size={isInteractive ? 34 : 32} strokeWidth={2.2} />
           </span>
         </div>
+
+        {showZoomControls && (
+          <div className="geo-point-map__zoom" aria-label="Controlli zoom">
+            <button
+              type="button"
+              className="geo-point-map__zoom-btn"
+              aria-label="Zoom avanti"
+              onClick={() => changeZoom(1)}
+            >
+              <Plus size={16} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className="geo-point-map__zoom-btn"
+              aria-label="Zoom indietro"
+              onClick={() => changeZoom(-1)}
+            >
+              <Minus size={16} aria-hidden="true" />
+            </button>
+          </div>
+        )}
 
         <p className="geo-point-map__attribution">
           ©{' '}
