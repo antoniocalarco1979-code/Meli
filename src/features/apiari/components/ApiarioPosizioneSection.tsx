@@ -4,13 +4,10 @@ import { MapPositionEmptyState } from '../../../components/map'
 import { Button } from '../../../components/ui/Button'
 import { Input } from '../../../components/ui/Input'
 import { reverseGeocode } from '../../../services/geocoding'
-import { gpsService } from '../../../services/device'
+import { DEFAULT_GEO_OPTIONS, gpsService } from '../../../services/device'
 import type { ApiarioPosizioneMode, ApiarioPosizioneState } from '../types/apiarioPosizione.types'
 import { ApiarioPosizioneMap } from './ApiarioPosizioneMap'
 import './ApiarioPosizioneSection.css'
-
-const hasGeolocation =
-  typeof navigator !== 'undefined' && 'geolocation' in navigator
 
 type ApiarioPosizioneSectionProps = {
   value: ApiarioPosizioneState
@@ -25,6 +22,7 @@ export function ApiarioPosizioneSection({
 }: ApiarioPosizioneSectionProps) {
   const [gpsLoading, setGpsLoading] = useState(false)
   const [geocodeLoading, setGeocodeLoading] = useState(false)
+  const [gpsNotice, setGpsNotice] = useState<string | null>(null)
   const valueRef = useRef(value)
   valueRef.current = value
 
@@ -61,23 +59,44 @@ export function ApiarioPosizioneSection({
   )
 
   const handleAcquireGps = async () => {
-    if (!hasGeolocation) {
-      onError?.('Geolocalizzazione non disponibile su questo dispositivo. Usa inserimento manuale.')
+    setGpsNotice(null)
+
+    if (!gpsService.isSupported()) {
+      const message =
+        'Geolocalizzazione non disponibile su questo dispositivo. Usa inserimento manuale.'
+      setGpsNotice(message)
+      onError?.(message)
       setMode('manual')
       return
     }
 
     setGpsLoading(true)
 
-    const coords = await gpsService.getCurrentPosition({ enableHighAccuracy: true })
+    const result = await gpsService.getCurrentPositionResult(DEFAULT_GEO_OPTIONS)
     setGpsLoading(false)
 
-    if (!coords) {
-      onError?.('Impossibile ottenere la posizione. Verifica i permessi o inserisci i dati manualmente.')
+    if (!result.ok) {
+      setGpsNotice(result.message)
+      onError?.(result.message)
+      if (result.code === 'permission_denied' || result.code === 'unsupported') {
+        setMode('manual')
+      }
       return
     }
 
-    await applyReverseGeocode(coords.latitudine, coords.longitudine, coords.quota)
+    onChange({
+      ...valueRef.current,
+      mode: 'gps',
+      latitudine: result.coords.latitudine,
+      longitudine: result.coords.longitudine,
+      quota: result.coords.quota ?? valueRef.current.quota,
+    })
+
+    await applyReverseGeocode(
+      result.coords.latitudine,
+      result.coords.longitudine,
+      result.coords.quota,
+    )
   }
 
   const handleMapMove = (coords: { latitudine: number; longitudine: number }) => {
@@ -90,6 +109,7 @@ export function ApiarioPosizioneSection({
   }
 
   const hasMapCoords = value.latitudine != null && value.longitudine != null
+  const gpsBusy = gpsLoading || geocodeLoading
 
   return (
     <section className="apiario-posizione meli-glass meli-glass--deep" aria-labelledby="apiario-posizione-title">
@@ -116,7 +136,10 @@ export function ApiarioPosizioneSection({
           role="tab"
           aria-selected={value.mode === 'manual'}
           className={`apiario-posizione__mode${value.mode === 'manual' ? ' apiario-posizione__mode--active' : ''}`}
-          onClick={() => setMode('manual')}
+          onClick={() => {
+            setGpsNotice(null)
+            setMode('manual')
+          }}
         >
           Inserisci manualmente
         </button>
@@ -130,32 +153,32 @@ export function ApiarioPosizioneSection({
             size="md"
             className="apiario-posizione__gps-btn"
             onClick={() => void handleAcquireGps()}
-            disabled={gpsLoading || geocodeLoading}
+            disabled={gpsBusy}
           >
-            {gpsLoading || geocodeLoading ? (
+            {gpsBusy ? (
               <Loader2 size={18} className="apiario-posizione__spin" aria-hidden="true" />
             ) : (
               <Navigation size={18} aria-hidden="true" />
             )}
             {gpsLoading
-              ? 'Acquisizione GPS…'
+              ? 'Rilevamento posizione…'
               : geocodeLoading
-                ? 'Recupero indirizzo…'
+                ? 'Recupero comune e provincia…'
                 : hasMapCoords
-                  ? 'Aggiorna posizione GPS'
-                  : 'Acquisisci posizione GPS'}
+                  ? 'Usa la mia posizione'
+                  : 'Usa la mia posizione'}
           </Button>
 
-          {!hasGeolocation && (
-            <p className="apiario-posizione__notice">
-              Geolocalizzazione non supportata. Passa a inserimento manuale.
+          {gpsNotice && (
+            <p className="apiario-posizione__notice" role="alert">
+              {gpsNotice}
             </p>
           )}
 
           {!hasMapCoords && (
             <MapPositionEmptyState
               onSetPosition={() => void handleAcquireGps()}
-              actionLabel="Imposta posizione"
+              actionLabel="Usa la mia posizione"
             />
           )}
 
@@ -210,6 +233,11 @@ export function ApiarioPosizioneSection({
         </div>
       ) : (
         <div className="apiario-posizione__manual">
+          {gpsNotice && (
+            <p className="apiario-posizione__notice" role="alert">
+              {gpsNotice}
+            </p>
+          )}
           <Input
             label="Comune"
             value={value.comune ?? ''}

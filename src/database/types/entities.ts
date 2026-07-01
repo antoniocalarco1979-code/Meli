@@ -59,7 +59,7 @@ export type Arnia = {
   apiarioId: string
   numero: string
   nome?: string
-  /** Payload QR (`meli:arnia:{publicUuid}`) per scansione futura. */
+  /** Payload QR — contiene esclusivamente publicUuid (UUID permanente). */
   qrCode: string
   /** Immagine QR (PNG data URL) persistita per anteprima, stampa e PDF. */
   qrImageDataUrl?: string

@@ -1,9 +1,8 @@
 import { arnieRepository } from '../../../database/repositories'
-import { parseArniaQrPayload } from './arniaQrService'
+import { ARNIA_QR_PREFIX, parseArniaQrPayload } from './arniaQrService'
 
 /**
- * Risolve l'ID arnia da un payload QR scansionato.
- * Preparato per la futura funzione "Scansiona QR" → scheda arnia.
+ * Risolve l'ID interno arnia da un payload QR scansionato (lookup offline su IndexedDB).
  */
 export async function resolveArniaIdFromScan(raw: string): Promise<string | null> {
   const publicUuid = parseArniaQrPayload(raw)
@@ -12,11 +11,14 @@ export async function resolveArniaIdFromScan(raw: string): Promise<string | null
   const byPublicUuid = await arnieRepository.getByPublicUuid(publicUuid)
   if (byPublicUuid) return byPublicUuid.id
 
-  const byId = await arnieRepository.getById(publicUuid)
-  return byId?.id ?? null
+  const byQrCode = await arnieRepository.getByQrCode(publicUuid)
+  if (byQrCode) return byQrCode.id
+
+  const legacyPayload = `${ARNIA_QR_PREFIX}${publicUuid}`
+  const byLegacyQr = await arnieRepository.getByQrCode(legacyPayload)
+  return byLegacyQr?.id ?? null
 }
 
-/** Route target futura per apertura scheda da scan. */
 export function buildArniaDetailPathFromScan(arniaId: string): string {
   return `/arnie/${arniaId}`
 }

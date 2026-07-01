@@ -7,7 +7,7 @@ import type { ArniaDetailView } from '../services/arniaDetailService'
 import { ArniaAzioneConsigliata } from './ArniaAzioneConsigliata'
 import { ArniaDetailHeader } from './ArniaDetailHeader'
 import { ArniaConfigSection } from './detail/ArniaConfigSection'
-import { ArniaDetailQrStrip } from './detail/ArniaDetailQrStrip'
+import { ArniaDetailQrCard } from './detail/ArniaDetailQrCard'
 import { ArniaDetailVisitCta } from './detail/ArniaDetailVisitCta'
 import { ArniaStatusSummary } from './ArniaStatusSummary'
 import { PhotoGallery } from './PhotoGallery'
@@ -44,7 +44,7 @@ export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
           salute={detail.salute}
         />
 
-        <ArniaDetailQrStrip arnia={arnia} apiarioNome={data.apiario?.nome} />
+        <ArniaDetailQrCard arnia={arnia} apiarioNome={data.apiario?.nome} />
 
         <ArniaDetailVisitCta onClick={onIniziaIspezione} />
       </div>

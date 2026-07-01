@@ -111,7 +111,13 @@ class MeliDatabase extends Dexie {
         await migrateArnieV10(tx)
       })
 
-    this.version(DATABASE_VERSION).stores(STORE_SCHEMA)
+    this.version(11).stores(STORE_SCHEMA)
+
+    this.version(DATABASE_VERSION)
+      .stores(STORE_SCHEMA)
+      .upgrade(async (tx) => {
+        await migrateArnieV12(tx)
+      })
   }
 }
 
@@ -234,13 +240,43 @@ async function migrateArnieV6(tx: Transaction): Promise<void> {
 
 async function migrateArnieV10(tx: Transaction): Promise<void> {
   const { buildArniaQrPayload } = await import('../features/arnie/services/arniaQrService')
+  const { generateId } = await import('./repositories/utils')
 
   await tx.table('arnie').toCollection().modify((row: Arnia & { qrCode?: string }) => {
     if (row.publicUuid && row.qrCode) return
 
-    row.publicUuid = row.publicUuid || row.id
+    row.publicUuid = row.publicUuid || generateId()
     row.qrCode = row.qrCode || buildArniaQrPayload(row.publicUuid)
   })
+}
+
+async function migrateArnieV12(tx: Transaction): Promise<void> {
+  const { buildArniaQrPayload, generateQrImageDataUrl, parseArniaQrPayload } = await import(
+    '../features/arnie/services/arniaQrService'
+  )
+  const { generateId } = await import('./repositories/utils')
+
+  const rows = await tx.table('arnie').toArray()
+  for (const row of rows) {
+    let publicUuid = row.publicUuid?.trim()
+    if (!publicUuid) {
+      publicUuid = generateId()
+    }
+
+    const parsedFromQr = row.qrCode ? parseArniaQrPayload(row.qrCode) : null
+    if (parsedFromQr && parsedFromQr !== publicUuid) {
+      publicUuid = parsedFromQr
+    }
+
+    const qrCode = buildArniaQrPayload(publicUuid)
+    const qrImageDataUrl = await generateQrImageDataUrl(qrCode)
+
+    await tx.table('arnie').update(row.id, {
+      publicUuid,
+      qrCode,
+      qrImageDataUrl,
+    })
+  }
 }
 
 export const db = new MeliDatabase(DATABASE_NAME)

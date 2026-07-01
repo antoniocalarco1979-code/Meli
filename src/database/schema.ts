@@ -18,7 +18,7 @@
 export const DATABASE_NAME = 'MeliDatabase'
 
 /** Versione schema — incrementare ad ogni migrazione breaking. */
-export const DATABASE_VERSION = 11
+export const DATABASE_VERSION = 12
 
 /** Definizione store Dexie: tabella → indici indicizzati. */
 export const STORE_SCHEMA = {

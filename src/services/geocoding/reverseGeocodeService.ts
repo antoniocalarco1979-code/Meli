@@ -6,79 +6,95 @@ export type ReverseGeocodeResult = {
   quota?: number
 }
 
-type BigDataCloudResponse = {
+type NominatimAddress = {
   city?: string
-  locality?: string
-  principalSubdivision?: string
-  principalSubdivisionCode?: string
+  town?: string
+  village?: string
+  municipality?: string
+  hamlet?: string
+  county?: string
+  state_district?: string
+  state?: string
+  road?: string
+  house_number?: string
   postcode?: string
-  localityInfo?: {
-    administrative?: { name: string; order: number }[]
-    informative?: { name: string; description?: string }[]
-  }
 }
 
-function pickComune(data: BigDataCloudResponse): string | undefined {
-  return data.city?.trim() || data.locality?.trim() || undefined
+type NominatimResponse = {
+  address?: NominatimAddress
+  display_name?: string
 }
 
-function pickProvincia(data: BigDataCloudResponse): string | undefined {
-  const admin = data.localityInfo?.administrative ?? []
-  const province = admin.find((entry) => entry.order === 6)?.name
-  if (province) return province
+const NOMINATIM_REVERSE_URL = 'https://nominatim.openstreetmap.org/reverse'
 
-  const code = data.principalSubdivisionCode
-  if (code?.startsWith('IT-')) return code.slice(3)
-  return data.principalSubdivision?.trim() || undefined
+function pickComune(address: NominatimAddress): string | undefined {
+  return (
+    address.city?.trim() ||
+    address.town?.trim() ||
+    address.village?.trim() ||
+    address.municipality?.trim() ||
+    address.hamlet?.trim() ||
+    undefined
+  )
 }
 
-function pickRegione(data: BigDataCloudResponse): string | undefined {
-  const admin = data.localityInfo?.administrative ?? []
-  const region = admin.find((entry) => entry.order === 4)?.name
-  return region || data.principalSubdivision?.trim() || undefined
+function pickProvincia(address: NominatimAddress): string | undefined {
+  return address.county?.trim() || address.state_district?.trim() || undefined
 }
 
-function pickIndirizzo(data: BigDataCloudResponse): string | undefined {
-  const informative = data.localityInfo?.informative ?? []
-  const road = informative.find((entry) =>
-    entry.description?.toLowerCase().includes('road'),
-  )?.name
+function pickRegione(address: NominatimAddress): string | undefined {
+  return address.state?.trim() || undefined
+}
 
-  if (road) {
-    return data.postcode ? `${road}, ${data.postcode}` : road
-  }
+function pickIndirizzo(address: NominatimAddress): string | undefined {
+  const road = address.road?.trim()
+  if (!road) return undefined
 
-  const place = informative[0]?.name?.trim()
-  if (place && place !== data.city && place !== data.locality) return place
-  return undefined
+  const parts = [road]
+  if (address.house_number?.trim()) parts.push(address.house_number.trim())
+  if (address.postcode?.trim()) parts.push(address.postcode.trim())
+  return parts.join(', ')
 }
 
 /**
- * Reverse geocoding client-side (CORS-friendly, adatto a PWA / mobile web).
- * @see https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api
+ * Reverse geocoding tramite OpenStreetMap Nominatim.
+ * @see https://nominatim.org/release-docs/latest/api/Reverse/
  */
 export async function reverseGeocode(
   latitudine: number,
   longitudine: number,
   quotaFromDevice?: number,
 ): Promise<ReverseGeocodeResult> {
-  const url = new URL('https://api.bigdatacloud.net/data/reverse-geocode-client')
-  url.searchParams.set('latitude', String(latitudine))
-  url.searchParams.set('longitude', String(longitudine))
-  url.searchParams.set('localityLanguage', 'it')
+  const url = new URL(NOMINATIM_REVERSE_URL)
+  url.searchParams.set('format', 'jsonv2')
+  url.searchParams.set('lat', String(latitudine))
+  url.searchParams.set('lon', String(longitudine))
+  url.searchParams.set('addressdetails', '1')
+  url.searchParams.set('accept-language', 'it')
 
   try {
-    const response = await fetch(url.toString())
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: 'application/json',
+        'Accept-Language': 'it',
+      },
+    })
+
     if (!response.ok) {
       return { quota: quotaFromDevice }
     }
 
-    const data = (await response.json()) as BigDataCloudResponse
+    const data = (await response.json()) as NominatimResponse
+    const address = data.address
+    if (!address) {
+      return { quota: quotaFromDevice }
+    }
+
     return {
-      comune: pickComune(data),
-      provincia: pickProvincia(data),
-      regione: pickRegione(data),
-      indirizzo: pickIndirizzo(data),
+      comune: pickComune(address),
+      provincia: pickProvincia(address),
+      regione: pickRegione(address),
+      indirizzo: pickIndirizzo(address),
       quota: quotaFromDevice,
     }
   } catch {

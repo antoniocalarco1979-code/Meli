@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { parseDexieError } from '../../../../database/errors'
 import { useToast } from '../../../../hooks/useToast'
-import { cameraService, gpsService, type GeoCoordinates } from '../../../../services/device'
+import { cameraService, DEFAULT_GEO_OPTIONS, gpsService, type GeoCoordinates } from '../../../../services/device'
 import type { VisitaSaveSummary } from '../../types/visitSave.types'
 import { useVisitWizard } from '../../hooks/useVisitWizard'
 import { saveVisitWizard } from '../../services/visitSaveService'
@@ -59,7 +59,7 @@ export function VisitWizard({
     if (!open) return
     setError('')
     setSaving(false)
-    void gpsService.getCurrentPosition().then(setGps)
+    void gpsService.getCurrentPosition(DEFAULT_GEO_OPTIONS).then(setGps)
   }, [open])
 
   useEffect(() => {

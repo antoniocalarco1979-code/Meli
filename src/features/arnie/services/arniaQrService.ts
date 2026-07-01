@@ -2,7 +2,7 @@ import QRCode from 'qrcode'
 import { jsPDF } from 'jspdf'
 import type { Arnia } from '../../../database/types'
 
-/** Prefisso payload QR — usato da scansione futura. */
+/** Prefisso legacy — accettato in scansione per etichette già stampate. */
 export const ARNIA_QR_PREFIX = 'meli:arnia:'
 
 export type ArniaQrLabelContext = {
@@ -10,14 +10,14 @@ export type ArniaQrLabelContext = {
   apiarioNome?: string
 }
 
-/** Costruisce il payload permanente legato a publicUuid. */
+/** Payload QR: esclusivamente l'UUID permanente dell'arnia. */
 export function buildArniaQrPayload(publicUuid: string): string {
-  return `${ARNIA_QR_PREFIX}${publicUuid}`
+  return publicUuid
 }
 
 /**
  * Estrae l'UUID permanente da un payload scansionato.
- * Accetta anche UUID raw per compatibilità scanner generici.
+ * Accetta UUID raw (definitivo) e prefisso legacy `meli:arnia:`.
  */
 export function parseArniaQrPayload(raw: string): string | null {
   const trimmed = raw.trim()
@@ -56,7 +56,7 @@ export async function buildArniaQrAssets(publicUuid: string) {
 
 async function resolveQrImage(arnia: Arnia): Promise<string> {
   if (arnia.qrImageDataUrl) return arnia.qrImageDataUrl
-  return generateQrImageDataUrl(arnia.qrCode)
+  return generateQrImageDataUrl(arnia.publicUuid)
 }
 
 function triggerDownload(dataUrl: string, filename: string) {
@@ -68,7 +68,7 @@ function triggerDownload(dataUrl: string, filename: string) {
 
 export async function downloadArniaQrPng(context: ArniaQrLabelContext): Promise<void> {
   const qrImage = await resolveQrImage(context.arnia)
-  triggerDownload(qrImage, `MELI-arnia-${context.arnia.numero}.png`)
+  triggerDownload(qrImage, `MELI-arnia-${context.arnia.publicUuid}.png`)
 }
 
 function buildLabelLines({ arnia, apiarioNome }: ArniaQrLabelContext) {
@@ -78,7 +78,6 @@ function buildLabelLines({ arnia, apiarioNome }: ArniaQrLabelContext) {
     apiario: apiarioNome?.trim() || 'Apiario',
     title,
     uuid: arnia.publicUuid,
-    payload: arnia.qrCode,
   }
 }
 
@@ -104,7 +103,7 @@ export async function downloadArniaQrPdf(context: ArniaQrLabelContext): Promise<
   doc.setFontSize(6)
   doc.text(lines.uuid, 10, 82, { maxWidth: 78 })
 
-  doc.save(`MELI-arnia-${context.arnia.numero}.pdf`)
+  doc.save(`MELI-arnia-${context.arnia.publicUuid}.pdf`)
 }
 
 export async function printArniaQrLabel(context: ArniaQrLabelContext): Promise<void> {

@@ -68,17 +68,17 @@ export function ArniaQrSection({
       >
         <header className="arnia-qr-section__header">
           <h2 id={`arnia-qr-title-${arnia.id}`} className="arnia-qr-section__title">
-            📱 QR Code
+            QR Code
           </h2>
           <p className="arnia-qr-section__subtitle">
-            Identificativo permanente dell&apos;arnia — valido anche se cambiano numero, nome o colore.
+            UUID permanente dell&apos;arnia — il codice QR contiene solo l&apos;UUID, valido anche offline.
           </p>
         </header>
 
         <div className="arnia-qr-section__body">
           <div className="arnia-qr-section__preview">
             <MeliQrCode
-              value={arnia.qrCode}
+              value={arnia.publicUuid}
               size={compact ? 180 : 220}
               title={`QR Code arnia ${arnia.numero}`}
             />
@@ -101,7 +101,7 @@ export function ArniaQrSection({
 
         <div className="arnia-qr-section__actions">
           <Button type="button" variant="secondary" size="md" onClick={() => setViewOpen(true)}>
-            Visualizza QR
+            Visualizza
           </Button>
           <Button
             type="button"
@@ -150,10 +150,10 @@ export function ArniaQrSection({
         title={`QR Code · Arnia ${arnia.numero}`}
       >
         <div className="arnia-qr-section__modal">
-          <MeliQrCode value={arnia.qrCode} size={280} title={`QR Code arnia ${arnia.numero}`} />
-          <p className="arnia-qr-section__modal-code">{arnia.qrCode}</p>
+          <MeliQrCode value={arnia.publicUuid} size={280} title={`QR Code arnia ${arnia.numero}`} />
+          <p className="arnia-qr-section__modal-code">{arnia.publicUuid}</p>
           <p className="arnia-qr-section__modal-hint">
-            Scansiona con la fotocamera per aprire l&apos;arnia (scansione in-app prossimamente).
+            Scansiona dalla Home con «Scansiona QR» per aprire questa arnia, anche senza connessione.
           </p>
         </div>
       </Modal>

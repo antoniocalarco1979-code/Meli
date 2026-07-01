@@ -1,0 +1,121 @@
+.arnia-detail-qr-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: var(--meli-radius-xl);
+}
+
+.arnia-detail-qr-card__title {
+  margin: 0;
+  font-family: var(--meli-font-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-gold-dark);
+}
+
+.arnia-detail-qr-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.arnia-detail-qr-card__qr-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 232px;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: var(--meli-radius-lg);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.arnia-detail-qr-card__loading {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--meli-brown-soft);
+}
+
+.arnia-detail-qr-card__uuid-block {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--meli-radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--meli-border);
+}
+
+.arnia-detail-qr-card__uuid-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meli-honey-dark);
+}
+
+.arnia-detail-qr-card__uuid {
+  display: block;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  word-break: break-all;
+  color: var(--meli-brown);
+}
+
+.arnia-detail-qr-card__error {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meli-alert-red, #b42828);
+}
+
+.arnia-detail-qr-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.arnia-detail-qr-card__actions .ui-button {
+  flex: 1 1 140px;
+}
+
+.arnia-detail-qr-card__modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0 0.25rem;
+  text-align: center;
+}
+
+.arnia-detail-qr-card__modal-uuid {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  word-break: break-all;
+  color: var(--meli-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .arnia-detail-qr-card__body {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .arnia-detail-qr-card__qr-wrap {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 232px;
+  }
+
+  .arnia-detail-qr-card__uuid-block {
+    flex: 1;
+  }
+}

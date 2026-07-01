@@ -21,7 +21,19 @@ export type GeoCoordinates = {
 export type GeoOptions = {
   enableHighAccuracy?: boolean
   timeoutMs?: number
+  maximumAgeMs?: number
 }
+
+export type GeoLocationErrorCode =
+  | 'unsupported'
+  | 'permission_denied'
+  | 'position_unavailable'
+  | 'timeout'
+  | 'unknown'
+
+export type GeoLocationResult =
+  | { ok: true; coords: GeoCoordinates }
+  | { ok: false; code: GeoLocationErrorCode; message: string }
 
 export type LocalNotificationPayload = {
   id: number
