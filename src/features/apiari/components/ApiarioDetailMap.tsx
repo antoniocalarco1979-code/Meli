@@ -1,6 +1,4 @@
-import { useMemo } from 'react'
-import { MapPin } from 'lucide-react'
-import { buildStaticMapUrl } from '../utils/mapProjection'
+import { ApiarioLocationMap } from './ApiarioLocationMap'
 import './ApiarioDetailMap.css'
 
 type ApiarioDetailMapProps = {
@@ -9,20 +7,9 @@ type ApiarioDetailMapProps = {
   nome: string
 }
 
+/** @deprecated Usa ApiarioLocationMap — mantenuto per compatibilità import. */
 export function ApiarioDetailMap({ latitudine, longitudine, nome }: ApiarioDetailMapProps) {
-  const mapUrl = useMemo(
-    () => buildStaticMapUrl(latitudine, longitudine, 14),
-    [latitudine, longitudine],
-  )
-
   return (
-    <div className="apiario-detail-map meli-glass">
-      <div className="apiario-detail-map__frame">
-        <img src={mapUrl} alt={`Mappa posizione ${nome}`} className="apiario-detail-map__image" />
-        <span className="apiario-detail-map__pin" aria-hidden="true">
-          <MapPin size={32} strokeWidth={2.2} />
-        </span>
-      </div>
-    </div>
+    <ApiarioLocationMap latitudine={latitudine} longitudine={longitudine} nome={nome} />
   )
 }

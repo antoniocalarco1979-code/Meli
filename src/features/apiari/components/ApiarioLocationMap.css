@@ -1,0 +1,14 @@
+.apiario-location-map-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.apiario-location-map-section__title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-gold-dark);
+}

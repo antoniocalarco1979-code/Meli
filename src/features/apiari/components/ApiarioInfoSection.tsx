@@ -20,7 +20,7 @@ import {
   formatGps,
   formatPresenzaAcqua,
 } from '../utils/apiarioFieldFormatters'
-import { ApiarioDetailMap } from './ApiarioDetailMap'
+import { ApiarioLocationMap } from './ApiarioLocationMap'
 import './ApiarioInfoSection.css'
 
 type ApiarioInfoSectionProps = {
@@ -53,7 +53,6 @@ function InfoRow({
 
 export function ApiarioInfoSection({ detail, onEdit, actions }: ApiarioInfoSectionProps) {
   const { apiario, arnieCount, famiglieCount } = detail
-  const hasGps = apiario.latitudine != null && apiario.longitudine != null
 
   return (
     <motion.section
@@ -99,13 +98,15 @@ export function ApiarioInfoSection({ detail, onEdit, actions }: ApiarioInfoSecti
         </div>
       </div>
 
-      {hasGps && (
-        <ApiarioDetailMap
-          latitudine={apiario.latitudine!}
-          longitudine={apiario.longitudine!}
+      <div className="apiario-info__map-section">
+        <h2 className="apiario-info__section-title">Mappa</h2>
+        <ApiarioLocationMap
+          latitudine={apiario.latitudine}
+          longitudine={apiario.longitudine}
           nome={apiario.nome}
+          onSetPosition={onEdit}
         />
-      )}
+      </div>
 
       <div className="apiario-info__grid meli-glass meli-glass--deep">
         <h2 className="apiario-info__section-title">Posizione</h2>

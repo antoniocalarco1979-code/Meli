@@ -1,5 +1,8 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+import { useAppPath } from '../../../demo/useAppPath'
+import { ApiarioLocationMap } from '../../apiari/components/ApiarioLocationMap'
 import type { ArniaDetailView } from '../services/arniaDetailService'
 import { ArniaAzioneConsigliata } from './ArniaAzioneConsigliata'
 import { ArniaDetailHeader } from './ArniaDetailHeader'
@@ -18,8 +21,10 @@ type ArniaDetailProps = {
 }
 
 export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
-  const { arnia, foto, detail } = data
+  const { arnia, foto, detail, apiario } = data
   const timelineRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+  const appPath = useAppPath()
 
   const scrollToTimeline = () => {
     timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -45,6 +50,20 @@ export function ArniaDetail({ data, onIniziaIspezione }: ArniaDetailProps) {
       </div>
 
       <div className="arnia-premium__primary">
+        {apiario && (
+          <section className="arnia-premium__location" aria-label="Posizione apiario">
+            <h2 className="arnia-premium__location-title">Posizione apiario</h2>
+            <ApiarioLocationMap
+              latitudine={apiario.latitudine}
+              longitudine={apiario.longitudine}
+              nome={apiario.nome}
+              onSetPosition={() =>
+                navigate(appPath('/apiari'), { state: { editId: apiario.id } })
+              }
+            />
+          </section>
+        )}
+
         <ArniaConfigSection arnia={arnia} />
 
         <ArniaStatusSummary visit={detail.ultimaVisita} onCellClick={scrollToTimeline} />

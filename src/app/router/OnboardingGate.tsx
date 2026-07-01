@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
+import { liveQuery } from 'dexie'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import {
-  initializeDatabase,
-  isOnboardingComplete,
-  readOnboardingCounts,
-} from '../../database/initializeDatabase'
+import { getDb } from '../../database/activeDatabase'
+import { isOnboardingComplete } from '../../database/initializeDatabase'
 
 /**
  * Non blocca mai l'app con uno spinner fullscreen.
- * Controlla onboarding in background e reindirizza se necessario.
+ * Usa liveQuery per i conteggi (zona Dexie corretta, niente count() fuori transazione).
  */
 export function OnboardingGate() {
   const navigate = useNavigate()
@@ -17,22 +15,26 @@ export function OnboardingGate() {
   useEffect(() => {
     let cancelled = false
 
-    void (async () => {
-      try {
-        await initializeDatabase()
-        const counts = await readOnboardingCounts()
+    const subscription = liveQuery(async () => {
+      const database = getDb()
+      const apiari = await database.apiari.count()
+      const arnie = await database.arnie.count()
+      return { apiari, arnie }
+    }).subscribe({
+      next: (counts) => {
         if (cancelled) return
-
         if (!isOnboardingComplete(counts) && location.pathname !== '/onboarding') {
           navigate('/onboarding', { replace: true })
         }
-      } catch (err) {
-        console.error('[MELI] OnboardingGate:', err)
-      }
-    })()
+      },
+      error: (err) => {
+        console.warn('[MELI] OnboardingGate:', err)
+      },
+    })
 
     return () => {
       cancelled = true
+      subscription.unsubscribe()
     }
   }, [location.pathname, navigate])
 

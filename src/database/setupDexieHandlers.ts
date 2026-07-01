@@ -7,5 +7,6 @@ export function setupDexieErrorHandlers(database: Dexie): void {
 
   database.on('versionchange', () => {
     database.close()
+    window.location.reload()
   })
 }

@@ -1,7 +1,9 @@
 export {
+  buildGoogleMapsUrl,
   buildOsmTileUrl,
   buildStaticMapUrl,
   computeMapViewForPoints,
+  hasValidCoordinates,
   latLngToPixel,
   latToTileY,
   lonToTileX,

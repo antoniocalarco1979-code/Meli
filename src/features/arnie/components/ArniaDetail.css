@@ -18,6 +18,21 @@
   gap: 1rem;
 }
 
+.arnia-premium__location {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.arnia-premium__location-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--meli-gold-dark);
+}
+
 .arnia-premium__secondary {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,6 @@
 import { Loader2, MapPin, Navigation } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
+import { MapPositionEmptyState } from '../../../components/map'
 import { Button } from '../../../components/ui/Button'
 import { Input } from '../../../components/ui/Input'
 import { reverseGeocode } from '../../../services/geocoding'
@@ -149,6 +150,13 @@ export function ApiarioPosizioneSection({
             <p className="apiario-posizione__notice">
               Geolocalizzazione non supportata. Passa a inserimento manuale.
             </p>
+          )}
+
+          {!hasMapCoords && (
+            <MapPositionEmptyState
+              onSetPosition={() => void handleAcquireGps()}
+              actionLabel="Imposta posizione"
+            />
           )}
 
           {hasMapCoords && (

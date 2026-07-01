@@ -29,6 +29,8 @@
 .mappa-apiari-page__map-wrap {
   flex: 1;
   min-height: 420px;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--meli-radius-xl);
   overflow: hidden;
   border: 1px solid var(--meli-border);

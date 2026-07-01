@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { liveQuery } from 'dexie'
-import { initializeDatabase } from '../database/initializeDatabase'
 import { normalizeError } from '../database/errors'
 
 type UseLiveQueryResult<T> = {
@@ -10,20 +9,13 @@ type UseLiveQueryResult<T> = {
 }
 
 type UseLiveQueryOptions<T> = {
+  /** @deprecated Il seed avviene in main.tsx al bootstrap. Ignorato. */
   seed?: () => Promise<void>
   /** Se la query fallisce o va in timeout, usa questo valore invece di mostrare errore. */
   fallback?: T
 }
 
 const QUERY_TIMEOUT_MS = 20_000
-
-async function runSeedSafely(seed: () => Promise<void>): Promise<void> {
-  try {
-    await seed()
-  } catch (err) {
-    console.warn('[MELI] Seed ignorato:', err)
-  }
-}
 
 export function useLiveQuery<T>(
   queryFn: () => Promise<T>,
@@ -60,71 +52,40 @@ export function useLiveQuery<T>(
       setLoading(false)
     }, QUERY_TIMEOUT_MS)
 
-    const runQuery = async () => {
+    const subscription = liveQuery(async () => {
       try {
-        await initializeDatabase()
-        if (options?.seed) {
-          await runSeedSafely(options.seed)
-        }
+        return await queryFn()
       } catch (err) {
-        console.warn('[MELI] Database non pronto:', err)
+        console.warn('[MELI] Query fallita:', err)
+        if (fallback !== undefined) return fallback
+        throw err
+      }
+    }).subscribe({
+      next: (next) => {
         if (!active) return
         resolved = true
         window.clearTimeout(safetyTimer)
-        applyFallback()
+        setData(next)
+        setError(null)
         setLoading(false)
-        return
-      }
-
-      if (!active) return
-
-      const subscription = liveQuery(async () => {
-        try {
-          return await queryFn()
-        } catch (err) {
-          console.warn('[MELI] Query fallita:', err)
-          if (fallback !== undefined) return fallback
-          throw err
+      },
+      error: (err) => {
+        if (!active) return
+        resolved = true
+        window.clearTimeout(safetyTimer)
+        if (applyFallback()) {
+          setLoading(false)
+          return
         }
-      }).subscribe({
-        next: (next) => {
-          if (!active) return
-          resolved = true
-          window.clearTimeout(safetyTimer)
-          setData(next)
-          setError(null)
-          setLoading(false)
-        },
-        error: (err) => {
-          if (!active) return
-          resolved = true
-          window.clearTimeout(safetyTimer)
-          if (applyFallback()) {
-            setLoading(false)
-            return
-          }
-          setError(normalizeError(err))
-          setLoading(false)
-        },
-      })
-
-      return subscription
-    }
-
-    let subscription: { unsubscribe: () => void } | undefined
-
-    void runQuery().then((sub) => {
-      if (!active) {
-        sub?.unsubscribe()
-        return
-      }
-      subscription = sub
+        setError(normalizeError(err))
+        setLoading(false)
+      },
     })
 
     return () => {
       active = false
       window.clearTimeout(safetyTimer)
-      subscription?.unsubscribe()
+      subscription.unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)

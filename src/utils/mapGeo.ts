@@ -153,6 +153,29 @@ export function buildOsmTileUrl(x: number, y: number, zoom: number): string {
   return `https://tile.openstreetmap.org/${zoom}/${x}/${y}.png`
 }
 
+export function buildGoogleMapsUrl(
+  latitudine: number,
+  longitudine: number,
+  label?: string,
+): string {
+  const url = new URL('https://www.google.com/maps/search/')
+  url.searchParams.set('api', '1')
+  url.searchParams.set('query', label ? `${latitudine},${longitudine}(${label})` : `${latitudine},${longitudine}`)
+  return url.toString()
+}
+
+export function hasValidCoordinates(
+  latitudine?: number | null,
+  longitudine?: number | null,
+): boolean {
+  return (
+    latitudine != null &&
+    longitudine != null &&
+    Number.isFinite(latitudine) &&
+    Number.isFinite(longitudine)
+  )
+}
+
 export function buildStaticMapUrl(
   latitudine: number,
   longitudine: number,

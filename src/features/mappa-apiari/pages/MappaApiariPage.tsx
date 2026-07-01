@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { MapPositionEmptyState } from '../../../components/map'
 import { EmptyState } from '../../../components/ui/EmptyState/EmptyState'
 import { LoadingScreen } from '../../../components/ui/LoadingScreen'
 import { useAppPath } from '../../../demo/useAppPath'
@@ -38,19 +39,25 @@ export function MappaApiariPage() {
         <EmptyState title="Nessun apiario presente." />
       ) : (
         <>
-          {!hasMarkers && (
-            <p className="mappa-apiari-page__notice">
-              Nessun apiario ha coordinate GPS salvate. Aggiungi la posizione durante la creazione dell&apos;apiario.
-            </p>
-          )}
-
-          {hasMarkers && (
-            <div className="mappa-apiari-page__map-wrap">
+          <div className="mappa-apiari-page__map-wrap">
+            {hasMarkers ? (
               <ApiariInteractiveMap
                 markers={data.markers}
                 onOpenApiario={(apiarioId) => navigate(appPath(`/apiari/${apiarioId}`))}
               />
-            </div>
+            ) : (
+              <MapPositionEmptyState
+                onSetPosition={() => navigate(appPath('/apiari'))}
+                actionLabel="Imposta posizione"
+              />
+            )}
+          </div>
+
+          {!hasMarkers && (
+            <p className="mappa-apiari-page__notice">
+              {data.apiariSenzaCoordinate} apiari su {data.totaleApiari} non hanno coordinate GPS.
+              Modifica un apiario e imposta la posizione.
+            </p>
           )}
 
           <section className="mappa-apiari-page__future meli-glass meli-glass--deep" aria-label="Funzioni future">

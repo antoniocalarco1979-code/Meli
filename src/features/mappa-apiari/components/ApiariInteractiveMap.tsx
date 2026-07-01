@@ -135,7 +135,7 @@ export function ApiariInteractiveMap({ markers, onOpenApiario }: ApiariInteracti
       role="application"
       aria-label="Mappa interattiva apiari"
     >
-      <div className="apiari-map__surface" style={{ width: size.width, height: size.height }}>
+      <div className="apiari-map__surface">
         <div className="apiari-map__tiles" aria-hidden="true">
           {tileLayout.map((tile) => (
             <img
@@ -146,6 +146,7 @@ export function ApiariInteractiveMap({ markers, onOpenApiario }: ApiariInteracti
               style={{ left: tile.left, top: tile.top, width: TILE_SIZE, height: TILE_SIZE }}
               draggable={false}
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
           ))}
         </div>
