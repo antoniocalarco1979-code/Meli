@@ -6,6 +6,7 @@ export type GiroIspezioneMeta = {
   fotoCount?: number
   hadTrattamento?: boolean
   reginaNonVista?: boolean
+  hadNote?: boolean
 }
 
 export async function createGiroApiario(apiarioId: string): Promise<GiroApiario> {
@@ -26,6 +27,7 @@ export async function createGiroApiario(apiarioId: string): Promise<GiroApiario>
     ispezioniCompletate: 0,
     trattamenti: 0,
     foto: 0,
+    noteInserite: 0,
     regineDaControllare: 0,
     createdAt: timestamp,
     updatedAt: timestamp,
@@ -58,6 +60,7 @@ export async function recordGiroIspezione(
     ispezioniCompletate: giro.ispezioniCompletate + 1,
     trattamenti: (giro.trattamenti ?? 0) + (meta.hadTrattamento ? 1 : 0),
     foto: (giro.foto ?? 0) + (meta.fotoCount ?? 0),
+    noteInserite: (giro.noteInserite ?? 0) + (meta.hadNote ? 1 : 0),
     regineDaControllare:
       (giro.regineDaControllare ?? 0) + (meta.reginaNonVista ? 1 : 0),
     updatedAt: now(),

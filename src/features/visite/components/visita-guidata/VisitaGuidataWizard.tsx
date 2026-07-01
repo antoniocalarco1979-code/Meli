@@ -10,6 +10,7 @@ import { GuidataStepMelario } from './GuidataStepMelario'
 import { GuidataStepNido } from './GuidataStepNido'
 import { GuidataStepSalva } from './GuidataStepSalva'
 import { GuidataStepVassoio } from './GuidataStepVassoio'
+import { GiroSessionHud } from '../giro/GiroSessionHud'
 import { VisitaGuidataFooter } from './VisitaGuidataFooter'
 import { VisitaGuidataHeader } from './VisitaGuidataHeader'
 import '../ispezione-engine/ispezione-engine.css'
@@ -25,6 +26,7 @@ export type VisitaGuidataWizardProps = {
     current: number
     total: number
     apiarioNome: string
+    startedAt: number
   }
   onClose: () => void
   onSaved?: (summary: VisitaSaveSummary) => void | Promise<void>
@@ -127,10 +129,20 @@ export function VisitaGuidataWizard({
     >
       <VisitaGuidataHeader
         arniaNumero={arniaNumero}
-        apiarioNome={apiarioNome}
-        giroProgress={giroProgress}
+        apiarioNome={giroProgress ? undefined : apiarioNome}
         onClose={onClose}
       />
+
+      {giroProgress ? (
+        <div className="ispezione-engine__giro-hud">
+          <GiroSessionHud
+            current={giroProgress.current}
+            total={giroProgress.total}
+            startedAt={giroProgress.startedAt}
+            apiarioNome={giroProgress.apiarioNome}
+          />
+        </div>
+      ) : null}
 
       <div className="ispezione-engine__divider" aria-hidden="true" />
 

@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { ChevronDown } from '../../../theme/icons'
 import { ErrorPage } from '../../../components/common/ErrorPage'
 import { parseDexieError } from '../../../database/errors'
 import { EmptyState } from '../../../components/ui/EmptyState'
 import { PageSkeleton } from '../../../components/ui/Skeleton'
 import { useArnieByApiarioId } from '../../arnie/hooks/useArnie'
+import { GiroSessionHud } from '../../visite/components/giro/GiroSessionHud'
 import { exportGiroReport } from '../../visite/services/giroReportService'
 import { useApiarioGiroFlow } from '../hooks/useApiarioGiroFlow'
 import { ApiarioGiroCompletato } from './ApiarioGiroCompletato'
@@ -23,8 +25,10 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
   const {
     expandedIndex,
     completedThrough,
+    giroActive,
     giroComplete,
     giroStats,
+    orderedArnie,
     starting,
     stepRefs,
     openVisita,
@@ -32,6 +36,12 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
     resetGiroView,
     expandStep,
   } = useApiarioGiroFlow({ apiarioId, apiarioNome, arnie, loading })
+
+  const displayArnie = orderedArnie.length > 0 ? orderedArnie : arnie
+  const giroCurrent = useMemo(
+    () => Math.min(giroStats.arnieVisitate + 1, giroStats.totaleArnie || displayArnie.length),
+    [giroStats.arnieVisitate, giroStats.totaleArnie, displayArnie.length],
+  )
 
   if (error) {
     return (
@@ -64,11 +74,23 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
       {!giroComplete && (
         <ApiarioGiroHero
           nome={apiarioNome}
-          arnieCount={arnie.length}
+          arnieCount={displayArnie.length}
           onIniziaGiro={() => void startGiro()}
-          disabled={arnie.length === 0 || starting}
+          disabled={displayArnie.length === 0 || starting || giroActive}
+          giroActive={giroActive}
         />
       )}
+
+      {giroActive && !giroComplete && giroStats.totaleArnie > 0 ? (
+        <div className="apiario-visite-flow__hud">
+          <GiroSessionHud
+            current={giroCurrent}
+            total={giroStats.totaleArnie}
+            startedAt={giroStats.startedAt}
+            apiarioNome={apiarioNome}
+          />
+        </div>
+      ) : null}
 
       {giroComplete ? (
         <ApiarioGiroCompletato
@@ -76,10 +98,10 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
           onExportReport={() => exportGiroReport(apiarioNome, giroStats)}
           onTornaPercorso={resetGiroView}
         />
-      ) : arnie.length === 0 ? (
+      ) : displayArnie.length === 0 ? (
         <EmptyState
           title="Nessuna arnia"
-          description="Non ci sono arnie registrate in questo apiario."
+          description="Non ci sono arnie attive da ispezionare in questo apiario."
         />
       ) : (
         <motion.section
@@ -90,7 +112,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
           aria-label="Percorso visite apiario"
         >
           <ol className="apiario-visite-flow__list">
-            {arnie.map((item, index) => {
+            {displayArnie.map((item, index) => {
               const { arnia, salute, ultimaVisitaLabel } = item
               const isExpanded = index === expandedIndex
               const isDone = index <= completedThrough
@@ -128,7 +150,7 @@ export function ApiarioVisiteFlow({ apiarioId, apiarioNome }: ApiarioVisiteFlowP
                     )}
                   </motion.div>
 
-                  {index < arnie.length - 1 && (
+                  {index < displayArnie.length - 1 && (
                     <div className="apiario-visite-flow__arrow" aria-hidden="true">
                       <ChevronDown size={28} strokeWidth={2.5} />
                     </div>

@@ -11,6 +11,7 @@ export type GiroSessionStats = {
   visitedArniaIds: string[]
   trattamenti: number
   foto: number
+  noteInserite: number
   regineDaControllare: number
 }
 
@@ -28,6 +29,7 @@ export function createGiroSessionStats(
     visitedArniaIds: [],
     trattamenti: 0,
     foto: 0,
+    noteInserite: 0,
     regineDaControllare: 0,
   }
 }
@@ -51,13 +53,14 @@ export function giroEntityToSessionStats(
     visitedArniaIds: [...giro.arnieVisitateIds],
     trattamenti: giro.trattamenti ?? 0,
     foto: giro.foto ?? 0,
+    noteInserite: giro.noteInserite ?? 0,
     regineDaControllare: giro.regineDaControllare ?? 0,
   }
 }
 
 export function accumulateGiroStats(
   current: GiroSessionStats,
-  visit: { fotoCount: number; hadTrattamento: boolean; reginaNonVista: boolean },
+  visit: { fotoCount: number; hadTrattamento: boolean; reginaNonVista: boolean; hadNote: boolean },
   arniaId: string,
 ): GiroSessionStats {
   const alreadyVisited = current.visitedArniaIds.includes(arniaId)
@@ -70,6 +73,7 @@ export function accumulateGiroStats(
       : [...current.visitedArniaIds, arniaId],
     trattamenti: current.trattamenti + (visit.hadTrattamento ? 1 : 0),
     foto: current.foto + visit.fotoCount,
+    noteInserite: current.noteInserite + (visit.hadNote ? 1 : 0),
     regineDaControllare: current.regineDaControllare + (visit.reginaNonVista ? 1 : 0),
   }
 }

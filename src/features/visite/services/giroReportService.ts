@@ -1,15 +1,21 @@
-import { formatDateTime } from '../../../utils/dateFormatters'
+import { formatDateTime, formatDuration } from '../../../utils/dateFormatters'
 import type { GiroSessionStats } from '../types/giro.types'
 
 export function exportGiroReport(apiarioNome: string, stats: GiroSessionStats): void {
+  const elapsedSeconds =
+    stats.durataSecondi ??
+    (stats.completedAt ? Math.max(0, Math.round((stats.completedAt - stats.startedAt) / 1000)) : 0)
+
   const lines = [
     'MELI — Report giro apiario',
     `Apiario: ${apiarioNome}`,
     `Data: ${formatDateTime(Date.now())}`,
     '',
     `${stats.arnieVisitate} arnie visitate`,
+    `Tempo impiegato: ${formatDuration(elapsedSeconds)}`,
+    `${stats.noteInserite} note inserite`,
+    `${stats.foto} foto scattate`,
     `${stats.trattamenti} trattamenti`,
-    `${stats.foto} foto`,
     `${stats.regineDaControllare} regine da controllare`,
   ]
 

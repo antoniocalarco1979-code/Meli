@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Button } from '../../../components/ui/Button'
+import { formatDuration } from '../../../utils/dateFormatters'
 import type { GiroSessionStats } from '../../visite/types/giro.types'
 import './ApiarioGiroCompletato.css'
 
@@ -9,7 +10,7 @@ type ApiarioGiroCompletatoProps = {
   onTornaPercorso: () => void
 }
 
-function StatRow({ value, label }: { value: number; label: string }) {
+function StatRow({ value, label }: { value: string | number; label: string }) {
   return (
     <div className="apiario-giro-completato__stat">
       <span className="apiario-giro-completato__stat-value">{value}</span>
@@ -23,6 +24,10 @@ export function ApiarioGiroCompletato({
   onExportReport,
   onTornaPercorso,
 }: ApiarioGiroCompletatoProps) {
+  const elapsedSeconds =
+    stats.durataSecondi ??
+    (stats.completedAt ? Math.max(0, Math.round((stats.completedAt - stats.startedAt) / 1000)) : 0)
+
   return (
     <motion.section
       className="apiario-giro-completato meli-glass meli-glass--deep"
@@ -32,7 +37,7 @@ export function ApiarioGiroCompletato({
       aria-labelledby="giro-completato-title"
     >
       <p className="apiario-giro-completato__emoji" aria-hidden="true">
-        🎉
+        ✔
       </p>
       <h2 id="giro-completato-title" className="apiario-giro-completato__title">
         Giro completato
@@ -40,9 +45,9 @@ export function ApiarioGiroCompletato({
 
       <div className="apiario-giro-completato__stats">
         <StatRow value={stats.arnieVisitate} label="arnie visitate" />
-        <StatRow value={stats.trattamenti} label="trattamenti" />
-        <StatRow value={stats.foto} label="foto" />
-        <StatRow value={stats.regineDaControllare} label="regine da controllare" />
+        <StatRow value={formatDuration(elapsedSeconds)} label="tempo impiegato" />
+        <StatRow value={stats.noteInserite} label="note inserite" />
+        <StatRow value={stats.foto} label="foto scattate" />
       </div>
 
       <Button

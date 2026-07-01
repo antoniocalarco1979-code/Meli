@@ -71,6 +71,8 @@ function enrichArniaListItemFromCache(
     salute: computeSalute(arnia.stato, ultimaVisita, arnia.forzaFamiglia, trattamentoRecente),
     reginaLabel: formatReginaLabel(regina?.anno, regina?.colore),
     ultimaVisitaLabel: ultimaVisita ? formatRelativeDate(ultimaVisita.data) : '—',
+    ultimaVisitaData: ultimaVisita?.data ?? null,
+    ultimaVisita,
     produzioneAnnoLabel: formatProduzioneKg(produzioneAnno),
   }
 }

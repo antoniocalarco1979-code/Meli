@@ -178,6 +178,7 @@ export type GiroApiario = {
   durataSecondi?: number
   trattamenti?: number
   foto?: number
+  noteInserite?: number
   regineDaControllare?: number
   createdAt: number
   updatedAt: number

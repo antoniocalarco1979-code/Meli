@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { parseDexieError } from '../../../database/errors'
 import { useAppPath } from '../../../demo/useAppPath'
@@ -35,12 +35,21 @@ export function useApiarioGiroFlow({
   const [completedThrough, setCompletedThrough] = useState(-1)
   const [giroActive, setGiroActive] = useState(false)
   const [giroComplete, setGiroComplete] = useState(false)
+  const [giroArniaIds, setGiroArniaIds] = useState<string[]>([])
   const [giroStats, setGiroStats] = useState<GiroSessionStats>(() => emptyGiroSessionStats())
   const [starting, setStarting] = useState(false)
   const autoStartHandled = useRef(false)
   const stepRefs = useRef<Map<number, HTMLLIElement>>(new Map())
 
-  const arniaIds = arnie.map((item) => item.arnia.id)
+  const arniaIds = giroArniaIds.length > 0 ? giroArniaIds : arnie.map((item) => item.arnia.id)
+
+  const orderedArnie = useMemo(() => {
+    if (giroArniaIds.length === 0) return arnie
+    const byId = new Map(arnie.map((item) => [item.arnia.id, item]))
+    return giroArniaIds
+      .map((id) => byId.get(id))
+      .filter((item): item is (typeof arnie)[number] => Boolean(item))
+  }, [arnie, giroArniaIds])
 
   const scrollToStep = (index: number) => {
     window.setTimeout(() => {
@@ -82,13 +91,14 @@ export function useApiarioGiroFlow({
     try {
       const payload = await startGiroSession(apiarioId, apiarioNome)
       if (!payload) {
-        toast.error('Nessuna arnia in questo apiario')
+        toast.error('Nessuna arnia attiva da ispezionare in questo apiario')
         return
       }
 
       setGiroActive(true)
       setGiroComplete(false)
       setGiroStats(payload.giroReturn.giroStats)
+      setGiroArniaIds(payload.giroReturn.arniaIds ?? [])
       setCompletedThrough(-1)
       setExpandedIndex(0)
       navigateToArniaVisit(0, payload.giroReturn)
@@ -102,6 +112,7 @@ export function useApiarioGiroFlow({
   const resetGiroView = () => {
     setGiroComplete(false)
     setGiroActive(false)
+    setGiroArniaIds([])
     setCompletedThrough(-1)
     setExpandedIndex(0)
     setGiroStats(emptyGiroSessionStats())
@@ -118,6 +129,7 @@ export function useApiarioGiroFlow({
 
       setGiroActive(resume.giroActive)
       setGiroStats(resume.giroStats)
+      setGiroArniaIds(resume.arniaIds ?? [])
       setCompletedThrough(resume.completedThrough)
 
       if (resume.giroActive && resume.nextIndex >= arnie.length) {
@@ -158,8 +170,11 @@ export function useApiarioGiroFlow({
   return {
     expandedIndex,
     completedThrough,
+    giroActive,
     giroComplete,
     giroStats,
+    giroArniaIds,
+    orderedArnie,
     starting,
     stepRefs,
     openVisita,

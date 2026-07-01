@@ -4,6 +4,7 @@ import {
   recordGiroIspezione,
 } from '../../../database/services/giriService'
 import { getArnieEnrichedByApiarioId } from '../../arnie/services/arniaDetailService'
+import { orderArnieForGiro } from './giroOrderingService'
 import { giroEntityToSessionStats, type GiroSessionStats } from '../types/giro.types'
 import type { GiroReturnContext } from '../types/visitFlow.types'
 import type { VisitaSaveSummary } from '../types/visitSave.types'
@@ -38,7 +39,7 @@ export async function startGiroSession(
   apiarioId: string,
   apiarioNome: string,
 ): Promise<GiroStartPayload | null> {
-  const arnie = await getArnieEnrichedByApiarioId(apiarioId)
+  const arnie = orderArnieForGiro(await getArnieEnrichedByApiarioId(apiarioId))
   if (arnie.length === 0) return null
 
   const giro = await createGiroApiario(apiarioId)
@@ -70,11 +71,14 @@ export async function advanceGiroAfterSavedVisit(
     fotoCount: summary.fotoCount,
     hadTrattamento: summary.hadTrattamento,
     reginaNonVista: summary.reginaNonVista,
+    hadNote: summary.hadNote,
   })
 
   const arniaIds =
     giroReturn.arniaIds ??
-    (await getArnieEnrichedByApiarioId(giroReturn.apiarioId)).map((item) => item.arnia.id)
+    orderArnieForGiro(await getArnieEnrichedByApiarioId(giroReturn.apiarioId)).map(
+      (item) => item.arnia.id,
+    )
 
   const completedThrough = Math.max(giroReturn.completedThrough, giroReturn.arniaIndex)
   const nextIndex = giroReturn.arniaIndex + 1

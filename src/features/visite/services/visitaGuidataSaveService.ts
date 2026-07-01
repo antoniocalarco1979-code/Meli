@@ -86,5 +86,9 @@ export async function saveVisitaGuidata(
     fotoCount: photos.length,
     hadTrattamento: false,
     reginaNonVista: varroaSi,
+    hadNote:
+      Boolean(state.vassoio.note.trim()) ||
+      Boolean(state.melario.note.trim()) ||
+      Boolean(state.nido.note.trim()),
   }
 }

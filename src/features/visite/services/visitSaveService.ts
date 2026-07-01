@@ -79,6 +79,7 @@ async function persistVisita(payload: PersistVisitaPayload): Promise<VisitaSaveS
     fotoCount: photos.length,
     hadTrattamento,
     reginaNonVista,
+    hadNote: noteParts.length > 0,
   }
 }
 

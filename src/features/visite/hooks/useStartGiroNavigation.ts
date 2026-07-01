@@ -19,7 +19,7 @@ export function useStartGiroNavigation() {
       try {
         const payload = await startGiroSession(apiarioId, apiarioNome)
         if (!payload) {
-          toast.error('Nessuna arnia in questo apiario')
+          toast.error('Nessuna arnia attiva da ispezionare in questo apiario')
           return false
         }
 

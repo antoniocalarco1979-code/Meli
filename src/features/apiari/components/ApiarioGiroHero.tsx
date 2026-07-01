@@ -7,13 +7,20 @@ type ApiarioGiroHeroProps = {
   arnieCount: number
   onIniziaGiro: () => void
   disabled?: boolean
+  giroActive?: boolean
 }
 
 function displayNome(nome: string) {
   return nome.trim().toUpperCase()
 }
 
-export function ApiarioGiroHero({ nome, arnieCount, onIniziaGiro, disabled }: ApiarioGiroHeroProps) {
+export function ApiarioGiroHero({
+  nome,
+  arnieCount,
+  onIniziaGiro,
+  disabled,
+  giroActive = false,
+}: ApiarioGiroHeroProps) {
   const label = arnieCount === 1 ? 'arnia' : 'arnie'
 
   return (
@@ -40,7 +47,7 @@ export function ApiarioGiroHero({ nome, arnieCount, onIniziaGiro, disabled }: Ap
       >
         <span className="apiario-giro-hero__shine" aria-hidden="true" />
         <Play size={26} fill="currentColor" strokeWidth={0} aria-hidden="true" />
-        <span>Inizia giro apiario</span>
+        <span>{giroActive ? 'Giro in corso…' : 'Inizia giro apiario'}</span>
       </motion.button>
     </motion.header>
   )

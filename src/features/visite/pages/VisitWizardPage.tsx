@@ -134,6 +134,7 @@ export function VisitWizardPage() {
               current: giroReturn.arniaIndex + 1,
               total: giroReturn.giroStats.totaleArnie,
               apiarioNome: giroReturn.apiarioNome,
+              startedAt: giroReturn.giroStats.startedAt,
             }
           : undefined
       }

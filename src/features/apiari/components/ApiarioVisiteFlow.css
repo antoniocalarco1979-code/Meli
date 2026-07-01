@@ -3,6 +3,10 @@
   border-radius: var(--meli-radius-xl);
 }
 
+.apiario-visite-flow__hud {
+  margin: 0 0 1rem;
+}
+
 .apiario-visite-flow__list {
   list-style: none;
   padding: 0;

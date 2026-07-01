@@ -1,4 +1,4 @@
-import type { Apiario, Arnia } from '../../database/types'
+import type { Apiario, Arnia, Visita } from '../../database/types'
 import type { AzioneConsigliata } from '../azioni/types'
 import type { SaluteLevel } from '../../utils/salute'
 
@@ -104,5 +104,8 @@ export type ArniaListItem = {
   salute: number
   reginaLabel: string
   ultimaVisitaLabel: string
+  ultimaVisitaData?: number | null
+  /** Ultima visita grezza — usata per ordinamento giro apiario. */
+  ultimaVisita?: Visita
   produzioneAnnoLabel: string
 }
